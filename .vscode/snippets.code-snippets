@@ -1,0 +1,24 @@
+{
+	"Event Snippet": {
+		"scope": "typescript",
+		"prefix": "eventclass",
+		"body": [
+			"import { Listener } from \"@sapphire/framework\";",
+			"",
+			"export class ${1}Listener extends Listener {",
+			"",
+			"constructor(ctx: Listener.Context, opts: Listener.Options) {",
+			"super(ctx, {",
+			"...opts,",
+			"name: \"${3}\",",
+			"event: \"${4}\"",
+			"});",
+			"}",
+			"",
+			"public async run(${5}) {",
+			"throw Error('Unimplemented Method')",
+			"}",
+			"}"
+		]
+	},
+}
