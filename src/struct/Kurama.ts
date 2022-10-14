@@ -5,6 +5,8 @@ import type { Message } from "discord.js";
 
 import logs from "@mateie/discord-logs";
 
+import Dashboard from "./dashboard";
+
 import Database from "./database";
 import Util from "./util";
 import XP from "./systems/XP";
@@ -49,6 +51,8 @@ export class Kurama extends SapphireClient {
         logs(this, { debug: process.env.NODE_ENV === "development" });
 
         container.owners = ["401269337924829186", "190120411864891392"];
+
+        container.dashboard = new Dashboard(container);
 
         container.canvas = new Canvas(container);
         container.crypt = new Crypt(container);

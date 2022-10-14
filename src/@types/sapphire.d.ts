@@ -18,6 +18,7 @@ import { Collection } from "discord.js";
 import { Command, Args, CommandOptions } from "@sapphire/framework";
 import { ValorantAccount } from "@types";
 import { Seasons } from "@valapi/valorant-api.com";
+import Dashboard from "@struct/dashboard";
 
 declare module "@sapphire/pieces" {
     interface Container {
@@ -28,6 +29,8 @@ declare module "@sapphire/pieces" {
         promoteChannel: GuildBasedChannel | null;
 
         owners: string[];
+
+        dashboard: Dashboard;
 
         canvas: Canvas;
         crypt: Crypt;
