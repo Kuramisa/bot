@@ -17,6 +17,9 @@ export default gql`
 
     scalar Ticket
 
+    scalar Warn
+    scalar Report
+
     type Query {
         client: Client!
         clientUser: User!
@@ -53,12 +56,18 @@ export default gql`
         member(guildId: String!, memberId: String!, fetchDb: Boolean): Member!
         members(guildId: String!, fetchDb: Boolean): [Member]!
 
+        warns(guildId: String!, userId: String!): [Warn]!
+        reports(guildId: String!, userId: String!): [Report]!
+
         chatLog(username: String!, message: String!, ip: String!): Boolean
     }
 
     type Mutation {
         login(code: String!): String!
         authUser(auth: String!): User!
+
+        warnUser(guildId: String!, userId: String!, reason: String): Warn!
+        reportUser(guildId: String!, userId: String!, reason: String): Report!
 
         linkServer(code: String!, ip: String!): String!
 
