@@ -15,6 +15,7 @@ export class TicketsCommand extends Subcommand {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                .setDefaultMemberPermissions(1 << 5)
                 .addSubcommand((command) =>
                     command
                         .setName("auto")

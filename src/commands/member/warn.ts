@@ -15,6 +15,7 @@ export class WarnCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                .setDefaultMemberPermissions(1 << 40)
                 .addUserOption((option) =>
                     option
                         .setName("member")

@@ -15,6 +15,7 @@ export class ReportsCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                .setDefaultMemberPermissions(1 << 7)
                 .addUserOption((option) =>
                     option
                         .setName("member")
