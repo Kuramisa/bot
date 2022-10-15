@@ -1,12 +1,18 @@
 import { Container } from "@sapphire/pieces";
+import Dashboard from "@struct/dashboard";
 import { UserInputError } from "apollo-server-core";
+import { Request } from "express";
 
 export default {
     Query: {
         guild: async (
             _: any,
             { guildId, fetchDb }: { guildId: string; fetchDb?: boolean },
-            { container: { client, database, util } }: { container: Container }
+            {
+                req,
+                server: { auth },
+                container: { client, database, util }
+            }: { req: Request; server: Dashboard; container: Container }
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
@@ -51,6 +57,15 @@ export default {
 
                             info = { ...info, inviteURL: invite.url };
                         }
+                    }
+                }
+
+                const user = await auth.check(req);
+                if (user) {
+                    const member = guild.members.cache.get(user.id);
+                    if (member) {
+                        const authPerms = member.permissions.toArray();
+                        info = { authPerms, ...info };
                     }
                 }
 
@@ -116,7 +131,9 @@ export default {
                     })
                 );
 
-                return guilds;
+                return guilds
+                    .sort((a, b) => b.memberCount - a.memberCount)
+                    .sort((a, b) => Number(b.promoted) - Number(a.promoted));
             } catch (err) {
                 console.error(err);
                 throw err;
