@@ -75,7 +75,10 @@ export const Guild: Schema = new Schema<IGuild>({
         type: String,
         default: "k!"
     },
-    promoted: Boolean,
+    promoted: {
+        type: Boolean,
+        default: false
+    },
     channels: {
         rules: String,
         reports: String
