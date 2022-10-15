@@ -69,6 +69,7 @@ export class Kurama extends SapphireClient {
 
     public override async login(token?: string) {
         await container.database.connect();
+        await container.dashboard.init();
         return super.login(token);
     }
 
