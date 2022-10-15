@@ -54,9 +54,11 @@ export class AnnounceCommand extends Command {
         client.guilds.cache.forEach(async (guild) => {
             const owner = await guild.fetchOwner();
 
-            owner.send({
-                content: `${text}\n\n*This is from the official developers and will not be used to spam the users*\n\n- **${client.user?.username} ${version}**`
-            });
+            owner
+                .send({
+                    content: `${text}\n\n*This is from the official developers and will not be used to spam the users*\n\n- **${client.user?.username} ${version}**`
+                })
+                .catch(console.error);
         });
 
         await submitted.editReply({ content: "Announcement sent" });
