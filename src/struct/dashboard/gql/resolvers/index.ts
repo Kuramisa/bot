@@ -10,11 +10,12 @@ export default {
         ...client.Query,
         ...guilds.Query,
         ...channels.Query,
+        ...minecraft.Query,
         ...tickets.Query,
         ...users.Query
     },
     Mutation: {
-        ...users.Mutation,
-        ...minecraft.Mutation
+        ...minecraft.Mutation,
+        ...users.Mutation
     }
 };

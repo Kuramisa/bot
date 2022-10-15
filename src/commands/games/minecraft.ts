@@ -1,5 +1,6 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import { Message } from "discord.js";
+import Minecraft from "@schemas/Minecraft";
 
 export class MinecraftCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -10,12 +11,18 @@ export class MinecraftCommand extends Subcommand {
             description: "Minecraft Commands",
             subcommands: [
                 {
-                    name: "link",
-                    messageRun: "messageLink"
-                },
-                {
-                    name: "unlink",
-                    messageRun: "messageUnlink"
+                    name: "player",
+                    type: "group",
+                    entries: [
+                        {
+                            name: "link",
+                            messageRun: "messageLink"
+                        },
+                        {
+                            name: "unlink",
+                            messageRun: "messageUnlink"
+                        }
+                    ]
                 }
             ]
         });
@@ -29,18 +36,43 @@ export class MinecraftCommand extends Subcommand {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
-                .addSubcommand((command) =>
-                    command
-                        .setName("link")
-                        .setDescription(
-                            "Link your minecraft account to your discord"
+                .setDMPermission(false)
+                .addSubcommandGroup((group) =>
+                    group
+                        .setName("player")
+                        .setDescription("Player commands for Minecraft")
+                        .addSubcommand((command) =>
+                            command
+                                .setName("link")
+                                .setDescription(
+                                    "Link your Minecraft account to your Discord"
+                                )
+                        )
+                        .addSubcommand((command) =>
+                            command
+                                .setName("unlink")
+                                .setDescription(
+                                    "Unlink your Minecraft account from your Discord"
+                                )
                         )
                 )
-                .addSubcommand((command) =>
-                    command
-                        .setName("unlink")
-                        .setDescription(
-                            "Unlink your minecraft account from your discord"
+                .addSubcommandGroup((group) =>
+                    group
+                        .setName("server")
+                        .setDescription("Server commands for minecraft")
+                        .addSubcommand((command) =>
+                            command
+                                .setName("link")
+                                .setDescription(
+                                    "Link your Minecraft server to the Discord server"
+                                )
+                        )
+                        .addSubcommand((command) =>
+                            command
+                                .setName("unlink")
+                                .setDescription(
+                                    "Unlink your Minecraft server from the Discord server"
+                                )
                         )
                 )
         );
@@ -49,42 +81,89 @@ export class MinecraftCommand extends Subcommand {
     /**
      * Execute Slash Commands
      */
-    public async chatInputRun(interaction: Subcommand.ChatInputInteraction) {
+    public async chatInputRun(
+        interaction: Subcommand.ChatInputInteraction<"cached">
+    ) {
         const { database, minecraft } = this.container;
-        const { user } = interaction;
+        const { guild, user, options } = interaction;
 
         const db = await database.users.get(user);
         if (!db) return;
 
-        switch (interaction.options.getSubcommand()) {
-            case "link": {
-                if (db.minecraft.username && db.minecraft.username.length > 0)
-                    return interaction.reply({
-                        content: `Your Discord account is already linked to \`${db.minecraft.username}\``,
-                        ephemeral: true
-                    });
+        switch (options.getSubcommandGroup()) {
+            case "player": {
+                switch (options.getSubcommand()) {
+                    case "link": {
+                        if (
+                            db.minecraft.username &&
+                            db.minecraft.username.length > 0
+                        )
+                            return interaction.reply({
+                                content: `Your Discord account is already linked to \`${db.minecraft.username}\``,
+                                ephemeral: true
+                            });
 
-                const code = await minecraft.generateCode(db);
+                        const code = await minecraft.generateCode(db);
 
-                return interaction.reply({
-                    content: `Code Generated: **${code}**`,
-                    ephemeral: true
-                });
+                        return interaction.reply({
+                            content: `Code Generated: **${code}**`,
+                            ephemeral: true
+                        });
+                    }
+                    case "unlink": {
+                        if (
+                            !db.minecraft.username ||
+                            db.minecraft.username.length < 1
+                        )
+                            return interaction.reply({
+                                content:
+                                    "You do not have your Discord account linked to any Minecraft account",
+                                ephemeral: true
+                            });
+
+                        await minecraft.unlinkAccounts(db);
+
+                        return interaction.reply({
+                            content: `Unlinked your Discord account from \`${db.minecraft.username}\``,
+                            ephemeral: true
+                        });
+                    }
+                }
+                break;
             }
-            case "unlink": {
-                if (!db.minecraft.username || db.minecraft.username.length < 1)
-                    return interaction.reply({
-                        content:
-                            "You do not have your Discord account linked to any Minecraft account",
-                        ephemeral: true
-                    });
+            case "server": {
+                switch (options.getSubcommand()) {
+                    case "link": {
+                        if (await Minecraft.findOne({ guildId: guild.id }))
+                            return interaction.reply({
+                                content:
+                                    "This Discord server already has a Minecraft server linked to it",
+                                ephemeral: true
+                            });
 
-                await minecraft.unlinkAccounts(db);
+                        const code = await minecraft.generateServerCode(guild);
 
-                return interaction.reply({
-                    content: `Unlinked your Discord account from \`${db.minecraft.username}\``,
-                    ephemeral: true
-                });
+                        return interaction.reply({
+                            content: `Code generated: **${code}**`,
+                            ephemeral: true
+                        });
+                    }
+                    case "unlink": {
+                        if (!(await Minecraft.findOne({ guildId: guild.id })))
+                            return interaction.reply({
+                                content:
+                                    "This Discord server is not linked to any Minecraft server",
+                                ephemeral: true
+                            });
+
+                        await minecraft.unlinkServer(guild);
+
+                        return interaction.reply({
+                            content: `Unlinked \`${guild.name}\` from the Minecraft server`,
+                            ephemeral: true
+                        });
+                    }
+                }
             }
         }
     }

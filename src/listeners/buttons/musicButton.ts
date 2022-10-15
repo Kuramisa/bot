@@ -170,7 +170,7 @@ export class MusicButtonsListener extends Listener {
 
                 queue.skip();
 
-                setTimeout(() => message.delete(), 5000);
+                setTimeout(() => message.delete().catch(console.error), 5000);
                 return interaction.deferUpdate();
             }
             case "skip_to_track": {

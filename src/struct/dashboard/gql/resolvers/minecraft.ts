@@ -1,9 +1,74 @@
 import { Container } from "@sapphire/pieces";
+import Minecraft from "@schemas/Minecraft";
 import { UserInputError } from "apollo-server-core";
 
 export default {
+    Query: {
+        chatLog: async (
+            _: any,
+            {
+                username,
+                message,
+                ip
+            }: { username: string; message: string; ip: string },
+            { container: { client, minecraft, util } }: { container: Container }
+        ) => {
+            const db = await Minecraft.findOne({ ip });
+            if (!db)
+                throw new UserInputError("This minecraft server is not linked");
+
+            if (!db.logs.chat) return;
+
+            if (!db.logs.channel && db.logs.channel.length < 1)
+                throw new UserInputError("Minecraft Logs channel is not setup");
+
+            const guild = client.guilds.cache.get(db.guildId);
+            if (!guild) throw new Error("Guild not found");
+
+            const channel = guild.channels.cache.get(db.logs.channel);
+            if (!channel) throw new Error("Channel not found");
+            if (!channel.isText())
+                throw new Error("Log channel is not text based");
+
+            await channel.send(`${username} » ${message}`);
+        }
+    },
     Mutation: {
-        linkMinecraft: async (
+        linkServer: async (
+            _: any,
+            { code, ip }: { code: string; ip: string },
+            { container: { client } }: { container: Container }
+        ) => {
+            const db = await Minecraft.findOne({ code });
+            if (!db) throw new UserInputError("Invalid Code");
+
+            const guild = client.guilds.cache.get(db.guildId);
+            if (!guild) throw new UserInputError("Guild not found");
+
+            if (db.ip && db.ip.length > 0)
+                throw new Error(
+                    `This Minecraft server is already linked to ${guild.name}`
+                );
+
+            db.ip = ip;
+
+            await db.save();
+
+            return "Discord Server Linked Successfully";
+        },
+        checkPlayer: async (
+            _: any,
+            { username }: { username: string },
+            { container: { database } }: { container: Container }
+        ) => {
+            const db = (await database.users.getAll()).find(
+                (user) => user.minecraft.username === username
+            );
+
+            if (!db) return false;
+            return true;
+        },
+        linkPlayer: async (
             _: any,
             { username, code }: { username: string; code: string },
             {
@@ -79,7 +144,7 @@ export default {
                 }
             }
         },
-        unlinkMinecraft: async (
+        unlinkPlayer: async (
             _: any,
             { username }: { username: string },
             {
@@ -90,7 +155,10 @@ export default {
                 (user) => user.minecraft.username === username
             );
 
-            if (!db) throw new UserInputError("Invalid Username");
+            if (!db)
+                throw new UserInputError(
+                    "You do not have any Discord account linked to your Minecraft account"
+                );
 
             const user = client.users.cache.get(db.id);
             if (!user) throw new UserInputError("User not found");

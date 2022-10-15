@@ -52,14 +52,19 @@ export default gql`
 
         member(guildId: String!, memberId: String!, fetchDb: Boolean): Member!
         members(guildId: String!, fetchDb: Boolean): [Member]!
+
+        chatLog(username: String!, message: String!, ip: String!): Boolean
     }
 
     type Mutation {
         login(code: String!): String!
         authUser(auth: String!): User!
 
-        linkMinecraft(username: String!, code: String!): String!
-        unlinkMinecraft(username: String!): String!
+        linkServer(code: String!, ip: String!): String!
+
+        checkPlayer(username: String!): Boolean!
+        linkPlayer(username: String!, code: String!): String!
+        unlinkPlayer(username: String!): String!
 
         music(username: String!, action: String!, query: String): String!
     }

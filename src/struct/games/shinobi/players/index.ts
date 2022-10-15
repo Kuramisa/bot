@@ -137,7 +137,8 @@ export default class ShinobiPlayers {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete") message.delete();
+                if (reason !== "messageDelete")
+                    message.delete().catch(console.error);
             });
     }
 

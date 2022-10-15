@@ -63,6 +63,6 @@ export class MusicSelectionsDropListener extends Listener {
         });
 
         message.edit({ components: [] });
-        setTimeout(() => message.delete(), 5000);
+        setTimeout(() => message.delete().catch(console.error), 5000);
     }
 }

@@ -1,22 +1,22 @@
 import { Document, model, Schema, HydratedDocument, Types } from "mongoose";
 
 export interface IMinecraft extends HydratedDocument<any> {
+    code: string;
     guildId: string;
+    ip: string;
     logs: {
-        chat: {
-            enabled: boolean;
-            channel: string;
-        };
+        channel: string;
+        chat: boolean;
     };
 }
 
 export const Minecraft: Schema = new Schema<IMinecraft>({
+    code: String,
     guildId: String,
+    ip: String,
     logs: {
-        chat: {
-            enabled: Boolean,
-            channel: String
-        }
+        channel: String,
+        chat: Boolean
     }
 });
 

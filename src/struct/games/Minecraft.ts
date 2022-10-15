@@ -1,10 +1,12 @@
 import { Container } from "@sapphire/pieces";
-import { Collection, Guild, CommandInteraction } from "discord.js";
+import { Collection, Guild } from "discord.js";
 
 import mc from "minecraft_head";
 import crafatar from "crafatar";
 
 import { DUser } from "@schemas/User";
+
+import Mc from "@schemas/Minecraft";
 
 export default class Minecraft {
     private readonly container: Container;
@@ -24,6 +26,21 @@ export default class Minecraft {
         await db.save();
 
         return code;
+    }
+
+    async generateServerCode(guild: Guild) {
+        const code = Math.random().toString(36).substring(6);
+
+        await Mc.create({
+            guildId: guild.id,
+            code
+        });
+
+        return code;
+    }
+
+    async unlinkServer(guild: Guild) {
+        await Mc.deleteOne({ guildId: guild.id });
     }
 
     async unlinkAccounts(db: DUser) {

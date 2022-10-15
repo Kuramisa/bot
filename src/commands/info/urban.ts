@@ -120,7 +120,8 @@ export class UrbanCommand extends Command {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete") message.delete();
+                if (reason !== "messageDelete")
+                    message.delete().catch(console.error);
             });
     }
 
@@ -211,7 +212,8 @@ export class UrbanCommand extends Command {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete") message.delete();
+                if (reason !== "messageDelete")
+                    message.delete().catch(console.error);
             });
     }
 

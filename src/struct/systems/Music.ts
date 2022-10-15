@@ -9,7 +9,11 @@ export default class Music extends Player {
     readonly util: typeof Util;
 
     constructor(container: Container) {
-        super(container.client);
+        super(container.client, {
+            ytdlOptions: {
+                filter: "audioonly"
+            }
+        });
 
         this.container = container;
         this.util = Util;
