@@ -4,9 +4,9 @@ import { Container } from "@sapphire/pieces";
 import { Permissions, User } from "discord.js";
 
 import jwt from "jsonwebtoken";
-import { ExpressContext } from "apollo-server-express";
 import { AuthenticationError } from "apollo-server-express";
 import DiscordOAuth2 from "discord-oauth2";
+import { Request } from "express";
 
 const { JWT_SECRET, SECRET } = process.env;
 
@@ -25,6 +25,12 @@ export default class Auth {
         this.jwt = jwt;
         this.oauth = new DiscordOAuth2();
         this.secrets = { client: SECRET as string, jwt: JWT_SECRET as string };
+    }
+
+    async getUser(auth: any) {
+        if (!auth) throw new AuthenticationError("User not logged in");
+
+        return await this.oauth.getUser(auth.token.access_token);
     }
 
     async getUserGuilds(auth: string, db?: boolean) {
@@ -74,16 +80,20 @@ export default class Auth {
         return Promise.all(guilds);
     }
 
-    check(context: ExpressContext) {
-        const header = context.req.headers.authorization;
+    async check(req: Request) {
+        const { crypt, dashboard } = this.container;
+
+        const header = req.headers.authorization;
         if (!header) throw new Error("You must be logged in");
         const token = header.split("Bearer ")[1];
         if (!token)
             throw new Error("Authentication token must be 'Bearer [token]'");
         try {
-            const user = jwt.verify(token, this.secrets.jwt);
+            const jwtData = jwt.verify(crypt.decrypt(token), this.secrets.jwt);
+            const user = await dashboard.auth.getUser(jwtData);
             return user;
         } catch (err) {
+            console.error(err);
             throw new AuthenticationError(
                 "Session timed out, please refresh the page and login again"
             );
