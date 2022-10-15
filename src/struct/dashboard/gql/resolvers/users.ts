@@ -1,6 +1,7 @@
 import { Container } from "@sapphire/pieces";
 import Dashboard from "@struct/dashboard";
 import { UserInputError } from "apollo-server-core";
+import { Request } from "express";
 
 export default {
     Query: {
@@ -90,9 +91,186 @@ export default {
             { server: { auth } }: { server: Dashboard }
         ) => {
             return auth.getUserGuilds(authData, fetchDb);
+        },
+
+        warns: async (
+            _: any,
+            { guildId, userId }: { guildId: string; userId: string },
+            { container: { client, moderation } }: { container: Container }
+        ) => {
+            const guild = client.guilds.cache.get(guildId);
+            if (!guild) throw new Error("Guild not found");
+
+            const member = guild.members.cache.get(userId);
+            if (!member) throw new Error("Member not found");
+
+            return await moderation.warns.get(member);
+        },
+        reports: async (
+            _: any,
+            { guildId, userId }: { guildId: string; userId: string },
+            { container: { client, moderation } }: { container: Container }
+        ) => {
+            const guild = client.guilds.cache.get(guildId);
+            if (!guild) throw new Error("Guild not found");
+
+            const member = guild.members.cache.get(userId);
+            if (!member) throw new Error("Member not found");
+
+            return await moderation.reports.get(member);
         }
     },
     Mutation: {
+        warnUser: async (
+            _: any,
+            {
+                guildId,
+                userId,
+                reason
+            }: { guildId: string; userId: string; reason?: string },
+            {
+                req,
+                server: { auth },
+                container: { client, database, util }
+            }: { req: Request; server: Dashboard; container: Container }
+        ) => {
+            try {
+                const user = await auth.check(req);
+
+                const guild = client.guilds.cache.get(guildId);
+                if (!guild) throw new Error("Guild not found");
+
+                const warnedBy = guild.members.cache.get(user.id);
+                if (!warnedBy) throw new Error("Member not found");
+
+                if (!warnedBy.permissions.has("MODERATE_MEMBERS"))
+                    throw new Error("Not enough permissions");
+
+                const member = guild.members.cache.get(userId);
+                if (!member) throw new Error("Member not found");
+
+                const dbUser = await database.users.get(member.user);
+                const dbGuild = await database.guilds.get(guild);
+
+                if (!dbUser || !dbGuild)
+                    throw new Error("Database data is missing");
+
+                if (!reason || reason.length < 1)
+                    reason = "No reason specified";
+
+                const warn = {
+                    guildId: guild.id,
+                    by: warnedBy.id,
+                    reason
+                };
+
+                dbUser.warns.push(warn);
+
+                await dbUser.save();
+
+                if (dbGuild.logs.types.memberWarned) {
+                    const channel = guild.channels.cache.get(
+                        dbGuild.logs.channel
+                    );
+                    if (!channel || !channel.isText()) return;
+                    if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES"))
+                        return;
+
+                    const embed = util
+                        .embed()
+                        .setAuthor({
+                            name: `${guild.name} Logs`,
+                            iconURL: guild.iconURL({ dynamic: true }) as string
+                        })
+                        .setThumbnail(
+                            member.displayAvatarURL({ dynamic: true })
+                        )
+                        .setDescription(`${warnedBy} **Warned** ${member}`)
+                        .addFields({ name: "Reason", value: reason });
+
+                    channel.send({ embeds: [embed] });
+                }
+
+                return warn;
+            } catch (err) {
+                console.error(err);
+                throw err;
+            }
+        },
+        reportUser: async (
+            _: any,
+            {
+                guildId,
+                userId,
+                reason
+            }: { guildId: string; userId: string; reason?: string },
+            {
+                req,
+                server: { auth },
+                container: { client, database, util }
+            }: { req: Request; server: Dashboard; container: Container }
+        ) => {
+            try {
+                const user = await auth.check(req);
+
+                const guild = client.guilds.cache.get(guildId);
+                if (!guild) throw new Error("Guild not found");
+
+                const warnedBy = guild.members.cache.get(user.id);
+                if (!warnedBy) throw new Error("Member not found");
+
+                const member = guild.members.cache.get(userId);
+                if (!member) throw new Error("Member not found");
+
+                const dbUser = await database.users.get(member.user);
+                const dbGuild = await database.guilds.get(guild);
+
+                if (!dbUser || !dbGuild)
+                    throw new Error("Database data is missing");
+
+                if (!reason || reason.length < 1)
+                    reason = "No reason specified";
+
+                const report = {
+                    guildId: guild.id,
+                    by: warnedBy.id,
+                    reason
+                };
+
+                dbUser.reports.push(report);
+
+                await dbUser.save();
+
+                if (dbGuild.logs.types.memberReported) {
+                    const channel = guild.channels.cache.get(
+                        dbGuild.logs.channel
+                    );
+                    if (!channel || !channel.isText()) return;
+                    if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES"))
+                        return;
+
+                    const embed = util
+                        .embed()
+                        .setAuthor({
+                            name: `${guild.name} Logs`,
+                            iconURL: guild.iconURL({ dynamic: true }) as string
+                        })
+                        .setThumbnail(
+                            member.displayAvatarURL({ dynamic: true })
+                        )
+                        .setDescription(`${warnedBy} **Reported** ${member}`)
+                        .addFields({ name: "Reason", value: reason });
+
+                    channel.send({ embeds: [embed] });
+                }
+
+                return report;
+            } catch (err) {
+                console.error(err);
+                throw err;
+            }
+        },
+
         login: async (
             _: any,
             { code }: { code: any },
