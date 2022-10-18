@@ -3,7 +3,7 @@ import { Container } from "@sapphire/pieces";
 import { Player, Track } from "@mateie/discord-player";
 import { CommandInteraction } from "discord.js";
 
-export default class Playlists {
+export default class Playlist {
     private readonly container: Container;
 
     constructor(container: Container) {
