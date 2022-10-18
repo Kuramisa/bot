@@ -123,9 +123,9 @@ export default class Auth {
                 scope: "identify guilds",
                 grantType: "authorization_code",
                 redirectUri:
-                    process.env.NODE_ENV === "production"
-                        ? "http://165.22.2.16/login"
-                        : "http://localhost:3000/login"
+                    process.env.NODE_ENV === "development"
+                        ? "http://localhost:3000/login"
+                        : "http://165.22.2.16/login"
             });
 
             return crypt.encrypt(
