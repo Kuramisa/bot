@@ -34,6 +34,7 @@ export class Kurama extends SapphireClient {
                 "DIRECT_MESSAGES"
             ],
             loadMessageCommandListeners: true,
+            loadSubcommandErrorListeners: true,
             loadDefaultErrorListeners: true,
             logger: {
                 level:
