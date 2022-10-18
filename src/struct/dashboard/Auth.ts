@@ -125,7 +125,7 @@ export default class Auth {
                 redirectUri:
                     process.env.NODE_ENV === "development"
                         ? "http://localhost:3000/login"
-                        : "http://165.22.2.16/login"
+                        : "http://kuramisa.com/login"
             });
 
             return crypt.encrypt(
