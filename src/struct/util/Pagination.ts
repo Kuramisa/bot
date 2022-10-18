@@ -101,7 +101,7 @@ export default class UtilPagination {
 
                     message.edit({
                         embeds: [embeds[page]],
-                        components: [disabledRow]
+                        components: embeds.length < 2 ? [] : [disabledRow]
                     });
                 }
             });
