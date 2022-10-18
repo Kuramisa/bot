@@ -124,7 +124,7 @@ export default class Auth {
                 grantType: "authorization_code",
                 redirectUri:
                     process.env.NODE_ENV === "production"
-                        ? "http://kurama.mateie.com/login"
+                        ? "http://165.22.2.16/login"
                         : "http://localhost:3000/login"
             });
 
