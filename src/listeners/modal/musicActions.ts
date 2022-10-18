@@ -14,7 +14,9 @@ export class MusicActionsModalListener extends Listener {
         if (!interaction.isModalSubmit()) return;
         if (interaction.customId !== "add_tracks_modal") return;
 
-        const { music } = this.container;
+        const {
+            systems: { music }
+        } = this.container;
 
         const { fields, guild, member } = interaction;
 

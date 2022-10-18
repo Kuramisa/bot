@@ -8,7 +8,7 @@ export class PlayerTrackAddListener extends Listener {
             ...opts,
             name: "Emits when track is added",
             event: "trackAdd",
-            emitter: container.music
+            emitter: container.systems.music
         });
     }
 

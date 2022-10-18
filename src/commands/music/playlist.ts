@@ -141,29 +141,31 @@ export class PlaylistCommand extends Subcommand {
     public async chatInputRun(
         interaction: Subcommand.ChatInputInteraction<"cached">
     ) {
-        const { playlists } = this.container;
+        const {
+            systems: { playlist }
+        } = this.container;
 
         switch (interaction.options.getSubcommand()) {
             case "play":
-                await playlists.play(interaction);
+                await playlist.play(interaction);
                 break;
             case "create":
-                await playlists.create(interaction);
+                await playlist.create(interaction);
                 break;
             case "import":
-                await playlists.import(interaction);
+                await playlist.import(interaction);
                 break;
             case "import_multiple":
-                await playlists.importMultiple(interaction);
+                await playlist.importMultiple(interaction);
                 break;
             case "add":
-                await playlists.add(interaction);
+                await playlist.add(interaction);
                 break;
             case "add_multiple":
-                await playlists.addMultiple(interaction);
+                await playlist.addMultiple(interaction);
                 break;
             case "delete":
-                await playlists.delete(interaction);
+                await playlist.delete(interaction);
                 break;
         }
     }

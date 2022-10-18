@@ -84,7 +84,10 @@ export class MinecraftCommand extends Subcommand {
     public async chatInputRun(
         interaction: Subcommand.ChatInputInteraction<"cached">
     ) {
-        const { database, minecraft } = this.container;
+        const {
+            database,
+            games: { minecraft }
+        } = this.container;
         const { guild, user, options } = interaction;
 
         const db = await database.users.get(user);
@@ -172,7 +175,10 @@ export class MinecraftCommand extends Subcommand {
      * Execute Message Subcommand (Link)
      */
     public async messageLink(message: Message) {
-        const { database, minecraft } = this.container;
+        const {
+            database,
+            games: { minecraft }
+        } = this.container;
 
         const { author } = message;
 
@@ -199,7 +205,10 @@ export class MinecraftCommand extends Subcommand {
      * Execute Message Subcommand (Unlink)
      */
     public async messageUnlink(message: Message) {
-        const { database, minecraft } = this.container;
+        const {
+            database,
+            games: { minecraft }
+        } = this.container;
         const { author } = message;
 
         const db = await database.users.get(author);

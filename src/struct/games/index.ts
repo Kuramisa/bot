@@ -1,5 +1,6 @@
 import { Container } from "@sapphire/pieces";
 
+import Minecraft from "./Minecraft";
 import Warframe from "./Warframe";
 import Valorant from "./Valorant";
 import ShinobiGame from "./shinobi";
@@ -14,6 +15,7 @@ export default class Games {
 
     readonly shinobi: ShinobiGame;
     readonly osu: OsuApi;
+    readonly minecraft: Minecraft;
     readonly steam: SteamAPI;
     readonly warframe: Warframe;
     readonly valorant: Valorant;
@@ -26,6 +28,7 @@ export default class Games {
             completeScores: true,
             parseNumeric: true
         });
+        this.minecraft = new Minecraft(this.container);
         this.steam = new SteamAPI(STEAM_API as string);
         this.valorant = new Valorant(this.container);
         this.warframe = new Warframe(this.container);

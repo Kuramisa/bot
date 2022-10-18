@@ -27,7 +27,10 @@ export class MusicButtonsListener extends Listener {
         )
             return;
 
-        const { music, util } = this.container;
+        const {
+            systems: { music },
+            util
+        } = this.container;
 
         const { guild, message, member } = interaction;
 

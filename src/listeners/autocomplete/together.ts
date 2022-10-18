@@ -14,7 +14,10 @@ export class TogetherACListener extends Listener {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "together") return;
 
-        const { together, util } = this.container;
+        const {
+            systems: { together },
+            util
+        } = this.container;
 
         const { options } = interaction;
 

@@ -14,7 +14,11 @@ export class PlaylistAddACListener extends Listener {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "playlist") return;
 
-        const { database, music, util } = this.container;
+        const {
+            database,
+            systems: { music },
+            util
+        } = this.container;
 
         const { options, user } = interaction;
 

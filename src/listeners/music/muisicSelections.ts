@@ -15,7 +15,10 @@ export class MusicSelectionsDropListener extends Listener {
 
         if (interaction.customId !== "select_track") return;
 
-        const { music, util } = this.container;
+        const {
+            systems: { music },
+            util
+        } = this.container;
 
         const { guild, message, member } = interaction;
 

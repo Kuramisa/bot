@@ -11,6 +11,11 @@ export default class Playlist {
     }
 
     async play(interaction: CommandInteraction<"cached">) {
+        const {
+            database,
+            systems: { music }
+        } = this.container;
+
         const { options, guild, channel, member } = interaction;
 
         const voiceChannel = member.voice.channel;
@@ -39,10 +44,7 @@ export default class Playlist {
 
         const name = options.getString("playlist_name", true);
 
-        const playlist = await this.container.database.playlists.get(
-            member.id,
-            name
-        );
+        const playlist = await database.playlists.get(member.id, name);
 
         if (!playlist)
             return interaction.reply({
@@ -56,10 +58,10 @@ export default class Playlist {
                 ephemeral: true
             });
 
-        let queue = this.container.music.getQueue(guild);
+        let queue = music.getQueue(guild);
 
         if (!queue) {
-            queue = this.container.music.createQueue(guild, {
+            queue = music.createQueue(guild, {
                 metadata: channel
             });
 
@@ -86,7 +88,7 @@ export default class Playlist {
             .setDescription(`
                 ${tracks
                     .map((track, index) => {
-                        const duration = this.container.music.util.parseMS(
+                        const duration = music.util.parseMS(
                             parseInt(track.duration)
                         );
 
@@ -104,12 +106,11 @@ export default class Playlist {
     }
 
     async create(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { options, member } = interaction;
 
-        if (
-            (await this.container.database.playlists.getAll(member.id))
-                .length === 5
-        )
+        if ((await database.playlists.getAll(member.id)).length === 5)
             return interaction.reply({
                 content: "You can only have 5 playlist",
                 ephemeral: true
@@ -118,7 +119,7 @@ export default class Playlist {
         const name = options.getString("playlist_name", true);
 
         if (
-            (await this.container.database.playlists.getAll(member.id)).some(
+            (await database.playlists.getAll(member.id)).some(
                 (playlist) => playlist.name === name
             )
         )
@@ -127,7 +128,7 @@ export default class Playlist {
                 ephemeral: true
             });
 
-        await this.container.database.playlists.create({
+        await database.playlists.create({
             member,
             name
         });
@@ -139,11 +140,16 @@ export default class Playlist {
     }
 
     async import(interaction: CommandInteraction<"cached">) {
+        const {
+            database,
+            systems: { music }
+        } = this.container;
+
         const { options, member } = interaction;
 
         const url = options.getString("playlist_url", true);
 
-        const result = await this.container.music.search(url, {
+        const result = await music.search(url, {
             requestedBy: interaction.user
         });
 
@@ -155,7 +161,7 @@ export default class Playlist {
         const { playlist } = result;
 
         if (
-            (await this.container.database.playlists.getAll(member.id)).some(
+            (await database.playlists.getAll(member.id)).some(
                 (pl) => pl.name === playlist.title
             )
         )
@@ -164,7 +170,7 @@ export default class Playlist {
                 ephemeral: true
             });
 
-        const newPlaylist = await this.container.database.playlists.create({
+        const newPlaylist = await database.playlists.create({
             member,
             name: playlist.title
         });
@@ -192,6 +198,11 @@ export default class Playlist {
     }
 
     async importMultiple(interaction: CommandInteraction<"cached">) {
+        const {
+            database,
+            systems: { music }
+        } = this.container;
+
         const { options } = interaction;
 
         const name = options.getString("playlist_name", true);
@@ -231,7 +242,7 @@ export default class Playlist {
 
         const member = mInteraction.member;
 
-        const newPlaylist = await this.container.database.playlists.create({
+        const newPlaylist = await database.playlists.create({
             member,
             name
         });
@@ -239,7 +250,7 @@ export default class Playlist {
         const playlists = (
             await Promise.all(
                 components.map(async (field) => {
-                    const result = await this.container.music.search(
+                    const result = await music.search(
                         field.components[0].value,
                         {
                             requestedBy: interaction.user
@@ -281,14 +292,13 @@ export default class Playlist {
     }
 
     async delete(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { options, member } = interaction;
 
         const name = options.getString("playlist_name", true);
 
-        const playlist = await this.container.database.playlists.get(
-            member.id,
-            name
-        );
+        const playlist = await database.playlists.get(member.id, name);
 
         if (!playlist)
             return interaction.reply({
@@ -335,7 +345,7 @@ export default class Playlist {
             return;
         }
 
-        await this.container.database.playlists.delete(member.id, name);
+        await database.playlists.delete(member.id, name);
 
         await mInteraction.reply({
             content: "Playlist was deleted successfully",
@@ -344,6 +354,11 @@ export default class Playlist {
     }
 
     async add(interaction: CommandInteraction<"cached">) {
+        const {
+            database,
+            systems: { music }
+        } = this.container;
+
         const { options, member } = interaction;
 
         const playlistName = options.getString("playlist_name", true);
@@ -352,10 +367,7 @@ export default class Playlist {
         if (query.length < 1)
             return interaction.reply({ content: "No Tracks Provided" });
 
-        const playlist = await this.container.database.playlists.get(
-            member.id,
-            playlistName
-        );
+        const playlist = await database.playlists.get(member.id, playlistName);
 
         if (!playlist)
             return interaction.reply({
@@ -363,7 +375,7 @@ export default class Playlist {
                 ephemeral: true
             });
 
-        const results = await this.container.music.search(query, {
+        const results = await music.search(query, {
             requestedBy: interaction.user
         });
 
@@ -397,15 +409,17 @@ export default class Playlist {
     }
 
     async addMultiple(interaction: CommandInteraction<"cached">) {
+        const {
+            database,
+            systems: { music }
+        } = this.container;
+
         const { options, member } = interaction;
 
         const name = options.getString("playlist_name", true);
         const query = options.getString("query", true);
 
-        const playlist = await this.container.database.playlists.get(
-            member.id,
-            name
-        );
+        const playlist = await database.playlists.get(member.id, name);
 
         if (!playlist)
             return interaction.reply({
@@ -413,7 +427,7 @@ export default class Playlist {
                 ephemeral: true
             });
 
-        const result = await this.container.music.search(query, {
+        const result = await music.search(query, {
             requestedBy: interaction.user
         });
 
@@ -424,7 +438,7 @@ export default class Playlist {
             });
 
         const tracksChosen = (
-            await this.container.music.selectTrack(interaction, result.tracks)
+            await music.selectTrack(interaction, result.tracks)
         ).map((track) => ({ ...track, ...track.raw }));
 
         playlist.tracks = [...playlist.tracks, ...tracksChosen];

@@ -36,7 +36,12 @@ export default class Auth {
     async getUserGuilds(auth: string, db?: boolean) {
         if (!auth) throw new AuthenticationError("User not logged in");
 
-        const { client, crypt, database, util } = this.container;
+        const {
+            client,
+            systems: { crypt },
+            database,
+            util
+        } = this.container;
 
         const decoded = this.jwt.verify(crypt.decrypt(auth), this.secrets.jwt);
 
@@ -81,7 +86,10 @@ export default class Auth {
     }
 
     async check(req: Request) {
-        const { crypt, dashboard } = this.container;
+        const {
+            systems: { crypt },
+            dashboard
+        } = this.container;
 
         const header = req.headers.authorization;
         if (!header) throw new Error("You must be logged in");
@@ -101,7 +109,10 @@ export default class Auth {
     }
 
     async generateToken(code: any) {
-        const { client, crypt } = this.container;
+        const {
+            client,
+            systems: { crypt }
+        } = this.container;
 
         try {
             const token = await this.oauth.tokenRequest({
@@ -137,7 +148,12 @@ export default class Auth {
         if (!auth)
             throw new AuthenticationError("Authentication data not provided");
 
-        const { client, crypt, database, util } = this.container;
+        const {
+            client,
+            systems: { crypt },
+            database,
+            util
+        } = this.container;
 
         try {
             const decoded = this.jwt.verify(

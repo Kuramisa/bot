@@ -10,7 +10,7 @@ import Games from "@struct/games";
 import Moderation from "@struct/moderation";
 import Minecraft from "@struct/games/Minecraft";
 import Music from "@struct/systems/Music";
-import Playlists from "@struct/systems/Playlists";
+import Playlists from "@struct/systems/Playlist";
 import Together from "@struct/systems/Together";
 import XP from "@struct/systems/XP";
 import Util from "@struct/util";
@@ -19,6 +19,7 @@ import { Command, Args, CommandOptions } from "@sapphire/framework";
 import { ValorantAccount } from "@types";
 import { Seasons } from "@valapi/valorant-api.com";
 import Dashboard from "@struct/dashboard";
+import Systems from "@struct/systems";
 
 declare module "@sapphire/pieces" {
     interface Container {
@@ -33,16 +34,11 @@ declare module "@sapphire/pieces" {
         dashboard: Dashboard;
 
         canvas: Canvas;
-        crypt: Crypt;
         database: Database;
         games: Games;
         moderation: Moderation;
-        minecraft: Minecraft;
-        music: Music;
-        playlists: Playlists;
-        together: Together;
+        systems: Systems;
         util: Util;
-        xp: XP;
     }
 }
 

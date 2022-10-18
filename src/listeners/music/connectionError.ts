@@ -6,7 +6,7 @@ export class MusicConnErrorListener extends Listener {
             ...opts,
             name: "Connection Error for music",
             event: "connectionError",
-            emitter: container.music
+            emitter: container.systems.music
         });
     }
 

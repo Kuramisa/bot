@@ -116,7 +116,10 @@ export class MusicCommand extends Subcommand {
     public async chatInputRun(
         interaction: Subcommand.ChatInputInteraction<"cached">
     ) {
-        const { music, util } = this.container;
+        const {
+            systems: { music },
+            util
+        } = this.container;
 
         const { options, guild, channel, member } = interaction;
 
@@ -480,7 +483,10 @@ export class MusicCommand extends Subcommand {
     public async contextMenuRun(
         interaction: Subcommand.ContextMenuInteraction<"cached">
     ) {
-        const { music, util } = this.container;
+        const {
+            systems: { music },
+            util
+        } = this.container;
 
         const { targetId, guild, channel, member } = interaction;
 

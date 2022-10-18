@@ -11,7 +11,10 @@ export class DestoryQueueMusicListener extends Listener {
     }
 
     public async run(member: GuildMember) {
-        const { client, music } = this.container;
+        const {
+            client,
+            systems: { music }
+        } = this.container;
 
         if (member.id !== client.user?.id) return;
 

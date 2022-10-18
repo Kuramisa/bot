@@ -6,7 +6,7 @@ export class MusicErrorListener extends Listener {
             ...opts,
             name: "Logs error from the music player",
             event: "error",
-            emitter: container.music
+            emitter: container.systems.music
         });
     }
 

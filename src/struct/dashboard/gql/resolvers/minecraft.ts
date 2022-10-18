@@ -11,7 +11,12 @@ export default {
                 message,
                 ip
             }: { username: string; message: string; ip: string },
-            { container: { client, minecraft, util } }: { container: Container }
+            {
+                container: {
+                    client,
+                    games: { minecraft }
+                }
+            }: { container: Container }
         ) => {
             const db = await Minecraft.findOne({ ip });
             if (!db)
@@ -72,7 +77,12 @@ export default {
             _: any,
             { username, code }: { username: string; code: string },
             {
-                container: { client, database, minecraft, util }
+                container: {
+                    client,
+                    database,
+                    games: { minecraft },
+                    util
+                }
             }: { container: Container }
         ) => {
             const db = (await database.users.getAll()).find(
@@ -148,7 +158,12 @@ export default {
             _: any,
             { username }: { username: string },
             {
-                container: { client, database, minecraft, util }
+                container: {
+                    client,
+                    database,
+                    games: { minecraft },
+                    util
+                }
             }: { container: Container }
         ) => {
             const db = (await database.users.getAll()).find(
@@ -235,7 +250,12 @@ export default {
                 query
             }: { username: string; action: string; query: string },
             {
-                container: { client, database, music, util }
+                container: {
+                    client,
+                    database,
+                    systems: { music },
+                    util
+                }
             }: { container: Container }
         ) => {
             const db = (await database.users.getAll()).find(

@@ -9,15 +9,10 @@ import Dashboard from "./dashboard";
 
 import Database from "./database";
 import Util from "./util";
-import XP from "./systems/XP";
-import Together from "./systems/Together";
-import Playlists from "./systems/Playlists";
-import Music from "./systems/Music";
-import Minecraft from "./games/Minecraft";
 import Moderation from "./moderation";
 import Games from "./games";
-import Crypt from "./systems/Crypt";
 import Canvas from "./canvas";
+import Systems from "./systems";
 
 export class Kurama extends SapphireClient {
     public constructor() {
@@ -55,16 +50,11 @@ export class Kurama extends SapphireClient {
         container.dashboard = new Dashboard(container);
 
         container.canvas = new Canvas(container);
-        container.crypt = new Crypt(container);
         container.database = new Database(container);
         container.games = new Games(container);
         container.moderation = new Moderation(container);
-        container.minecraft = new Minecraft(container);
-        container.music = new Music(container);
-        container.playlists = new Playlists(container);
-        container.together = new Together(container);
+        container.systems = new Systems(container);
         container.util = new Util(container);
-        container.xp = new XP(container);
     }
 
     public override async login(token?: string) {

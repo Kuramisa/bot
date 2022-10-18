@@ -51,7 +51,11 @@ export default class UtilMember {
     }
 
     async getCardData(user: IUser) {
-        const neededXP = this.container.xp.calculateReqXP(user.level);
+        const {
+            systems: { xp }
+        } = this.container;
+
+        const neededXP = xp.calculateReqXP(user.level);
 
         const rank = await this.getRank(user);
 

@@ -44,7 +44,9 @@ export class TogetherCommand extends Command {
 
         const activity = await args.pick("string").catch(() => null);
 
-        const { together } = this.container;
+        const {
+            systems: { together }
+        } = this.container;
 
         if (!activity)
             return message.reply(
@@ -73,7 +75,9 @@ export class TogetherCommand extends Command {
     public async chatInputRun(
         interaction: Command.ChatInputInteraction<"cached">
     ) {
-        const { together } = this.container;
+        const {
+            systems: { together }
+        } = this.container;
         const { member, options } = interaction;
 
         if (!member.voice.channel)

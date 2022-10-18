@@ -23,16 +23,20 @@ export class XPCommand extends Command {
      * Execute Message Command
      */
     public async messageRun(message: Message) {
+        const {
+            systems: { xp }
+        } = this.container;
+
         const { author: user } = message;
 
         if (!user) return message.reply("User not found");
 
-        const xp = await this.container.xp.getXP(user);
-        const level = await this.container.xp.getLevel(user);
-        const requiredXP = this.container.xp.calculateReqXP(level as number);
+        const eXp = await xp.getXP(user);
+        const level = await xp.getLevel(user);
+        const requiredXP = xp.calculateReqXP(level as number);
 
         return message.reply(
-            `\`Level\`: ${level}\n\`XP\`: ${xp}\n\`Required XP\`: ${requiredXP}`
+            `\`Level\`: ${level}\n\`XP\`: ${eXp}\n\`Required XP\`: ${requiredXP}`
         );
     }
 
@@ -40,14 +44,18 @@ export class XPCommand extends Command {
      * Execute Slash Command
      */
     public async chatInputCommand(interaction: Command.ChatInputInteraction) {
+        const {
+            systems: { xp }
+        } = this.container;
+
         const { user } = interaction;
 
-        const xp = await this.container.xp.getXP(user);
-        const level = await this.container.xp.getLevel(user);
-        const requiredXP = this.container.xp.calculateReqXP(level as number);
+        const eXp = await xp.getXP(user);
+        const level = await xp.getLevel(user);
+        const requiredXP = xp.calculateReqXP(level as number);
 
         return interaction.reply(
-            `\`Level\`: ${level}\n\`XP\`: ${xp}\n\`Required XP\`: ${requiredXP}`
+            `\`Level\`: ${level}\n\`XP\`: ${eXp}\n\`Required XP\`: ${requiredXP}`
         );
     }
 }

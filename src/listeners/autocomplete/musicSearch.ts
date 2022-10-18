@@ -14,7 +14,10 @@ export class MusicSearchACListener extends Listener {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "music") return;
 
-        const { music, util } = this.container;
+        const {
+            systems: { music },
+            util
+        } = this.container;
 
         const { options, user } = interaction;
 

@@ -8,12 +8,15 @@ export class PlayerTrackStartListener extends Listener {
             ...opts,
             name: "Emits when a new track starts",
             event: "trackStart",
-            emitter: container.music
+            emitter: container.systems.music
         });
     }
 
     public async run(queue: Queue, track: Track) {
-        const { music, util } = container;
+        const {
+            systems: { music },
+            util
+        } = container;
 
         const embed = util
             .embed()
