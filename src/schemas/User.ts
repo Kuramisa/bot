@@ -3,6 +3,7 @@ import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
 export interface IUser extends HydratedDocument<any> {
     id: string;
     username: string;
+    premium: boolean;
     minecraft: {
         code: string | null;
         username: string | null;
@@ -55,6 +56,10 @@ export const User: Schema = new Schema<IUser>({
     username: {
         type: String,
         required: true
+    },
+    premium: {
+        type: Boolean,
+        default: false
     },
     minecraft: {
         code: String,

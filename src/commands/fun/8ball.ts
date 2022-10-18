@@ -7,7 +7,8 @@ export class EightBallCommand extends Command {
             ...opts,
             name: "8ball",
             aliases: ["ask", "8b"],
-            description: "8ball answers your burning questions"
+            description: "8ball answers your burning questions",
+            preconditions: ["PremiumOnly"]
         });
     }
 

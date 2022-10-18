@@ -4,6 +4,7 @@ export interface IGuild extends HydratedDocument<any> {
     id: string;
     name: string;
     prefix: string;
+    premium: boolean;
     promoted: boolean;
     channels: {
         rules: string;
@@ -74,6 +75,10 @@ export const Guild: Schema = new Schema<IGuild>({
     prefix: {
         type: String,
         default: "k!"
+    },
+    premium: {
+        type: Boolean,
+        default: false
     },
     promoted: {
         type: Boolean,
