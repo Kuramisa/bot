@@ -6,7 +6,7 @@
     "build": "rimraf ./build && ttsc -P ./tsconfig.json",
     "start": "node ./build/index.js",
     "dev": "yarn build && node .",
-    "watch": "nodemon --delay 500ms"
+    "watch": "ttsc -P ./tsconfig.json --watch"
   },
   "author": "S&B",
   "license": "MIT",
