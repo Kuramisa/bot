@@ -13,7 +13,13 @@ export class ReadyListener extends Listener {
 
     public async run() {
         const { container } = this;
-        const { client, logger } = container;
+        const {
+            client,
+            database,
+            games,
+            systems: { patreon },
+            logger
+        } = container;
 
         logger.info(`Ready! Logged in as ${client.user?.tag}`);
 
@@ -35,10 +41,10 @@ export class ReadyListener extends Listener {
             "1014290516764016670"
         );
 
-        container.database.guilds.verifyAll();
-        container.database.users.verifyAll();
+        database.guilds.verifyAll();
+        database.users.verifyAll();
 
-        container.games.shinobi.players.init();
+        games.shinobi.players.init();
 
         const activities: PresenceData[] = [
             {
@@ -65,10 +71,18 @@ export class ReadyListener extends Listener {
             activities[Math.floor(Math.random() * activities.length)]
         );
 
+        patreon.chkServersRedeemed();
+        patreon.chkUsersRedeemed();
+
         setInterval(() => {
             client.user?.setPresence(
                 activities[Math.floor(Math.random() * activities.length)]
             );
         }, 60000);
+
+        setInterval(() => {
+            patreon.chkServersRedeemed();
+            patreon.chkUsersRedeemed();
+        }, 300000);
     }
 }

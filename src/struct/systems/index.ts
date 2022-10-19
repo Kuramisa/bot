@@ -3,6 +3,7 @@ import { Container } from "@sapphire/pieces";
 import Crypt from "./Crypt";
 import Marriage from "./Marriage";
 import Music from "./Music";
+import Patreon from "./Patreon";
 import Playlist from "./Playlist";
 import XP from "./XP";
 
@@ -12,6 +13,7 @@ export default class Systems {
     readonly crypt: Crypt;
     readonly marriage: Marriage;
     readonly music: Music;
+    readonly patreon: Patreon;
     readonly playlist: Playlist;
     readonly xp: XP;
 
@@ -21,6 +23,7 @@ export default class Systems {
         this.crypt = new Crypt(this.container);
         this.marriage = new Marriage(this.container);
         this.music = new Music(this.container);
+        this.patreon = new Patreon(this.container);
         this.playlist = new Playlist(this.container);
         this.xp = new XP(this.container);
     }
