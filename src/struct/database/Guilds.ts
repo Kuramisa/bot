@@ -11,7 +11,9 @@ export default class DatabaseGuilds {
     }
 
     async create(guild: DiscordGuild) {
-        console.log(
+        const { logger } = this.container;
+
+        logger.info(
             `Guild added to the database (ID: ${guild.id} - Name: ${guild.name})`
         );
 

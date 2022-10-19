@@ -72,6 +72,6 @@ export default class Dashboard extends ApolloServer {
             httpServer.listen({ port: process.env.PORT || 4000 }, resolve)
         );
 
-        console.log(`Server ready at port: ${this.graphqlPath}`);
+        this.container.logger.info(`Server ready at port: ${this.graphqlPath}`);
     }
 }

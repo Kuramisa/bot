@@ -11,9 +11,11 @@ export default class DatabaseUsers {
     }
 
     async create(user: DiscordUser) {
+        const {logger } = this.container;
+
         if (user.bot) return;
 
-        console.log(
+        logger.info(
             `User added to the Database (ID: ${user.id} - Name: ${user.tag})`
         );
 

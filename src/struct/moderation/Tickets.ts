@@ -96,7 +96,6 @@ export default class Tickets {
                 components: [this.container.util.row().setComponents(button)]
             });
         } catch (err: any) {
-            console.log(err);
             if (err.message.includes("duplicated"))
                 return interaction.editReply({
                     content: "Button with the similar name already exists"

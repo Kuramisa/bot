@@ -15,8 +15,6 @@ export class ValorantActArgument extends Argument<Seasons.Seasons> {
             act.displayName.toString().includes(parameter)
         );
 
-        console.log(season);
-
         if (!season)
             return this.error({
                 parameter,

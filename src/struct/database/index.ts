@@ -31,11 +31,13 @@ export default class Database {
     connect = () =>
         this.connection
             .connect(DB as string)
-            .then(() => console.log("Connected to the database"))
+            .then(() => this.container.logger.info("Connected to the database"))
             .catch(this.container.logger.error);
     disconnect = () =>
         this.connection
             .disconnect()
-            .then(() => console.log("Disconnected from the database"))
+            .then(() =>
+                this.container.logger.info("Disconnected from the database")
+            )
             .catch(this.container.logger.error);
 }
