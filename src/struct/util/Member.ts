@@ -89,7 +89,10 @@ export default class UtilMember {
         executor: GuildMember,
         member: GuildMember
     ): Promise<{ embeds: MessageEmbed[]; components: MessageActionRow[] }> {
-        const avatar = member.user.displayAvatarURL({ dynamic: true });
+        const avatar = member.user.displayAvatarURL({
+            format: "png",
+            dynamic: true
+        });
         const activities: string[] = [];
         const status = {
             emoji: ":white_circle:",
