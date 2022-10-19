@@ -85,7 +85,7 @@ export default class Auth {
         return Promise.all(guilds);
     }
 
-    async check(req: Request) {
+    async checkToken(req: Request) {
         const {
             systems: { crypt },
             dashboard
@@ -105,6 +105,26 @@ export default class Auth {
             throw new AuthenticationError(
                 "Session timed out, please refresh the page and login again"
             );
+        }
+    }
+
+    async check(req: Request) {
+        const {
+            systems: { crypt },
+            dashboard
+        } = this.container;
+
+        const header = req.headers.authorization;
+        if (!header) return null;
+        const token = header.split("Bearer ")[1];
+        if (!token) return null;
+        try {
+            const jwtData = jwt.verify(crypt.decrypt(token), this.secrets.jwt);
+            const user = await dashboard.auth.getUser(jwtData);
+            return user;
+        } catch (err) {
+            console.error(err);
+            return null;
         }
     }
 

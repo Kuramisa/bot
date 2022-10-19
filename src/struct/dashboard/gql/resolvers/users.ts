@@ -1,6 +1,7 @@
 import { Container } from "@sapphire/pieces";
 import Dashboard from "@struct/dashboard";
 import { UserInputError } from "apollo-server-core";
+import { AuthenticationError } from "apollo-server-express";
 import { Request } from "express";
 
 export default {
@@ -135,7 +136,7 @@ export default {
             }: { req: Request; server: Dashboard; container: Container }
         ) => {
             try {
-                const user = await auth.check(req);
+                const user = await auth.checkToken(req);
 
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new Error("Guild not found");
@@ -211,7 +212,7 @@ export default {
             }: { req: Request; server: Dashboard; container: Container }
         ) => {
             try {
-                const user = await auth.check(req);
+                const user = await auth.checkToken(req);
 
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new Error("Guild not found");
