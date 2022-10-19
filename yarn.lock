@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@anitrack/patreon-wrapper@^1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@anitrack/patreon-wrapper/-/patreon-wrapper-1.4.6.tgz#d66f6b34a5af2078501fc4065caddc41ed4df5c2"
+  integrity sha512-bBAQ+cf5BgdPBvo3UrMjWnTITAFpcAC0Co61RheVjaWuctoHNI7eE4KNXVuccIxMWH9vsqcwItZ19N2lDI6ciA==
+  dependencies:
+    axios "^0.27.2"
+
 "@apollo/protobufjs@1.2.6":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@apollo/protobufjs/-/protobufjs-1.2.6.tgz#d601e65211e06ae1432bf5993a1a0105f2862f27"
@@ -724,10 +731,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
 
-"@types/node@^18.11.0":
-  version "18.11.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.0.tgz#f38c7139247a1d619f6cc6f27b072606af7c289d"
-  integrity sha512-IOXCvVRToe7e0ny7HpT/X9Rb2RYtElG1a+VshjwT00HxrM2dWBApHQoqsI6WiY7Q03vdf2bCrIGzVrkF/5t10w==
+"@types/node@^18.11.2":
+  version "18.11.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.2.tgz#c59b7641832531264fda3f1ba610362dc9a7dfc8"
+  integrity sha512-BWN3M23gLO2jVG8g/XHIRFWiiV4/GckeFIqbU/C4V3xpoBBWSMk4OZomouN0wCkfQFPqgZikyLr7DOYDysIkkw==
 
 "@types/qs@*":
   version "6.9.7"
@@ -4797,10 +4804,10 @@ w3c-xmlserializer@^3.0.0:
   dependencies:
     xml-name-validator "^4.0.0"
 
-warframe-items@^1.1255.22:
-  version "1.1255.22"
-  resolved "https://registry.yarnpkg.com/warframe-items/-/warframe-items-1.1255.22.tgz#d155708e654c5c479062e502f3dd30404625e26f"
-  integrity sha512-MhWnaUX50Gz+Hxm8lqqgcslK7omiMdHAiecOQzttDXv33U3QmC10rLvFn+cwaa2lIQBpY31c3cjmAlC2EHPwhQ==
+warframe-items@^1.1255.26:
+  version "1.1255.26"
+  resolved "https://registry.yarnpkg.com/warframe-items/-/warframe-items-1.1255.26.tgz#db76539dd7c822b8e8d13fa7e947b61894934689"
+  integrity sha512-MRa6vpTf7DYxaHWP+opUvhw+vdv6fmhTJ28MAG9gSnQX1GrOgXNmn6TBunTVtygOOLxSO2QfBq7JoajEzVTGjA==
 
 warframe-market@^1.1.1:
   version "1.1.1"
