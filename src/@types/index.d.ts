@@ -1,31 +1,6 @@
 import { Client as Assets } from "@valapi/valorant-api.com";
 import { Client as Web } from "@valapi/web-client";
 
-export interface TogetherApplications {
-    youtube: string;
-    youtube_dev: string;
-    poker: string;
-    betrayal: string;
-    fishing: string;
-    chess: string;
-    chess_dev: string;
-    lettertile: string;
-    wordsnack: string;
-    doodlecrew: string;
-    awkword: string;
-    spellcast: string;
-    checkers: string;
-    puttparty: string;
-    sketchheads: string;
-    ocho: string;
-    puttpartyqa: string;
-    sketchyartist: string;
-    land: string;
-    meme: string;
-    askaway: string;
-    bobble: string;
-}
-
 export interface ValorantAccount {
     memberId: string;
     assets: Assets;
