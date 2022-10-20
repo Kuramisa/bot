@@ -41,40 +41,48 @@ export class EitherCommand extends Command {
             time: 30000
         });
 
-        collector.on("collect", async (i) => {
-            switch (i.customId) {
-                case "question_1_btn":
-                case "question_2_btn":
-                    const buttons = wyr.row.components.map((button: any, i) => {
-                        const question = wyr.questions[i];
-                        if (button.customId === "next_question") return button;
-                        return button
-                            .setLabel(
-                                `${question.question} - ${question.percentage}%`
-                            )
-                            .setDisabled(true);
-                    });
+        collector
+            .on("collect", async (i) => {
+                switch (i.customId) {
+                    case "question_1_btn":
+                    case "question_2_btn":
+                        const buttons = wyr.row.components.map(
+                            (button: any, i) => {
+                                const question = wyr.questions[i];
+                                if (button.customId === "next_question")
+                                    return button;
+                                return button
+                                    .setLabel(
+                                        `${question.question} - ${question.percentage}%`
+                                    )
+                                    .setDisabled(true);
+                            }
+                        );
 
-                    const row = util.row().setComponents(buttons);
-                    const embed = wyr.embed.setDescription(
-                        `You chose ${i.component.label}`
-                    );
+                        const row = util.row().setComponents(buttons);
+                        const embed = wyr.embed.setDescription(
+                            `You chose ${i.component.label}`
+                        );
 
-                    await i.update({ embeds: [embed], components: [row] });
-                    break;
-                case "next_question": {
-                    wyr = await this.getQuestion();
+                        await i.update({ embeds: [embed], components: [row] });
+                        break;
+                    case "next_question": {
+                        wyr = await this.getQuestion();
 
-                    await i.update({
-                        embeds: [wyr.embed],
-                        components: [wyr.row]
-                    });
-                    break;
+                        await i.update({
+                            embeds: [wyr.embed],
+                            components: [wyr.row]
+                        });
+                        break;
+                    }
                 }
-            }
 
-            collector.resetTimer();
-        });
+                collector.resetTimer();
+            })
+            .on("end", (_, reason) => {
+                if (reason !== "messageDelete")
+                    message.delete().catch(() => {});
+            });
     }
 
     public async messageRun(message: Message) {
@@ -97,40 +105,48 @@ export class EitherCommand extends Command {
             time: 30000
         });
 
-        collector.on("collect", async (i) => {
-            switch (i.customId) {
-                case "question_1_btn":
-                case "question_2_btn":
-                    const buttons = wyr.row.components.map((button: any, i) => {
-                        const question = wyr.questions[i];
-                        if (button.customId === "next_question") return button;
-                        return button
-                            .setLabel(
-                                `${question.question} - ${question.percentage}%`
-                            )
-                            .setDisabled(true);
-                    });
+        collector
+            .on("collect", async (i) => {
+                switch (i.customId) {
+                    case "question_1_btn":
+                    case "question_2_btn":
+                        const buttons = wyr.row.components.map(
+                            (button: any, i) => {
+                                const question = wyr.questions[i];
+                                if (button.customId === "next_question")
+                                    return button;
+                                return button
+                                    .setLabel(
+                                        `${question.question} - ${question.percentage}%`
+                                    )
+                                    .setDisabled(true);
+                            }
+                        );
 
-                    const row = util.row().setComponents(buttons);
-                    const embed = wyr.embed.setDescription(
-                        `You chose ${i.component.label}`
-                    );
+                        const row = util.row().setComponents(buttons);
+                        const embed = wyr.embed.setDescription(
+                            `You chose ${i.component.label}`
+                        );
 
-                    await i.update({ embeds: [embed], components: [row] });
-                    break;
-                case "next_question": {
-                    wyr = await this.getQuestion();
+                        await i.update({ embeds: [embed], components: [row] });
+                        break;
+                    case "next_question": {
+                        wyr = await this.getQuestion();
 
-                    await i.update({
-                        embeds: [wyr.embed],
-                        components: [wyr.row]
-                    });
-                    break;
+                        await i.update({
+                            embeds: [wyr.embed],
+                            components: [wyr.row]
+                        });
+                        break;
+                    }
                 }
-            }
 
-            collector.resetTimer();
-        });
+                collector.resetTimer();
+            })
+            .on("end", (_, reason) => {
+                if (reason !== "messageDelete")
+                    message.delete().catch(() => {});
+            });
     }
 
     private async getQuestion() {
