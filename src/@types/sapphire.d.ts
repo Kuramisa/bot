@@ -1,7 +1,5 @@
 import { Container as SapphireContainer } from "@sapphire/pieces";
 
-import { Kurama } from "@struct/Kurama";
-
 import akinator from "discord";
 import Canvas from "@struct/canvas";
 import Crypt from "@struct/systems/Crypt";
