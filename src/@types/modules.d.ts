@@ -6,3 +6,4 @@ declare module "minecraft_head";
 declare module "crafatar";
 declare module "image-moderation";
 declare module "discord.js-akinator";
+declare module "either-wyr";
