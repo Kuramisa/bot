@@ -37,7 +37,8 @@ export class EitherCommand extends Command {
                 (i.customId === "question_1_btn" ||
                     i.customId === "question_2_btn" ||
                     i.customId === "next_question") &&
-                i.user.id === interaction.user.id
+                i.user.id === interaction.user.id,
+            time: 30000
         });
 
         collector.on("collect", async (i) => {
@@ -71,6 +72,8 @@ export class EitherCommand extends Command {
                     break;
                 }
             }
+
+            collector.resetTimer();
         });
     }
 
@@ -90,7 +93,8 @@ export class EitherCommand extends Command {
                 (i.customId === "question_1_btn" ||
                     i.customId === "question_2_btn" ||
                     i.customId === "next_question") &&
-                i.user.id === message.author.id
+                i.user.id === message.author.id,
+            time: 30000
         });
 
         collector.on("collect", async (i) => {
@@ -124,6 +128,8 @@ export class EitherCommand extends Command {
                     break;
                 }
             }
+
+            collector.resetTimer();
         });
     }
 
