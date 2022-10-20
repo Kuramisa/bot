@@ -144,8 +144,7 @@ export class EitherCommand extends Command {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete")
-                    message.delete().catch(() => {});
+                if (reason !== "messageDelete") msg.delete().catch(() => {});
             });
     }
 
