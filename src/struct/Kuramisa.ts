@@ -14,7 +14,7 @@ import Games from "./games";
 import Canvas from "./canvas";
 import Systems from "./systems";
 
-export class Kurama extends SapphireClient {
+export class Kuramisa extends SapphireClient {
     public constructor() {
         super({
             caseInsensitiveCommands: true,
@@ -81,4 +81,4 @@ export class Kurama extends SapphireClient {
     };
 }
 
-export default Kurama;
+export default Kuramisa;

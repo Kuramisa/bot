@@ -1,10 +1,10 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 dotenv.config();
 
-import Kurama from '@struct/Kurama';
+import Kuramisa from "@struct/Kuramisa";
 
 const { TOKEN } = process.env;
 
-const client = new Kurama();
+const client = new Kuramisa();
 
 client.login(TOKEN);
