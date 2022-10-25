@@ -4,6 +4,7 @@ export interface IUser extends HydratedDocument<any> {
     id: string;
     username: string;
     premium: boolean;
+    betaTester: boolean;
     minecraft: {
         code: string | null;
         username: string | null;
@@ -58,6 +59,10 @@ export const User: Schema = new Schema<IUser>({
         required: true
     },
     premium: {
+        type: Boolean,
+        default: false
+    },
+    betaTester: {
         type: Boolean,
         default: false
     },
