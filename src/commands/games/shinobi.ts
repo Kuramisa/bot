@@ -6,7 +6,8 @@ export class ShinobiCommand extends Subcommand {
             ...opts,
             name: "sh",
             description: "Shinobi Adventure Game",
-            aliases: ["shinobi"]
+            aliases: ["shinobi"],
+            preconditions: ["BetaTesterOnly"]
         });
     }
 
