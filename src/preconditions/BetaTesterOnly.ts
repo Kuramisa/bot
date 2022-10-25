@@ -25,7 +25,8 @@ export class BetaTesterOnlyPrecondition extends Precondition {
     ) => await this.checkBetaTester(interaction.user);
 
     private async checkBetaTester(user: User) {
-        const { database } = this.container;
+        const { database, owners } = this.container;
+        if (owners.includes(user.id)) return this.ok();
 
         const db = await database.users.get(user);
         if (!db)
