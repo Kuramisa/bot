@@ -71,8 +71,8 @@ export class ReadyListener extends Listener {
             activities[Math.floor(Math.random() * activities.length)]
         );
 
-        patreon.chkServersRedeemed();
-        patreon.chkUsersRedeemed();
+        patreon.premium.checkServers();
+        patreon.premium.checkUsers();
 
         setInterval(() => {
             client.user?.setPresence(
@@ -81,8 +81,8 @@ export class ReadyListener extends Listener {
         }, 60000);
 
         setInterval(() => {
-            patreon.chkServersRedeemed();
-            patreon.chkUsersRedeemed();
+            patreon.premium.checkServers();
+            patreon.premium.checkUsers();
         }, 300000);
     }
 }

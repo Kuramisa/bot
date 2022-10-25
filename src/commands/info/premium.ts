@@ -226,8 +226,8 @@ export class PremiumInfoCommand extends Command {
                         ephemeral: true
                     });
 
-                await patreon.chkServersRedeemed();
-                await patreon.chkUsersRedeemed();
+                patreon.premium.checkServers();
+                patreon.premium.checkUsers();
 
                 return interaction.reply({
                     content: "Patreon Subscriptions refreshed",

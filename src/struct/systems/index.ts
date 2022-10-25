@@ -3,7 +3,7 @@ import { Container } from "@sapphire/pieces";
 import Crypt from "./Crypt";
 import Marriage from "./Marriage";
 import Music from "./Music";
-import Patreon from "./Patreon";
+import Patreon from "./patreon";
 import Playlist from "./Playlist";
 import XP from "./XP";
 

@@ -1,26 +1,17 @@
 import { Container } from "@sapphire/pieces";
-import { Patreon as PatreonAPI, Sandbox } from "@anitrack/patreon-wrapper";
-import { GuildMember, User } from "discord.js";
+import { Patreon as PatreonAPI } from "@anitrack/patreon-wrapper";
+import { GuildMember } from "discord.js";
 
-const { PATREON_API } = process.env;
+export default class Premium {
+    private readonly container: Container;
+    private readonly api: typeof PatreonAPI;
 
-export default class Patreon {
-    readonly container: Container;
-
-    readonly api: typeof PatreonAPI;
-
-    constructor(container: Container) {
+    constructor(container: Container, api: typeof PatreonAPI) {
         this.container = container;
-
-        this.api = PatreonAPI;
-
-        this.api.Authorization({
-            AccessToken: PATREON_API as string,
-            CampaignID: "9431016"
-        });
+        this.api = api;
     }
 
-    async chkServersRedeemed() {
+    async checkServers() {
         const { client, database, util } = this.container;
 
         const patreons = (
@@ -132,10 +123,10 @@ export default class Patreon {
         }
     }
 
-    async chkUsersRedeemed() {
-        const { client, database, util } = this.container;
+    async checkUsers() {
+        const { client, database } = this.container;
 
-        const patreons = await (
+        const patreons = (
             await this.api.FetchPatrons(["active_patron", "declined_patron"])
         ).filter(
             (pat) =>
@@ -176,9 +167,5 @@ export default class Patreon {
                 "It seems you have purchased User Premium on Patreon, it will be applied to you momentarily. Thank you for supporting us :>"
             );
         }
-    }
-
-    async fetchPatrons() {
-        return;
     }
 }
