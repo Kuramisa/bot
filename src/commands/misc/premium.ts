@@ -23,6 +23,72 @@ export class PremiumInfoCommand extends Command {
                             "Information about Premium subscription"
                         )
                 )
+                .addSubcommandGroup((group) =>
+                    group
+                        .setName("give")
+                        .setDescription("Give Guild/User Premium")
+                        .addSubcommand((command) =>
+                            command
+                                .setName("guild")
+                                .setDescription(
+                                    "Give a Server Premium Subscription to a server"
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("server")
+                                        .setDescription("Server to give it to")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                        )
+                        .addSubcommand((command) =>
+                            command
+                                .setName("user")
+                                .setDescription(
+                                    "Give a User Premium Subscription to a User"
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("user")
+                                        .setDescription("Server to give it to")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                        )
+                )
+                .addSubcommandGroup((group) =>
+                    group
+                        .setName("take")
+                        .setDescription("Take away Guild/User Premium")
+                        .addSubcommand((command) =>
+                            command
+                                .setName("guild")
+                                .setDescription(
+                                    "Take away a Server Premium Subscription from a server"
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("server")
+                                        .setDescription("Server to give it to")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                        )
+                        .addSubcommand((command) =>
+                            command
+                                .setName("user")
+                                .setDescription(
+                                    "Take away a User Premium Subscription from a User"
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("user")
+                                        .setDescription("Server to give it to")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                        )
+                )
                 .addSubcommand((command) =>
                     command
                         .setName("refresh")
@@ -125,6 +191,7 @@ export class PremiumInfoCommand extends Command {
         const { options, user } = interaction;
         const {
             client,
+            database,
             systems: { patreon },
             owners,
             util
@@ -233,6 +300,47 @@ export class PremiumInfoCommand extends Command {
                     content: "Patreon Subscriptions refreshed",
                     ephemeral: true
                 });
+            }
+            case "server": {
+                const guild = await client.guilds.fetch(
+                    options.getString("server", true)
+                );
+                if (!guild)
+                    return interaction.reply({
+                        content: "Server not found",
+                        ephemeral: true
+                    });
+                const db = await database.guilds.get(guild);
+                if (!db) return;
+                switch (options.getSubcommandGroup()) {
+                    case "give": {
+                        if (db.premium)
+                            return interaction.reply({
+                                content: `${guild} already has premium`,
+                                ephemeral: true
+                            });
+                        db.premium = true;
+                        await interaction.reply({
+                            content: `Gave ${guild} a Premium Subscription`,
+                            ephemeral: true
+                        });
+                    }
+                    case "take": {
+                        if (!db.premium)
+                            return interaction.reply({
+                                content: `${guild} does not have premium`,
+                                ephemeral: true
+                            });
+                        db.premium = false;
+                        await interaction.reply({
+                            content: `Took Premium Subscription from ${guild}`,
+                            ephemeral: true
+                        });
+                    }
+                }
+
+                await db.save();
+                break;
             }
         }
     }
