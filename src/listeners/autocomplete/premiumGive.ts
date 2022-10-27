@@ -39,8 +39,13 @@ export class PremiumGIveACListener extends Listener {
                         }))
                 );
             case "user":
+                let users = client.users.cache.toJSON();
+
+                if (focused.value.length < 1)
+                    users = users.filter((_, i) => i < 25);
+
                 return interaction.respond(
-                    client.users.cache
+                    users
                         .filter((user) =>
                             user.tag
                                 .toLowerCase()
