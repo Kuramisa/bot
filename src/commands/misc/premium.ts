@@ -301,7 +301,7 @@ export class PremiumInfoCommand extends Command {
                     ephemeral: true
                 });
             }
-            case "server": {
+            case "guild": {
                 const guild = await client.guilds.fetch(
                     options.getString("server", true)
                 );
@@ -314,13 +314,14 @@ export class PremiumInfoCommand extends Command {
                 if (!db) return;
                 switch (options.getSubcommandGroup()) {
                     case "give": {
-                        if (db.premium)
+                        if (db.premium == true)
                             return interaction.reply({
                                 content: `${guild} already has premium`,
                                 ephemeral: true
                             });
                         db.premium = true;
-                        await interaction.reply({
+                        await db.save();
+                        return interaction.reply({
                             content: `Gave ${guild} a Premium Subscription`,
                             ephemeral: true
                         });
@@ -332,14 +333,54 @@ export class PremiumInfoCommand extends Command {
                                 ephemeral: true
                             });
                         db.premium = false;
-                        await interaction.reply({
+                        await db.save();
+                        return interaction.reply({
                             content: `Took Premium Subscription from ${guild}`,
                             ephemeral: true
                         });
                     }
                 }
-
-                await db.save();
+                break;
+            }
+            case "user": {
+                const user = await client.users.fetch(
+                    options.getString("user", true)
+                );
+                if (!user)
+                    return interaction.reply({
+                        content: "User not found",
+                        ephemeral: true
+                    });
+                const db = await database.users.get(user);
+                if (!db) return;
+                switch (options.getSubcommandGroup()) {
+                    case "give": {
+                        if (db.premium == true)
+                            return interaction.reply({
+                                content: `${user} already has premium`,
+                                ephemeral: true
+                            });
+                        db.premium = true;
+                        await db.save();
+                        return interaction.reply({
+                            content: `Gave ${user} a Premium Subscription`,
+                            ephemeral: true
+                        });
+                    }
+                    case "take": {
+                        if (!db.premium)
+                            return interaction.reply({
+                                content: `${user} does not have premium`,
+                                ephemeral: true
+                            });
+                        db.premium = false;
+                        await db.save();
+                        return interaction.reply({
+                            content: `Took Premium Subscription from ${user}`,
+                            ephemeral: true
+                        });
+                    }
+                }
                 break;
             }
         }
