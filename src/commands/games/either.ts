@@ -53,7 +53,10 @@ export class EitherCommand extends Command {
                                     return button;
                                 return button
                                     .setLabel(
-                                        `${question.question} - ${question.percentage}%`
+                                        util.shorten(
+                                            `${question.question} - ${question.percentage}%`,
+                                            79
+                                        )
                                     )
                                     .setDisabled(true);
                             }
@@ -112,12 +115,15 @@ export class EitherCommand extends Command {
                     case "question_2_btn":
                         const buttons = wyr.row.components.map(
                             (button: any, i) => {
-                                const question = wyr.questions[i];
+                                const question: any = wyr.questions[i];
                                 if (button.customId === "next_question")
                                     return button;
                                 return button
                                     .setLabel(
-                                        `${question.question} - ${question.percentage}%`
+                                        util.shorten(
+                                            `${question.question} - ${question.percentage}%`,
+                                            79
+                                        )
                                     )
                                     .setDisabled(true);
                             }
@@ -164,12 +170,12 @@ export class EitherCommand extends Command {
                 util
                     .button()
                     .setCustomId("question_1_btn")
-                    .setLabel(wyr.questions[0].question)
+                    .setLabel(util.shorten(wyr.questions[0].question, 79))
                     .setStyle("PRIMARY"),
                 util
                     .button()
                     .setCustomId("question_2_btn")
-                    .setLabel(wyr.questions[1].question)
+                    .setLabel(util.shorten(wyr.questions[1].question, 79))
                     .setStyle("DANGER"),
                 util
                     .button()
