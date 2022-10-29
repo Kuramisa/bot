@@ -6,6 +6,21 @@ export interface IGuild extends HydratedDocument<any> {
     prefix: string;
     premium: boolean;
     promoted: boolean;
+    games: {
+        list: string[];
+        settings: {
+            [x: string]: {
+                category: string | null;
+                channels: {
+                    [x: string]: string[] | string;
+                };
+                jtc: {
+                    enabled: boolean;
+                    channel: string | null;
+                };
+            };
+        };
+    };
     channels: {
         rules: string;
         reports: string;
@@ -79,6 +94,10 @@ export const Guild: Schema = new Schema<IGuild>({
     premium: {
         type: Boolean,
         default: false
+    },
+    games: {
+        list: ["Valorant", "CSGO"],
+        settings: {}
     },
     promoted: {
         type: Boolean,
