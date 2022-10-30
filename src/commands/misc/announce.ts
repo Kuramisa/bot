@@ -66,7 +66,7 @@ export class AnnounceCommand extends Command {
 
         for (const owner of owners) {
             owner.send({
-                content: `${text}\n\n*This is from the official developers and will not be used to spam the users*\n\n- **${client.user?.username} ${version}**`
+                content: `${text}\n\n*This is from the official developers and will not be used to spam the users*\n**Disclaimer: If you encounter any bugs or unresponsiveness, please DM me directly or use </dev report:1027678917282238594>**\n\n- Sent by ${interaction.member}\n- **${client.user?.username} ${version}**`
             });
         }
 
