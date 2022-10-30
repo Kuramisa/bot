@@ -33,6 +33,7 @@ export class Kuramisa extends SapphireClient {
                 "MESSAGE_CONTENT",
                 "DIRECT_MESSAGES"
             ],
+            partials: ["CHANNEL"],
             loadMessageCommandListeners: true,
             loadSubcommandErrorListeners: true,
             loadDefaultErrorListeners: true,
