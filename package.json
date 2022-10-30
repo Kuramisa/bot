@@ -1,6 +1,6 @@
 {
   "name": "kuramisa",
-  "version": "Alpha 4.0",
+  "version": "Alpha 5.0",
   "main": "build/index.js",
   "scripts": {
     "build": "rimraf ./build && ttsc -P ./tsconfig.json",
