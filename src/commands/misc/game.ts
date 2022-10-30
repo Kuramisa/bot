@@ -28,7 +28,7 @@ export class GameCommand extends Command {
                         )
                         .addStringOption((option) =>
                             option
-                                .setName("game_to_setup")
+                                .setName("game_to_use")
                                 .setDescription("Which game to setup for?")
                                 .setAutocomplete(true)
                                 .setRequired(true)
@@ -50,10 +50,56 @@ export class GameCommand extends Command {
                         )
                         .addStringOption((option) =>
                             option
-                                .setName("game_to_remove")
+                                .setName("game_to_use")
                                 .setDescription("Which game to remove?")
                                 .setAutocomplete(true)
                                 .setRequired(true)
+                        )
+                )
+                .addSubcommandGroup((group) =>
+                    group
+                        .setName("jtc")
+                        .setDescription("Join to create Control System")
+                        .addSubcommand((command) =>
+                            command
+                                .setName("add_jtc")
+                                .setDescription("Add JTC type (Maximum 5)")
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("game_to_use")
+                                        .setDescription("Which game to reset?")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("jtc_type")
+                                        .setDescription(
+                                            "What kind of type you want to add?"
+                                        )
+                                        .setRequired(true)
+                                )
+                        )
+                        .addSubcommand((command) =>
+                            command
+                                .setName("remove_jtc")
+                                .setDescription("Remove JTC type")
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("game_to_use")
+                                        .setDescription("Which game to reset?")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("type_to_remove")
+                                        .setDescription(
+                                            "What kind of type you want to remove?"
+                                        )
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
                         )
                 )
                 .addSubcommand((command) =>
@@ -64,7 +110,7 @@ export class GameCommand extends Command {
                         )
                         .addStringOption((option) =>
                             option
-                                .setName("game_to_reset")
+                                .setName("game_to_use")
                                 .setDescription("Which game to reset?")
                                 .setAutocomplete(true)
                                 .setRequired(true)
@@ -83,37 +129,39 @@ export class GameCommand extends Command {
         const db = await database.guilds.get(guild);
         if (!db) return;
 
+        const gameToUse = options.getString("game_to_use", true);
+        const jtc = options.getBoolean("jtc") || false;
+
+        const forObj = gameToUse.toLowerCase();
+
+        if (!db.games.list.includes(gameToUse))
+            return interaction.reply({
+                content: "Game is not supported currently",
+                ephemeral: true
+            });
+
         switch (options.getSubcommand()) {
             case "setup": {
-                const gameToSetup = options.getString("game_to_setup", true);
-                const jtc = options.getBoolean("jtc") || false;
-
-                const forObj = gameToSetup.toLowerCase();
-
-                if (!db.games.list.includes(gameToSetup))
+                if (
+                    db.games.settings[forObj] &&
+                    db.games.settings[forObj].category !== null
+                )
                     return interaction.reply({
-                        content: "Game is not supported currently",
-                        ephemeral: true
-                    });
-
-                if (db.games.settings[forObj].category !== null)
-                    return interaction.reply({
-                        content: `You already have set up ${gameToSetup}. To reset it use </game reset:1035351423631773726>\n**ONLY USE IF NEEDED SINCE IT RESETS SETTINGS IN THE DATABASE AND NOT ON YOUR SERVER**`,
+                        content: `You already have set up ${gameToUse}. To reset it use </game reset:1035351423631773726>\n**ONLY USE IF NEEDED SINCE IT RESETS SETTINGS IN THE DATABASE AND NOT ON YOUR SERVER**`,
                         ephemeral: true
                     });
 
                 db.games.settings[forObj] = {
                     category: null,
                     channels: {},
+                    types: ["unranked", "competitive", "custom"],
                     jtc: {
                         enabled: jtc,
                         channel: null
                     }
                 };
 
-                const embed = util
-                    .embed()
-                    .setTitle(`Setting up ${gameToSetup}`);
+                const embed = util.embed().setTitle(`Setting up ${gameToUse}`);
 
                 let message = null;
 
@@ -123,7 +171,7 @@ export class GameCommand extends Command {
                         fetchReply: true
                     });
 
-                const category = await guild.channels.create(gameToSetup, {
+                const category = await guild.channels.create(gameToUse, {
                     type: "GUILD_CATEGORY"
                 });
 
@@ -134,8 +182,11 @@ export class GameCommand extends Command {
                 if (message) await message.edit({ embeds: [embed] });
 
                 const textChannel = await guild.channels.create(
-                    `${gameToSetup}-chat`,
-                    { parent: category, type: "GUILD_TEXT" }
+                    `${gameToUse}-chat`,
+                    {
+                        parent: category,
+                        type: "GUILD_TEXT"
+                    }
                 );
 
                 db.games.settings[forObj].channels.chat = textChannel.id;
@@ -151,8 +202,7 @@ export class GameCommand extends Command {
                         "Join to Create",
                         {
                             type: "GUILD_VOICE",
-                            parent: category,
-                            userLimit: 1
+                            parent: category
                         }
                     );
 
@@ -167,14 +217,16 @@ export class GameCommand extends Command {
                     db.markModified("games");
                     await db.save();
                 } else {
+                    let modal = util
+                        .modal()
+                        .setCustomId("unknown_modal")
+                        .setTitle("Something went wrong, please try again");
+
                     switch (forObj) {
                         case "valorant": {
-                            const modal = util
-                                .modal()
+                            modal = modal
                                 .setCustomId("channel_amounts")
-                                .setTitle(
-                                    `Creating channels for ${gameToSetup}`
-                                )
+                                .setTitle(`Creating channels for ${gameToUse}`)
                                 .setComponents(
                                     util
                                         .modalRow()
@@ -227,141 +279,122 @@ export class GameCommand extends Command {
                                                 .setStyle("SHORT")
                                         )
                                 );
+                            break;
+                        }
+                        case "csgo": {
+                            modal = util
+                                .modal()
+                                .setCustomId("channel_amounts")
+                                .setTitle(`Creating channels for ${gameToUse}`)
+                                .setComponents(
+                                    util
+                                        .modalRow()
+                                        .setComponents(
+                                            util
+                                                .input()
+                                                .setCustomId(
+                                                    "unranked_channels"
+                                                )
+                                                .setLabel(
+                                                    "How many Unranked channels? (Maximum 5)"
+                                                )
+                                                .setMinLength(1)
+                                                .setMaxLength(1)
+                                                .setPlaceholder(
+                                                    "Provide a number"
+                                                )
+                                                .setStyle("SHORT")
+                                        ),
+                                    util
+                                        .modalRow()
+                                        .setComponents(
+                                            util
+                                                .input()
+                                                .setCustomId(
+                                                    "competitive_channels"
+                                                )
+                                                .setLabel(
+                                                    "How many Competitive channels? (Maximum 5)"
+                                                )
+                                                .setMinLength(1)
+                                                .setMaxLength(1)
+                                                .setPlaceholder(
+                                                    "Provide a number"
+                                                )
+                                                .setStyle("SHORT")
+                                        ),
+                                    util
+                                        .modalRow()
+                                        .setComponents(
+                                            util
+                                                .input()
+                                                .setCustomId(
+                                                    "workshop_channels"
+                                                )
+                                                .setLabel(
+                                                    "How many Workshop channels? (Maximum 5)"
+                                                )
+                                                .setMinLength(1)
+                                                .setMaxLength(1)
+                                                .setPlaceholder(
+                                                    "Provide a number"
+                                                )
+                                                .setStyle("SHORT")
+                                        )
+                                );
+                        }
+                    }
 
-                            await interaction.showModal(modal);
+                    await interaction.showModal(modal);
 
-                            const mInteraction =
-                                await interaction.awaitModalSubmit({
-                                    time: 0
-                                });
+                    const mInteraction = await interaction.awaitModalSubmit({
+                        filter: (i) => i.customId === "channel_amounts",
+                        time: 0
+                    });
 
-                            const unrankedAmount = parseInt(
-                                mInteraction.fields.getTextInputValue(
-                                    "unrated_channels"
-                                )
+                    let fields = mInteraction.fields as any;
+                    fields = fields._fields;
+                    if (
+                        fields.some((field: any) =>
+                            isNaN(parseInt(field.value))
+                        )
+                    )
+                        return mInteraction.reply({
+                            content: "Please provide numbers for the channels",
+                            ephemeral: true
+                        });
+
+                    if (fields.some((field: any) => parseInt(field.value) > 5))
+                        return mInteraction.reply({
+                            content: "Maximum number of channels is 5",
+                            ephemeral: true
+                        });
+
+                    embed.setDescription(
+                        embed.description + "\n\n**Voice Channels**\n"
+                    );
+
+                    await mInteraction.reply({ embeds: [embed] });
+
+                    for (let i = 0; i < fields.length; i++) {
+                        const field = fields[i];
+                        const channelName = field.customId.split("_")[0];
+                        for (let j = 1; j <= parseInt(field.value); j++) {
+                            const channel = await guild.channels.create(
+                                `${util.capFirstLetter(channelName)} #${j}`,
+                                {
+                                    parent: category,
+                                    type: "GUILD_VOICE"
+                                }
                             );
 
-                            const compAmount = parseInt(
-                                mInteraction.fields.getTextInputValue(
-                                    "competitive_channels"
-                                )
-                            );
-
-                            const customAmount = parseInt(
-                                mInteraction.fields.getTextInputValue(
-                                    "custom_channels"
-                                )
-                            );
-
-                            if (
-                                isNaN(
-                                    compAmount || unrankedAmount || customAmount
-                                )
-                            )
-                                return mInteraction.reply({
-                                    content:
-                                        "Please provide numbers for the channels",
-                                    ephemeral: true
-                                });
-
-                            if (
-                                compAmount > 5 ||
-                                unrankedAmount > 5 ||
-                                customAmount > 5
-                            )
-                                return mInteraction.reply({
-                                    content: "Maximum number of channels is 5",
-                                    ephemeral: true
-                                });
-
-                            await mInteraction.reply({ embeds: [embed] });
+                            db.games.settings[forObj].channels[
+                                channelName + j
+                            ] = channel.id;
 
                             embed.setDescription(
-                                embed.description + "\n\n**Voice Channels**\n"
+                                embed.description + `✅ ${channel} created\n`
                             );
-
-                            for (let i = 1; i <= unrankedAmount; i++) {
-                                const channel = await guild.channels.create(
-                                    `Unranked #${i}`,
-                                    {
-                                        parent: category,
-                                        type: "GUILD_VOICE"
-                                    }
-                                );
-
-                                db.games.settings[forObj].channels[
-                                    `unranked${i}`
-                                ] = channel.id;
-
-                                embed.setDescription(
-                                    embed.description +
-                                        `✅ ${channel} created\n`
-                                );
-                                if (message)
-                                    await message.edit({ embeds: [embed] });
-                                else
-                                    await mInteraction.editReply({
-                                        embeds: [embed]
-                                    });
-                            }
-
-                            embed.setDescription(`${embed.description}\n`);
-
-                            for (let j = 1; j <= compAmount; j++) {
-                                const channel = await guild.channels.create(
-                                    `Ranked #${j}`,
-                                    {
-                                        parent: category,
-                                        type: "GUILD_VOICE"
-                                    }
-                                );
-
-                                db.games.settings[forObj].channels[
-                                    `ranked${j}`
-                                ] = channel.id;
-
-                                embed.setDescription(
-                                    embed.description +
-                                        `✅ ${channel} created\n`
-                                );
-
-                                if (message)
-                                    await message.edit({ embeds: [embed] });
-                                else
-                                    await mInteraction.editReply({
-                                        embeds: [embed]
-                                    });
-                            }
-
-                            embed.setDescription(`${embed.description}\n`);
-
-                            for (let k = 1; k <= customAmount; k++) {
-                                const channel = await guild.channels.create(
-                                    `Custom #${k}`,
-                                    {
-                                        parent: category,
-                                        type: "GUILD_VOICE"
-                                    }
-                                );
-
-                                db.games.settings[forObj].channels[
-                                    `custom${k}`
-                                ] = channel.id;
-
-                                embed.setDescription(
-                                    embed.description +
-                                        `✅ ${channel} created\n`
-                                );
-
-                                if (message)
-                                    await message.edit({ embeds: [embed] });
-                                else
-                                    await mInteraction.editReply({
-                                        embeds: [embed]
-                                    });
-                            }
-
-                            embed.setTitle(`${gameToSetup} Setup has finished`);
 
                             if (message)
                                 await message.edit({ embeds: [embed] });
@@ -369,29 +402,29 @@ export class GameCommand extends Command {
                                 await mInteraction.editReply({
                                     embeds: [embed]
                                 });
-
-                            db.markModified("games");
-                            await db.save();
-                            break;
                         }
+
+                        embed.setDescription(`${embed.description}\n`);
                     }
+
+                    embed.setTitle(`${gameToUse} Setup has finished`);
+
+                    if (message) await message.edit({ embeds: [embed] });
+                    else
+                        await mInteraction.editReply({
+                            embeds: [embed]
+                        });
+
+                    db.markModified("games");
+                    await db.save();
                 }
                 break;
             }
             case "remove": {
-                const gameToRemove = options.getString("game_to_remove", true);
-                const forObj = gameToRemove.toLowerCase();
-
-                if (!db.games.list.includes(gameToRemove))
-                    return interaction.reply({
-                        content: "Game is not supported currently",
-                        ephemeral: true
-                    });
-
                 const gameSettings = db.games.settings[forObj];
                 if (!gameSettings.category)
                     return interaction.reply({
-                        content: `${gameToRemove} is not setup with this bot or for the server yet`,
+                        content: `${gameToUse} is not setup with this bot or for the server yet`,
                         ephemeral: true
                     });
 
@@ -401,7 +434,7 @@ export class GameCommand extends Command {
 
                 if (!category)
                     return interaction.reply({
-                        content: `${gameToRemove} Category not found on the server`,
+                        content: `${gameToUse} Category not found on the server`,
                         ephemeral: true
                     });
 
@@ -421,6 +454,7 @@ export class GameCommand extends Command {
                 db.games.settings[forObj] = {
                     category: null,
                     channels: {},
+                    types: [],
                     jtc: {
                         enabled: false,
                         channel: null
@@ -428,7 +462,7 @@ export class GameCommand extends Command {
                 };
 
                 await interaction.editReply({
-                    content: `Deleted ${gameToRemove} from your server`
+                    content: `Deleted **${gameToUse}** from your server`
                 });
 
                 db.markModified("games");
@@ -436,18 +470,10 @@ export class GameCommand extends Command {
                 break;
             }
             case "reset": {
-                const gameToReset = options.getString("game_to_reset", true);
-                const forObj = gameToReset.toLowerCase();
-
-                if (!db.games.list.includes(gameToReset))
-                    return interaction.reply({
-                        content: "Game is not supported currently",
-                        ephemeral: true
-                    });
-
                 db.games.settings[forObj] = {
                     category: null,
                     channels: {},
+                    types: [],
                     jtc: {
                         enabled: false,
                         channel: null
@@ -455,12 +481,97 @@ export class GameCommand extends Command {
                 };
 
                 await interaction.reply({
-                    content: `Database reset for ${gameToReset} is done`,
+                    content: `**${gameToUse}** Database was reset`,
                     ephemeral: true
                 });
 
                 db.markModified("games");
                 await db.save();
+                break;
+            }
+        }
+
+        switch (options.getSubcommandGroup()) {
+            case "jtc": {
+                switch (options.getSubcommand()) {
+                    case "add_jtc": {
+                        if (!db.games.settings[forObj].category)
+                            return interaction.reply({
+                                content: `${gameToUse} is not setup with this bot or for the server yet`,
+                                ephemeral: true
+                            });
+
+                        if (db.games.settings[forObj].types.length === 5)
+                            return interaction.reply({
+                                content:
+                                    "You already hit the maximum types of 5",
+                                ephemeral: true
+                            });
+
+                        let jtcType = options.getString("jtc_type", true);
+                        if (jtcType.includes(" "))
+                            jtcType = jtcType.split(" ").join("_");
+
+                        if (db.games.settings[forObj].types.includes(jtcType))
+                            return interaction.reply({
+                                content: `**${jtcType}** already exists`,
+                                ephemeral: true
+                            });
+
+                        db.games.settings[forObj].types.push(jtcType);
+
+                        db.markModified("games");
+                        await db.save();
+
+                        await interaction.reply({
+                            content: `Added **${util.capFirstLetter(
+                                jtcType
+                            )}** as a new Join to Create Channel type`,
+                            ephemeral: true
+                        });
+                        break;
+                    }
+                    case "remove_jtc": {
+                        if (!db.games.settings[forObj].category)
+                            return interaction.reply({
+                                content: `${gameToUse} is not setup with this bot or for the server yet`,
+                                ephemeral: true
+                            });
+
+                        let typeToRemove = options.getString(
+                            "type_to_remove",
+                            true
+                        );
+
+                        if (typeToRemove.includes(" "))
+                            typeToRemove = typeToRemove.split(" ").join("_");
+
+                        if (
+                            !db.games.settings[forObj].types.includes(
+                                typeToRemove
+                            )
+                        )
+                            return interaction.reply({
+                                content: `**${typeToRemove}** doesn't exist`,
+                                ephemeral: true
+                            });
+
+                        db.games.settings[forObj].types = db.games.settings[
+                            forObj
+                        ].types.filter((type) => type !== typeToRemove);
+
+                        db.markModified("games");
+                        await db.save();
+
+                        await interaction.reply({
+                            content: `Removed **${util.capFirstLetter(
+                                typeToRemove
+                            )}** from Join to Create Channel types`,
+                            ephemeral: true
+                        });
+                        break;
+                    }
+                }
                 break;
             }
         }

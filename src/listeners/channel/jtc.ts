@@ -1,5 +1,10 @@
 import { Listener } from "@sapphire/framework";
-import { VoiceState } from "discord.js";
+import {
+    MessageButton,
+    MessageButtonStyleResolvable,
+    VoiceState,
+    Collection
+} from "discord.js";
 
 export class JTCListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -36,159 +41,92 @@ export class JTCListener extends Listener {
 
         if (gameSettings.jtc.channel !== channel.id) return;
 
-        switch (gameName.toLowerCase()) {
-            case "valorant": {
-                const embed = util
-                    .embed()
-                    .setTitle(`${gameName} - Join to Create`)
-                    .setDescription("⬇ Choose from below ⬇");
+        const embed = util
+            .embed()
+            .setTitle(`${gameName} - Join to Create`)
+            .setDescription("⬇ Choose from below ⬇");
 
-                const buttons = [
+        const colors: MessageButtonStyleResolvable[] = [
+            "PRIMARY",
+            "DANGER",
+            "SECONDARY"
+        ];
+
+        try {
+            const buttons: Collection<number, MessageButton> = new Collection();
+
+            gameSettings.types.forEach((type, i) =>
+                buttons.set(
+                    i,
                     util
                         .button()
-                        .setCustomId("unrated_jtc")
-                        .setLabel("Unrated")
-                        .setStyle("PRIMARY"),
-                    util
-                        .button()
-                        .setCustomId("competitive_jtc")
-                        .setLabel("Competitive")
-                        .setStyle("DANGER"),
-                    util
-                        .button()
-                        .setCustomId("custom_jtc")
-                        .setLabel("Custom Game")
-                        .setStyle("SECONDARY")
-                ];
+                        .setCustomId(`${type}_jtc`)
+                        .setLabel(util.capFirstLetter(type))
+                        .setStyle(
+                            colors[Math.floor(Math.random() * colors.length)]
+                        )
+                )
+            );
 
-                const row = util.row().setComponents(buttons);
+            const message = await channel.send({
+                content: `${member}`,
+                embeds: [embed],
+                components: [util.row().setComponents(buttons.first(5))]
+            });
 
-                try {
-                    const message = await channel.send({
-                        embeds: [embed],
-                        components: [row]
-                    });
+            const buttonClick = await message.awaitMessageComponent({
+                componentType: "BUTTON",
+                filter: (i) =>
+                    buttons.some((button) => button.customId === i.customId)
+            });
 
-                    const buttonClick = await message.awaitMessageComponent({
-                        componentType: "BUTTON",
-                        filter: (i) =>
-                            buttons.some(
-                                (button) => button.customId === i.customId
-                            )
-                    });
+            await message.edit({
+                components: message.components.map((row) =>
+                    row.setComponents(
+                        buttons.map((button) => button.setDisabled(true))
+                    )
+                )
+            });
 
-                    await message.edit({
-                        components: [
-                            row.setComponents(
-                                buttons.map((button) =>
-                                    button.setDisabled(true)
-                                )
-                            )
-                        ]
-                    });
+            if (!channel.members.get(member.id))
+                return buttonClick.reply({
+                    content: "You have left the channel",
+                    ephemeral: true
+                });
 
-                    if (!channel.members.get(member.id))
-                        return buttonClick.reply({
-                            content: "You have left the channel",
-                            ephemeral: true
-                        });
+            await buttonClick.deferUpdate();
 
-                    await buttonClick.deferUpdate();
+            const button = buttons.find(
+                (button) => buttonClick.customId === button.customId
+            );
+            if (!button) return;
 
-                    switch (buttonClick.customId) {
-                        case "unrated_jtc": {
-                            const unratedChannels =
-                                channel.parent.children.filter((channel) =>
-                                    channel.name.includes("Unrated #")
-                                );
+            const channels = channel.parent.children.filter((channel) =>
+                channel.name.includes(button.label as string)
+            );
 
-                            const unratedChannel =
-                                await channel.parent.createChannel(
-                                    `Unrated #${unratedChannels.size + 1}`,
-                                    {
-                                        type: "GUILD_VOICE",
-                                        userLimit: 5,
-                                        permissionOverwrites: [
-                                            {
-                                                id: member.id,
-                                                allow: [
-                                                    "MUTE_MEMBERS",
-                                                    "MOVE_MEMBERS",
-                                                    "CREATE_INSTANT_INVITE"
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                );
-
-                            await member.voice.setChannel(unratedChannel);
-                            break;
+            const newChannel = await channel.parent.createChannel(
+                `${button.label} #${channels.size + 1}`,
+                {
+                    type: "GUILD_VOICE",
+                    permissionOverwrites: [
+                        {
+                            id: member.id,
+                            allow: [
+                                "MUTE_MEMBERS",
+                                "MOVE_MEMBERS",
+                                "CREATE_INSTANT_INVITE"
+                            ]
                         }
-                        case "competitive_jtc": {
-                            const competitiveChannels =
-                                channel.parent.children.filter((channel) =>
-                                    channel.name.includes("Competitive #")
-                                );
-
-                            const competitiveChannel =
-                                await channel.parent.createChannel(
-                                    `Competitive #${
-                                        competitiveChannels.size + 1
-                                    }`,
-                                    {
-                                        type: "GUILD_VOICE",
-                                        userLimit: 5,
-                                        permissionOverwrites: [
-                                            {
-                                                id: member.id,
-                                                allow: [
-                                                    "MUTE_MEMBERS",
-                                                    "MOVE_MEMBERS",
-                                                    "CREATE_INSTANT_INVITE"
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                );
-
-                            await member.voice.setChannel(competitiveChannel);
-                            break;
-                        }
-                        case "custom_jtc": {
-                            const customChannels =
-                                channel.parent.children.filter((channel) =>
-                                    channel.name.includes("Custom #")
-                                );
-
-                            const customChannel =
-                                await channel.parent.createChannel(
-                                    `Custom #${customChannels.size + 1}`,
-                                    {
-                                        type: "GUILD_VOICE",
-                                        userLimit: 5,
-                                        permissionOverwrites: [
-                                            {
-                                                id: member.id,
-                                                allow: [
-                                                    "MUTE_MEMBERS",
-                                                    "MOVE_MEMBERS",
-                                                    "CREATE_INSTANT_INVITE"
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                );
-
-                            await member.voice.setChannel(customChannel);
-                            break;
-                        }
-                    }
-
-                    await message.delete().catch(console.error);
-                } catch (err) {
-                    console.error(err);
+                    ]
                 }
-            }
+            );
+
+            await member.voice.setChannel(newChannel);
+
+            await message.delete();
+        } catch (err) {
+            console.error(err);
         }
     }
 }

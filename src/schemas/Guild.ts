@@ -14,6 +14,7 @@ export interface IGuild extends HydratedDocument<any> {
                 channels: {
                     [x: string]: string[] | string;
                 };
+                types: string[];
                 jtc: {
                     enabled: boolean;
                     channel: string | null;
