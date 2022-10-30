@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { GuildMember } from "discord.js";
 
 const { version } = require("../../../package.json");
 
@@ -43,24 +44,26 @@ export class AnnounceCommand extends Command {
 
         await interaction.showModal(modal);
 
-        const submitted = await interaction.awaitModalSubmit({ time: 0 });
+        const mInteraction = await interaction.awaitModalSubmit({
+            time: 0,
+            filter: (i) => i.customId === "announce-modal"
+        });
 
-        await submitted.deferReply({ ephemeral: true });
+        await mInteraction.deferReply({ ephemeral: true });
 
-        const text = `***Announcement from the Developer***\n\n\`\`\`${submitted.fields.getTextInputValue(
+        const text = `***Announcement from the Developer***\n\n\`\`\`${mInteraction.fields.getTextInputValue(
             "announcement-text"
         )}\`\`\``;
 
-        client.guilds.cache.forEach(async (guild) => {
+        const owners: GuildMember[] = [];
+
+        for (const guild of client.guilds.cache.toJSON()) {
             const owner = await guild.fetchOwner();
 
-            owner
-                .send({
-                    content: `${text}\n\n*This is from the official developers and will not be used to spam the users*\n\n- **${client.user?.username} ${version}**`
-                })
-                .catch(console.error);
-        });
+            if (!owners.some((owner2) => owner2.id == owner.id))
+                owners.push(await guild.fetchOwner());
+        }
 
-        await submitted.editReply({ content: "Announcement sent" });
+        await mInteraction.editReply({ content: "Announcement sent" });
     }
 }
