@@ -67,7 +67,7 @@ export class GameCommand extends Command {
                                 .addStringOption((option) =>
                                     option
                                         .setName("game_to_use")
-                                        .setDescription("Which game to reset?")
+                                        .setDescription("Which game add to?")
                                         .setAutocomplete(true)
                                         .setRequired(true)
                                 )
@@ -87,7 +87,9 @@ export class GameCommand extends Command {
                                 .addStringOption((option) =>
                                     option
                                         .setName("game_to_use")
-                                        .setDescription("Which game to reset?")
+                                        .setDescription(
+                                            "Which game to remove from?"
+                                        )
                                         .setAutocomplete(true)
                                         .setRequired(true)
                                 )
@@ -96,6 +98,20 @@ export class GameCommand extends Command {
                                         .setName("type_to_remove")
                                         .setDescription(
                                             "What kind of type you want to remove?"
+                                        )
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                        )
+                        .addSubcommand((command) =>
+                            command
+                                .setName("reset_jtc")
+                                .setDescription("Reset JTC types")
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("game_to_use")
+                                        .setDescription(
+                                            "Which game to reset it for?"
                                         )
                                         .setAutocomplete(true)
                                         .setRequired(true)
@@ -217,6 +233,23 @@ export class GameCommand extends Command {
                             content: `Removed **${util.capFirstLetter(
                                 typeToRemove
                             )}** from Join to Create Channel types`,
+                            ephemeral: true
+                        });
+                        break;
+                    }
+                    case "reset_jtc": {
+                        if (!db.games.settings[forObj].category)
+                            return interaction.reply({
+                                content: `${gameToUse} is not setup with this bot or for the server yet`,
+                                ephemeral: true
+                            });
+
+                        db.games.settings[forObj].types = [];
+
+                        db.markModified("games");
+                        await db.save();
+                        await interaction.reply({
+                            content: `${gameToUse} JTC types was reset`,
                             ephemeral: true
                         });
                         break;
