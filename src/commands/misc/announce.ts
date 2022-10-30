@@ -52,9 +52,9 @@ export class AnnounceCommand extends Command {
 
         await mInteraction.deferReply({ ephemeral: true });
 
-        const text = `\`\`\`${mInteraction.fields.getTextInputValue(
+        const text = `${mInteraction.fields.getTextInputValue(
             "announcement-text"
-        )}\`\`\``;
+        )}`;
 
         const owners: GuildMember[] = [];
 
