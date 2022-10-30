@@ -24,6 +24,7 @@ export class AnnounceCommand extends Command {
 
     public async chatInputRun(interaction: Command.ChatInputInteraction) {
         const { client, util } = this.container;
+        const { user } = interaction;
 
         const modal = util
             .modal()
@@ -51,7 +52,7 @@ export class AnnounceCommand extends Command {
 
         await mInteraction.deferReply({ ephemeral: true });
 
-        const text = `***Announcement from the Developer***\n\n\`\`\`${mInteraction.fields.getTextInputValue(
+        const text = `\`\`\`${mInteraction.fields.getTextInputValue(
             "announcement-text"
         )}\`\`\``;
 
@@ -64,10 +65,29 @@ export class AnnounceCommand extends Command {
                 owners.push(await guild.fetchOwner());
         }
 
+        const embed = util
+            .embed()
+            .setAuthor({
+                name: user.tag,
+                iconURL: user.displayAvatarURL({ dynamic: true })
+            })
+            .setTitle("Annoucement from The Developers")
+            .setDescription(
+                `${text}\n\n*This is from the official developers and will not be used to spam the users*\n**Disclaimer: If you encounter any bugs or unresponsiveness, please DM me directly or use </dev report:1027678917282238594>**\n\n- Sent by ${interaction.member}\n- **${client.user?.username} ${version}**`
+            );
+
+        const row = util
+            .row()
+            .setComponents(
+                util
+                    .button()
+                    .setCustomId("dismiss-announcement")
+                    .setLabel("Dismiss")
+                    .setStyle("DANGER")
+            );
+
         for (const owner of owners) {
-            owner.send({
-                content: `${text}\n\n*This is from the official developers and will not be used to spam the users*\n**Disclaimer: If you encounter any bugs or unresponsiveness, please DM me directly or use </dev report:1027678917282238594>**\n\n- Sent by ${interaction.member}\n- **${client.user?.username} ${version}**`
-            });
+            owner.send({ embeds: [embed], components: [row] });
         }
 
         await mInteraction.editReply({ content: "Announcement sent" });
