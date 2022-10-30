@@ -10,9 +10,10 @@ export class TicketingMessageDeletedListener extends Listener {
         });
     }
 
-    public async run(message: Message<true>) {
+    public async run(message: Message) {
         const { database } = this.container;
         const { guild } = message;
+        if (!guild) return;
 
         const db = await database.guilds.get(guild);
         if (!db) return;
