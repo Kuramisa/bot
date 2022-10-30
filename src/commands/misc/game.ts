@@ -157,7 +157,9 @@ export class GameCommand extends Command {
                                 ephemeral: true
                             });
 
-                        let jtcType = options.getString("jtc_type", true);
+                        let jtcType = options
+                            .getString("jtc_type", true)
+                            .toLowerCase();
                         if (jtcType.includes(" "))
                             jtcType = jtcType.split(" ").join("_");
 
@@ -187,10 +189,9 @@ export class GameCommand extends Command {
                                 ephemeral: true
                             });
 
-                        let typeToRemove = options.getString(
-                            "type_to_remove",
-                            true
-                        );
+                        let typeToRemove = options
+                            .getString("type_to_remove", true)
+                            .toLowerCase();
 
                         if (typeToRemove.includes(" "))
                             typeToRemove = typeToRemove.split(" ").join("_");
