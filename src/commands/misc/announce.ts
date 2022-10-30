@@ -64,6 +64,12 @@ export class AnnounceCommand extends Command {
                 owners.push(await guild.fetchOwner());
         }
 
+        for (const owner of owners) {
+            owner.send({
+                content: `${text}\n\n*This is from the official developers and will not be used to spam the users*\n\n- **${client.user?.username} ${version}**`
+            });
+        }
+
         await mInteraction.editReply({ content: "Announcement sent" });
     }
 }
