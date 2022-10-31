@@ -13,7 +13,7 @@ export class HelpACListener extends Listener {
 
     public async run(interaction: AutocompleteInteraction<"cached">) {
         if (!interaction.isAutocomplete()) return;
-        if (!["game", "game_beta"].includes(interaction.commandName)) return;
+        if (!["game"].includes(interaction.commandName)) return;
 
         const { database, util } = this.container;
         const { options, guild } = interaction;
