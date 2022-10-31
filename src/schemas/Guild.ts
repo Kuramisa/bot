@@ -101,7 +101,10 @@ export const Guild: Schema = new Schema<IGuild>({
             type: Array,
             default: ["Valorant", "CSGO"]
         },
-        settings: {}
+        settings: {
+            type: Object,
+            default: {}
+        }
     },
     promoted: {
         type: Boolean,
