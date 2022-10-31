@@ -150,7 +150,7 @@ export class GameCommand extends Command {
 
         const forObj = gameToUse.toLowerCase();
 
-        if (!db.games.list.includes(gameToUse.toLowerCase()))
+        if (!db.games.list.map((list) => list.toLowerCase()).includes(forObj))
             return interaction.reply({
                 content: "Game is not supported currently",
                 ephemeral: true
