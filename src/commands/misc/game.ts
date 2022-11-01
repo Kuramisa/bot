@@ -33,14 +33,6 @@ export class GameCommand extends Command {
                                 .setAutocomplete(true)
                                 .setRequired(true)
                         )
-                        .addBooleanOption((option) =>
-                            option
-                                .setName("jtc")
-                                .setDescription(
-                                    "Do you want to setup Join to create?"
-                                )
-                                .setRequired(false)
-                        )
                 )
                 .addSubcommand((command) =>
                     command
@@ -138,7 +130,7 @@ export class GameCommand extends Command {
     public async chatInputRun(
         interaction: Command.ChatInputInteraction<"cached">
     ) {
-        const { database, util } = this.container;
+        const { database, games, util } = this.container;
         const { options, guild, channel } = interaction;
 
         if (!channel) return;
@@ -179,13 +171,10 @@ export class GameCommand extends Command {
 
                 const embed = util.embed().setTitle(`Setting up ${gameToUse}`);
 
-                let message = null;
-
-                if (jtc)
-                    message = await interaction.reply({
-                        embeds: [embed],
-                        fetchReply: true
-                    });
+                const message = await interaction.reply({
+                    embeds: [embed],
+                    fetchReply: true
+                });
 
                 const category = await guild.channels.create(gameToUse, {
                     type: "GUILD_CATEGORY"
@@ -195,7 +184,7 @@ export class GameCommand extends Command {
 
                 embed.setDescription("✅ Category created");
 
-                if (message) await message.edit({ embeds: [embed] });
+                await message.edit({ embeds: [embed] });
 
                 const textChannel = await guild.channels.create(
                     `${gameToUse}-chat`,
@@ -211,9 +200,44 @@ export class GameCommand extends Command {
                     embed.description + `\n✅ ${textChannel} created`
                 );
 
-                if (message) await message.edit({ embeds: [embed] });
+                await message.edit({ embeds: [embed] });
 
-                if (jtc) {
+                const row = util
+                    .row()
+                    .setComponents(
+                        util
+                            .button()
+                            .setCustomId("predefined_channels")
+                            .setLabel("Predefined")
+                            .setStyle("SUCCESS"),
+                        util
+                            .button()
+                            .setCustomId("jtc_channel")
+                            .setLabel("Join to Create")
+                            .setStyle("PRIMARY")
+                    );
+
+                const differentEmbed = util
+                    .embed()
+                    .setDescription(
+                        embed.description +
+                            "What kind of Channel/s do you want?"
+                    );
+
+                await message.edit({
+                    embeds: [differentEmbed],
+                    components: [row]
+                });
+
+                const buttonClick = await message.awaitMessageComponent({
+                    componentType: "BUTTON",
+                    filter: (i) =>
+                        (i.customId === "predefined_channels" ||
+                            i.customId === "jtc_channel") &&
+                        i.user.id === interaction.user.id
+                });
+
+                if (buttonClick.customId === "jtc_channel") {
                     const jtcChannel = await guild.channels.create(
                         "Join to Create",
                         {
@@ -228,143 +252,18 @@ export class GameCommand extends Command {
                         embed.description + `\n✅ ${jtcChannel} created`
                     );
 
-                    if (message) await message.edit({ embeds: [embed] });
+                    await message.edit({ embeds: [embed], components: [] });
+
+                    buttonClick.deferUpdate();
 
                     db.markModified("games");
                     await db.save();
                 } else {
-                    let modal = util
-                        .modal()
-                        .setCustomId("unknown_modal")
-                        .setTitle("Something went wrong, please try again");
+                    const modal = games.getChannelModals(gameToUse);
 
-                    switch (forObj) {
-                        case "valorant": {
-                            modal = modal
-                                .setCustomId("channel_amounts")
-                                .setTitle(`Creating channels for ${gameToUse}`)
-                                .setComponents(
-                                    util
-                                        .modalRow()
-                                        .setComponents(
-                                            util
-                                                .input()
-                                                .setCustomId("unrated_channels")
-                                                .setLabel(
-                                                    "How many Unrated channels? (Maximum 5)"
-                                                )
-                                                .setMinLength(1)
-                                                .setMaxLength(1)
-                                                .setPlaceholder(
-                                                    "Provide a number"
-                                                )
-                                                .setStyle("SHORT")
-                                        ),
-                                    util
-                                        .modalRow()
-                                        .setComponents(
-                                            util
-                                                .input()
-                                                .setCustomId(
-                                                    "competitive_channels"
-                                                )
-                                                .setLabel(
-                                                    "How many Competitive channels? (Maximum 5)"
-                                                )
-                                                .setMinLength(1)
-                                                .setMaxLength(1)
-                                                .setPlaceholder(
-                                                    "Provide a number"
-                                                )
-                                                .setStyle("SHORT")
-                                        ),
-                                    util
-                                        .modalRow()
-                                        .setComponents(
-                                            util
-                                                .input()
-                                                .setCustomId("custom_channels")
-                                                .setLabel(
-                                                    "How many Custom Game channels? (Maximum 5)"
-                                                )
-                                                .setMinLength(1)
-                                                .setMaxLength(1)
-                                                .setPlaceholder(
-                                                    "Provide a number"
-                                                )
-                                                .setStyle("SHORT")
-                                        )
-                                );
-                            break;
-                        }
-                        case "csgo": {
-                            modal = util
-                                .modal()
-                                .setCustomId("channel_amounts")
-                                .setTitle(`Creating channels for ${gameToUse}`)
-                                .setComponents(
-                                    util
-                                        .modalRow()
-                                        .setComponents(
-                                            util
-                                                .input()
-                                                .setCustomId(
-                                                    "unranked_channels"
-                                                )
-                                                .setLabel(
-                                                    "How many Unranked channels? (Maximum 5)"
-                                                )
-                                                .setMinLength(1)
-                                                .setMaxLength(1)
-                                                .setPlaceholder(
-                                                    "Provide a number"
-                                                )
-                                                .setStyle("SHORT")
-                                        ),
-                                    util
-                                        .modalRow()
-                                        .setComponents(
-                                            util
-                                                .input()
-                                                .setCustomId(
-                                                    "competitive_channels"
-                                                )
-                                                .setLabel(
-                                                    "How many Competitive channels? (Maximum 5)"
-                                                )
-                                                .setMinLength(1)
-                                                .setMaxLength(1)
-                                                .setPlaceholder(
-                                                    "Provide a number"
-                                                )
-                                                .setStyle("SHORT")
-                                        ),
-                                    util
-                                        .modalRow()
-                                        .setComponents(
-                                            util
-                                                .input()
-                                                .setCustomId(
-                                                    "workshop_channels"
-                                                )
-                                                .setLabel(
-                                                    "How many Workshop channels? (Maximum 5)"
-                                                )
-                                                .setMinLength(1)
-                                                .setMaxLength(1)
-                                                .setPlaceholder(
-                                                    "Provide a number"
-                                                )
-                                                .setStyle("SHORT")
-                                        )
-                                );
-                            break;
-                        }
-                    }
+                    await buttonClick.showModal(modal);
 
-                    await interaction.showModal(modal);
-
-                    const mInteraction = await interaction.awaitModalSubmit({
+                    const mInteraction = await buttonClick.awaitModalSubmit({
                         filter: (i) => i.customId === "channel_amounts",
                         time: 0
                     });
@@ -391,7 +290,8 @@ export class GameCommand extends Command {
                         embed.description + "\n\n**Voice Channels**\n"
                     );
 
-                    await mInteraction.reply({ embeds: [embed] });
+                    await message.edit({ embeds: [embed], components: [] });
+                    await mInteraction.deferUpdate();
 
                     for (let i = 0; i < fields.length; i++) {
                         const field = fields[i];
@@ -512,7 +412,10 @@ export class GameCommand extends Command {
             case "jtc": {
                 switch (options.getSubcommand()) {
                     case "add_jtc": {
-                        if (!db.games.settings[forObj].category)
+                        if (
+                            !db.games.settings[forObj] ||
+                            !db.games.settings[forObj].category
+                        )
                             return interaction.reply({
                                 content: `${gameToUse} is not setup with this bot or for the server yet`,
                                 ephemeral: true
@@ -551,7 +454,10 @@ export class GameCommand extends Command {
                         return;
                     }
                     case "remove_jtc": {
-                        if (!db.games.settings[forObj].category)
+                        if (
+                            !db.games.settings[forObj] ||
+                            !db.games.settings[forObj].category
+                        )
                             return interaction.reply({
                                 content: `${gameToUse} is not setup with this bot or for the server yet`,
                                 ephemeral: true
@@ -590,7 +496,10 @@ export class GameCommand extends Command {
                         return;
                     }
                     case "reset_jtc": {
-                        if (!db.games.settings[forObj].category)
+                        if (
+                            !db.games.settings[forObj] ||
+                            !db.games.settings[forObj].category
+                        )
                             return interaction.reply({
                                 content: `${gameToUse} is not setup with this bot or for the server yet`,
                                 ephemeral: true
