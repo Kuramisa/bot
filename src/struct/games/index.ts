@@ -33,4 +33,110 @@ export default class Games {
         this.valorant = new Valorant(this.container);
         this.warframe = new Warframe(this.container);
     }
+
+    getChannelModals(game: string) {
+        const { util } = this.container;
+
+        const modal = util
+            .modal()
+            .setCustomId("channel_amounts")
+            .setTitle(`Creating channels for ${game}`);
+
+        switch (game.toLowerCase()) {
+            case "valorant": {
+                return modal.setComponents(
+                    util
+                        .modalRow()
+                        .setComponents(
+                            util
+                                .input()
+                                .setCustomId("unrated_channels")
+                                .setLabel(
+                                    "How many Unrated channels? (Maximum 5)"
+                                )
+                                .setMinLength(1)
+                                .setMaxLength(1)
+                                .setPlaceholder("Provide a number")
+                                .setStyle("SHORT")
+                        ),
+                    util
+                        .modalRow()
+                        .setComponents(
+                            util
+                                .input()
+                                .setCustomId("competitive_channels")
+                                .setLabel(
+                                    "How many Competitive channels? (Maximum 5)"
+                                )
+                                .setMinLength(1)
+                                .setMaxLength(1)
+                                .setPlaceholder("Provide a number")
+                                .setStyle("SHORT")
+                        ),
+                    util
+                        .modalRow()
+                        .setComponents(
+                            util
+                                .input()
+                                .setCustomId("custom_channels")
+                                .setLabel(
+                                    "How many Custom Game channels? (Maximum 5)"
+                                )
+                                .setMinLength(1)
+                                .setMaxLength(1)
+                                .setPlaceholder("Provide a number")
+                                .setStyle("SHORT")
+                        )
+                );
+            }
+            case "csgo": {
+                return modal.setComponents(
+                    util
+                        .modalRow()
+                        .setComponents(
+                            util
+                                .input()
+                                .setCustomId("unranked_channels")
+                                .setLabel(
+                                    "How many Unranked channels? (Maximum 5)"
+                                )
+                                .setMinLength(1)
+                                .setMaxLength(1)
+                                .setPlaceholder("Provide a number")
+                                .setStyle("SHORT")
+                        ),
+                    util
+                        .modalRow()
+                        .setComponents(
+                            util
+                                .input()
+                                .setCustomId("competitive_channels")
+                                .setLabel(
+                                    "How many Competitive channels? (Maximum 5)"
+                                )
+                                .setMinLength(1)
+                                .setMaxLength(1)
+                                .setPlaceholder("Provide a number")
+                                .setStyle("SHORT")
+                        ),
+                    util
+                        .modalRow()
+                        .setComponents(
+                            util
+                                .input()
+                                .setCustomId("workshop_channels")
+                                .setLabel(
+                                    "How many Workshop channels? (Maximum 5)"
+                                )
+                                .setMinLength(1)
+                                .setMaxLength(1)
+                                .setPlaceholder("Provide a number")
+                                .setStyle("SHORT")
+                        )
+                );
+            }
+            default:
+                return util.unknownModal();
+        }
+    }
 }
