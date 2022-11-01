@@ -55,6 +55,10 @@ export default class Util {
     button = () => new MessageButton();
     dropdown = () => new MessageSelectMenu();
     modal = () => new Modal();
+    unknownModal = () =>
+        new Modal()
+            .setCustomId("unknown_modal")
+            .setTitle("Something went wrong, please try again");
     input = () => new TextInputComponent();
 
     durationMs = (dur: string) =>
