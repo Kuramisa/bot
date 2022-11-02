@@ -12,7 +12,7 @@ export class LogsACListener extends Listener {
 
     public async run(interaction: AutocompleteInteraction<"cached">) {
         if (!interaction.isAutocomplete()) return;
-        if (interaction.commandName !== "help") return;
+        if (interaction.commandName !== "logs") return;
 
         const { database, util } = this.container;
 
