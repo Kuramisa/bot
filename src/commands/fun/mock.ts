@@ -37,7 +37,7 @@ export class MockCommand extends Command {
 
         if (channel.isThread() || !guild.me?.permissions.has("MANAGE_WEBHOOKS"))
             return interaction.reply({
-                content: this.mockText(message.content)
+                content: `==${message.content}==`
             });
 
         await interaction.deferReply({ ephemeral: true });
@@ -47,7 +47,7 @@ export class MockCommand extends Command {
         });
 
         await webhook.send({
-            content: `${message.member} ${this.mockText(message.content)}`,
+            content: `${message.member} ==${message.content}==`,
             username: member.displayName,
             avatarURL: member.displayAvatarURL({ dynamic: true })
         });
@@ -56,14 +56,4 @@ export class MockCommand extends Command {
 
         return interaction.editReply({ content: `Mocked ${message.member}` });
     }
-
-    private mockText = (text: string) =>
-        text
-            .split("")
-            .map((word, index) =>
-                Number.isInteger(index / 2)
-                    ? word.toLowerCase()
-                    : word.toUpperCase()
-            )
-            .join("");
 }
