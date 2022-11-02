@@ -12,7 +12,6 @@ export class ShinobiACListener extends Listener {
 
     public async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
-
         if (interaction.commandName !== "sh") return;
 
         const { games } = this.container;
