@@ -46,7 +46,7 @@ export class NSFWFilterListener extends Listener {
         if (filter.error_code === 1001) return;
         if (filter.rating_letter !== "a") return;
 
-        message.delete().catch(console.error);
+        await message.delete().catch(console.error);
 
         if (
             channel.isThread() &&

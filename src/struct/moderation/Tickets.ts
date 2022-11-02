@@ -9,9 +9,11 @@ export default class Tickets {
     }
 
     async addButton(interaction: CommandInteraction<"cached">) {
+        const { database, util } = this.container;
+
         const { options, guild } = interaction;
 
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
@@ -44,7 +46,7 @@ export default class Tickets {
                 content: "Delete some buttons before adding a new one"
             });
 
-        const button = this.container.util
+        const button = util
             .button()
             .setCustomId(id)
             .setLabel(text)
@@ -55,9 +57,7 @@ export default class Tickets {
         try {
             const latestRow = message.components.at(-1) as any;
             if (!latestRow) {
-                const row = this.container.util
-                    .row()
-                    .addComponents(button) as any;
+                const row = util.row().addComponents(button) as any;
                 message.components.push(row);
 
                 await message.edit({ components: [row] });
@@ -68,16 +68,12 @@ export default class Tickets {
 
                 return interaction.editReply({
                     content: "First button added",
-                    components: [
-                        this.container.util.row().setComponents(button)
-                    ]
+                    components: [util.row().setComponents(button)]
                 });
             }
 
             if (latestRow.components.length === 5) {
-                const newRow = this.container.util
-                    .row()
-                    .addComponents(button) as any;
+                const newRow = util.row().addComponents(button) as any;
                 message.components.push(newRow);
             }
 
@@ -93,7 +89,7 @@ export default class Tickets {
 
             return interaction.editReply({
                 content: "New button added",
-                components: [this.container.util.row().setComponents(button)]
+                components: [util.row().setComponents(button)]
             });
         } catch (err: any) {
             if (err.message.includes("duplicated"))
@@ -108,10 +104,12 @@ export default class Tickets {
     }
 
     async removeButton(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { options, guild } = interaction;
 
         const id = options.getString("id", true);
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const channel = guild.channels.cache.get(
@@ -165,9 +163,11 @@ export default class Tickets {
     }
 
     async resetButtons(interaction: CommandInteraction<"cached">) {
+        const { database, util } = this.container;
+
         const { guild } = interaction;
 
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const channel = guild.channels.cache.get(
@@ -197,9 +197,11 @@ export default class Tickets {
     }
 
     async editDescription(interaction: CommandInteraction<"cached">) {
+        const { database, util } = this.container;
+
         const { options, guild } = interaction;
 
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         if (!db.tickets.category)
@@ -229,7 +231,7 @@ export default class Tickets {
                 ephemeral: true
             });
 
-        const embed = this.container.util.embed().setDescription(description);
+        const embed = util.embed().setDescription(description);
 
         await message.edit({ embeds: [embed] });
 
@@ -240,6 +242,8 @@ export default class Tickets {
     }
 
     async autoSetup(interaction: CommandInteraction<"cached">) {
+        const { database, util } = this.container;
+
         const { guild } = interaction;
 
         if (!guild.me?.permissions.has("MANAGE_CHANNELS"))
@@ -250,12 +254,10 @@ export default class Tickets {
 
         await interaction.deferReply({ ephemeral: true });
 
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
-        const setupEmbed = this.container.util
-            .embed()
-            .setTitle("Ticket System Auto Setup");
+        const setupEmbed = util.embed().setTitle("Ticket System Auto Setup");
 
         const category = await guild.channels.create("Ticket System", {
             type: "GUILD_CATEGORY",
@@ -339,7 +341,7 @@ export default class Tickets {
             (db.tickets.channels.openTicket = openTicket.id),
             (db.tickets.channels.transcripts = transcripts.id);
 
-        const embed = this.container.util
+        const embed = util
             .embed()
             .setDescription(
                 "Use </tickets description:1013962963989831685> to change this description\nUse </tickets buttons add:1013962963989831685> to add buttons\nUse </tickets buttons remove:1013962963989831685> to remove buttons"

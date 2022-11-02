@@ -44,6 +44,8 @@ export default class Warframe {
     }
 
     async orders(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const { options, user } = interaction;
 
         const item = options.getString("item", true);
@@ -82,12 +84,12 @@ export default class Warframe {
         let page = 0;
 
         const typeButtons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("orders_sellers")
                 .setLabel("Sellers")
                 .setStyle("PRIMARY"),
-            this.container.util
+            util
                 .button()
                 .setCustomId("orders_buyers")
                 .setLabel("Buyers")
@@ -95,13 +97,13 @@ export default class Warframe {
         ];
 
         const navButtons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("previous_order")
                 .setLabel("Order")
                 .setEmoji("⬅️")
                 .setStyle("SECONDARY"),
-            this.container.util
+            util
                 .button()
                 .setCustomId("next_order")
                 .setLabel("Order")
@@ -110,23 +112,21 @@ export default class Warframe {
         ];
 
         const bottomButtons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("create_paste")
                 .setLabel("Create Paste")
                 .setStyle("SUCCESS")
         ];
 
-        const typeRow = this.container.util.row().setComponents(typeButtons);
-        const navRow = this.container.util.row().setComponents(navButtons);
-        const bottomRow = this.container.util
-            .row()
-            .setComponents(bottomButtons);
+        const typeRow = util.row().setComponents(typeButtons);
+        const navRow = util.row().setComponents(navButtons);
+        const bottomRow = util.row().setComponents(bottomButtons);
 
         const sellerEmbeds = orders
             .filter((order) => order.order_type === "sell")
             .map((order, index) => {
-                const embed = this.container.util
+                const embed = util
                     .embed()
                     .setTitle(`Sell Orders for ${item}`)
                     .setDescription(
@@ -142,9 +142,7 @@ export default class Warframe {
                         value: `
                     \`In Game Name\`: ${order.user.ingame_name}
                     \`Reputation\`: ${order.user.reputation}
-                    \`Status\`: ${this.container.util.capFirstLetter(
-                        order.user.status
-                    )}
+                    \`Status\`: ${util.capFirstLetter(order.user.status)}
                     \`Last Seen\`*: <t:${moment(order.user.last_seen).unix()}:R>
                 `
                     })
@@ -158,7 +156,7 @@ export default class Warframe {
         const buyerEmbeds = orders
             .filter((order) => order.order_type === "buy")
             .map((order, index) => {
-                const embed = this.container.util
+                const embed = util
                     .embed()
                     .setTitle(`Buy Orders for ${item}`)
                     .setDescription(
@@ -174,9 +172,7 @@ export default class Warframe {
                         value: `
                     \`In Game Name\`: ${order.user.ingame_name}
                     \`Reputation\`: ${order.user.reputation}
-                    \`Status\`: ${this.container.util.capFirstLetter(
-                        order.user.status
-                    )}
+                    \`Status\`: ${util.capFirstLetter(order.user.status)}
                     \`Last Seen\`*: <t:${moment(order.user.last_seen).unix()}:R>
                 `
                     })

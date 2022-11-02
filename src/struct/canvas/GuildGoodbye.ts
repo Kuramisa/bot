@@ -17,9 +17,11 @@ export default class GuildGoodbye {
     }
 
     async banner(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         if (!guild.banner)
@@ -39,9 +41,11 @@ export default class GuildGoodbye {
     }
 
     async icon(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         if (!guild.icon)
@@ -61,9 +65,11 @@ export default class GuildGoodbye {
     }
 
     async color(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const color = options.getString("color");
@@ -101,9 +107,11 @@ export default class GuildGoodbye {
     }
 
     async image(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
@@ -155,9 +163,11 @@ export default class GuildGoodbye {
     }
 
     async imageURL(interaction: CommandInteraction<"cached">) {
+        const { database, util } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
@@ -190,7 +200,7 @@ export default class GuildGoodbye {
 
         await db.save();
 
-        const attachment = this.container.util.attachment(url);
+        const attachment = util.attachment(url);
 
         return interaction.editReply({
             content: "Set custom image URL as the background",
@@ -199,9 +209,11 @@ export default class GuildGoodbye {
     }
 
     async channel(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const channel = options.getChannel("text_channel", true);
@@ -217,9 +229,11 @@ export default class GuildGoodbye {
     }
 
     async toggle(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         db.goodbyeMessage.enabled = !db.goodbyeMessage.enabled;
@@ -235,6 +249,8 @@ export default class GuildGoodbye {
     }
 
     async card(member: GuildMember) {
+        const { database, util } = this.container;
+
         await member.user.fetch();
 
         const canvas = new CanvasM(1024, 450);
@@ -242,7 +258,7 @@ export default class GuildGoodbye {
 
         const guild = await member.guild.fetch();
 
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const settings = db.goodbyeMessage;
@@ -331,9 +347,7 @@ export default class GuildGoodbye {
         // Avatar
         ctx.beginPath();
         ctx.lineWidth = 10;
-        ctx.strokeStyle = this.container.util.member.statusColor(
-            member.presence as Presence
-        );
+        ctx.strokeStyle = util.member.statusColor(member.presence as Presence);
         ctx.arc(canvas.width - 525, 135, 64, 0, Math.PI * 2, true);
         ctx.stroke();
         ctx.closePath();
@@ -343,7 +357,7 @@ export default class GuildGoodbye {
         );
         ctx.drawImage(avatar, canvas.width - 590, 70, 128, 128);
 
-        const attachment = this.container.util.attachment(
+        const attachment = util.attachment(
             await canvas.toBuffer("png"),
             `farewell-${member.user.username}.png`
         );

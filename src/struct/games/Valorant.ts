@@ -29,29 +29,31 @@ export default class Valorant {
     }
 
     async login(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const { user } = interaction;
 
         const web = new this._web();
 
-        const loginModal = this.container.util
+        const loginModal = util
             .modal()
             .setCustomId("valorant-login-modal")
             .setTitle("Login to your Valorant Account")
             .setComponents(
-                this.container.util
+                util
                     .modalRow()
                     .setComponents(
-                        this.container.util
+                        util
                             .input()
                             .setCustomId("valorant-username")
                             .setLabel("Your Valorant Username")
                             .setStyle("SHORT")
                             .setRequired(true)
                     ),
-                this.container.util
+                util
                     .modalRow()
                     .setComponents(
-                        this.container.util
+                        util
                             .input()
                             .setCustomId("valorant-password")
                             .setLabel("Your Valorant Password")
@@ -72,15 +74,15 @@ export default class Valorant {
         await web.login(username, password).catch(console.error);
 
         if (web.isMultifactor) {
-            const row = this.container.util
+            const row = util
                 .row()
                 .setComponents(
-                    this.container.util
+                    util
                         .button()
                         .setCustomId("accept-mfa")
                         .setLabel("Accept MFA")
                         .setStyle("SUCCESS"),
-                    this.container.util
+                    util
                         .button()
                         .setCustomId("decline-mfa")
                         .setLabel("Decline MFA")
@@ -103,15 +105,15 @@ export default class Valorant {
 
             switch (acceptOrDecline.customId) {
                 case "accept-mfa": {
-                    const mfaModal = this.container.util
+                    const mfaModal = util
                         .modal()
                         .setCustomId("mfa-valorant-verify")
                         .setTitle("Enter your MFA Code")
                         .setComponents(
-                            this.container.util
+                            util
                                 .modalRow()
                                 .setComponents(
-                                    this.container.util
+                                    util
                                         .input()
                                         .setCustomId("mfa-code")
                                         .setLabel("MFA Code")
@@ -242,6 +244,8 @@ export default class Valorant {
     }
 
     async store(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const { options, member } = interaction;
 
         const account = this.accounts.get(member.id);
@@ -270,19 +274,19 @@ export default class Valorant {
 
         let page = 0;
         const buttons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
                 .setStyle("SECONDARY"),
-            this.container.util
+            util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
                 .setStyle("SECONDARY")
         ];
 
-        const row = this.container.util.row().addComponents(buttons);
+        const row = util.row().addComponents(buttons);
 
         let embeds: MessageEmbed[] = [];
 
@@ -292,7 +296,7 @@ export default class Valorant {
                     await Promise.all(
                         featured.Bundle.Items.map(
                             async (bundleItem: any, index: number) => {
-                                const embed = this.container.util.embed();
+                                const embed = util.embed();
 
                                 let item: any;
                                 switch (bundleItem.Item.ItemTypeID) {
@@ -362,7 +366,7 @@ export default class Valorant {
                 embeds = await Promise.all(
                     daily.SingleItemOffers.map(
                         async (offer: any, index: number) => {
-                            const embed = this.container.util.embed();
+                            const embed = util.embed();
 
                             const item = (
                                 await account.assets.Weapons.getSkinLevelByUuid(
@@ -436,12 +440,14 @@ export default class Valorant {
     }
 
     async loadout(interaction: CommandInteraction<"cached">) {
+        const { client, util } = this.container;
+
         const { options, member } = interaction;
 
         const playerGiven = options.getString("val_account");
 
         const user = playerGiven
-            ? this.container.client.users.cache.get(playerGiven)
+            ? client.users.cache.get(playerGiven)
             : interaction.user;
 
         if (!user)
@@ -474,35 +480,35 @@ export default class Valorant {
 
         let embeds: MessageEmbed[];
 
-        const pageRow = this.container.util
+        const pageRow = util
             .row()
             .setComponents(
-                this.container.util
+                util
                     .button()
                     .setCustomId("previous_page")
                     .setEmoji("⬅️")
                     .setStyle("SECONDARY"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("next_page")
                     .setEmoji("➡️")
                     .setStyle("SECONDARY")
             );
 
-        const menuRow = this.container.util
+        const menuRow = util
             .row()
             .setComponents(
-                this.container.util
+                util
                     .button()
                     .setCustomId("profile_page")
                     .setLabel("Profile")
                     .setStyle("SUCCESS"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("sprays_page")
                     .setLabel("Sprays")
                     .setStyle("PRIMARY"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("weapons_page")
                     .setLabel("Weapons")
@@ -517,7 +523,7 @@ export default class Valorant {
                     )
                 ).data.data;
 
-                const embed = this.container.util.embed();
+                const embed = util.embed();
 
                 if (!info) embed.setTitle("Could not fetch the weapon");
                 else
@@ -535,7 +541,7 @@ export default class Valorant {
                     await account.assets.Sprays.getByUuid(spray.SprayID)
                 ).data.data;
 
-                const embed = this.container.util.embed();
+                const embed = util.embed();
 
                 if (!info) embed.setTitle("Could not fetch the spray");
                 else
@@ -563,7 +569,7 @@ export default class Valorant {
             )
         ).data.data;
 
-        const profileEmbed = this.container.util
+        const profileEmbed = util
             .embed()
             .setTitle(`${title?.titleText}`)
             .setDescription(
@@ -637,13 +643,15 @@ export default class Valorant {
     }
 
     async mmr(interaction: CommandInteraction<"cached">) {
+        const { client, util } = this.container;
+
         const { options, member } = interaction;
 
         const playerGiven = options.getString("val_account");
         const actGiven = options.getString("act_rank");
 
         const user = playerGiven
-            ? this.container.client.users.cache.get(playerGiven)
+            ? client.users.cache.get(playerGiven)
             : interaction.user;
 
         if (!user)
@@ -670,7 +678,7 @@ export default class Valorant {
                 (season: any) => season.SeasonID === actId
             );
 
-            const embed = this.container.util.embed();
+            const embed = util.embed();
 
             if (!actData)
                 return embed.setDescription(
@@ -699,18 +707,18 @@ export default class Valorant {
                 .setFields(
                     {
                         name: "Season",
-                        value: `${this.container.util.capFirstLetter(
+                        value: `${util.capFirstLetter(
                             episode?.displayName
                                 .toString()
                                 .toLowerCase() as string
-                        )} - ${this.container.util.capFirstLetter(
+                        )} - ${util.capFirstLetter(
                             act?.displayName.toString().toLowerCase() as string
                         )}`,
                         inline: true
                     },
                     {
                         name: "Rank",
-                        value: `${this.container.util.capFirstLetter(
+                        value: `${util.capFirstLetter(
                             currentRank?.tierName
                                 .toString()
                                 .toLowerCase() as string
@@ -755,10 +763,10 @@ export default class Valorant {
                     )
                 ).data.data;
 
-                const actName = this.container.util.capFirstLetter(
+                const actName = util.capFirstLetter(
                     act?.displayName.toString().toLowerCase() as string
                 );
-                const epName = this.container.util.capFirstLetter(
+                const epName = util.capFirstLetter(
                     episode?.displayName.toString().toLowerCase() as string
                 );
 
@@ -769,8 +777,8 @@ export default class Valorant {
             })
         );
 
-        const row = this.container.util.row().setComponents(
-            this.container.util
+        const row = util.row().setComponents(
+            util
                 .dropdown()
                 .setCustomId("choose_act_rank")
                 .setPlaceholder("Choose an Act")

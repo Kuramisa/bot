@@ -12,7 +12,7 @@ export class DeleteEmptyChannelListener extends Listener {
 
     public async run(oldState: VoiceState) {
         if (!oldState.channel) return;
-        const { database, util } = this.container;
+        const { database } = this.container;
         const { guild, member, channel } = oldState;
         if (!member) return;
         if (!channel || !channel.parent) return;

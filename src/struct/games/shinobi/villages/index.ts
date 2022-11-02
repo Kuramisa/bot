@@ -30,24 +30,26 @@ export default class ShinobiVillages {
             .setFooter({ text: `Population: ${village.population}` });
 
     async pagination(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const villages = this.getAll();
 
         let page = 0;
 
         const buttons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
                 .setStyle("SECONDARY"),
-            this.container.util
+            util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
                 .setStyle("SECONDARY")
         ];
 
-        const row = this.container.util.row().addComponents(buttons);
+        const row = util.row().addComponents(buttons);
 
         const embeds = villages.map((village) => this.embed(village));
 

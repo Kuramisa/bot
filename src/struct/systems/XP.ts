@@ -12,7 +12,9 @@ export default class XP {
     calculateLevel = (xp: number) => Math.floor(0.1 * Math.sqrt(xp));
 
     async giveXP(user: User, amount = 1) {
-        const db = await this.container.database.users.get(user);
+        const { database } = this.container;
+
+        const db = await database.users.get(user);
         if (!db) return;
 
         db.xp += amount;
@@ -20,7 +22,9 @@ export default class XP {
     }
 
     async setLevel(user: User, level: number) {
-        const db = await this.container.database.users.get(user);
+        const { database } = this.container;
+
+        const db = await database.users.get(user);
         if (!db) return;
 
         db.level = level;
@@ -28,7 +32,9 @@ export default class XP {
     }
 
     async levelUp(user: User) {
-        const db = await this.container.database.users.get(user);
+        const { database } = this.container;
+
+        const db = await database.users.get(user);
         if (!db) return;
 
         db.level += 1;
@@ -36,14 +42,18 @@ export default class XP {
     }
 
     async getXP(user: User) {
-        const db = await this.container.database.users.get(user);
+        const { database } = this.container;
+
+        const db = await database.users.get(user);
         if (!db) return;
 
         return db.xp;
     }
 
     async getLevel(user: User) {
-        const db = await this.container.database.users.get(user);
+        const { database } = this.container;
+
+        const db = await database.users.get(user);
         if (!db) return;
 
         return db.level;

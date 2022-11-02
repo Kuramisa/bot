@@ -14,14 +14,16 @@ export default class MemberCanvas {
     }
 
     async card(user: User, type: CardType = "attachment") {
+        const { database, util } = this.container;
+
         await user.fetch();
 
         const canvas = new CanvasM(1024, 450);
         const ctx = canvas.getContext("2d");
 
-        const db = await this.container.database.users.get(user);
+        const db = await database.users.get(user);
         if (!db) return;
-        const data = await this.container.util.member.getCardData(db);
+        const data = await util.member.getCardData(db);
 
         ctx.filter = "blur(6px)";
         switch (data.card.background.type) {
@@ -131,10 +133,7 @@ export default class MemberCanvas {
 
         switch (type) {
             case "attachment":
-                return this.container.util.attachment(
-                    buffer,
-                    `rank-${user.username}.png`
-                );
+                return util.attachment(buffer, `rank-${user.username}.png`);
             case "buffer":
                 return buffer;
         }

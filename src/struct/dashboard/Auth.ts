@@ -1,4 +1,3 @@
-import Dashboard from ".";
 import { Container } from "@sapphire/pieces";
 
 import { Permissions, User } from "discord.js";
@@ -12,15 +11,13 @@ const { JWT_SECRET, SECRET } = process.env;
 
 export default class Auth {
     readonly container: Container;
-    private readonly server: Dashboard;
 
     private readonly jwt: any;
     private readonly oauth: DiscordOAuth2;
     private readonly secrets: { client: string; jwt: string };
 
-    constructor(container: Container, server: Dashboard) {
+    constructor(container: Container) {
         this.container = container;
-        this.server = server;
 
         this.jwt = jwt;
         this.oauth = new DiscordOAuth2();

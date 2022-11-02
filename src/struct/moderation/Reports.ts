@@ -21,10 +21,12 @@ export default class Reports {
         member: GuildMember,
         reason: string
     ) {
+        const { database, util } = this.container;
+
         const { guild, member: by } = interaction;
 
-        const dbUser = await this.container.database.users.get(member.user);
-        const dbGuild = await this.container.database.guilds.get(guild);
+        const dbUser = await database.users.get(member.user);
+        const dbGuild = await database.guilds.get(guild);
 
         if (!dbUser || !dbGuild) return;
 
@@ -41,7 +43,7 @@ export default class Reports {
             if (!channel || !channel.isText()) return;
             if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
 
-            const embed = this.container.util
+            const embed = util
                 .embed()
                 .setAuthor({
                     name: by.user.tag,
@@ -59,7 +61,7 @@ export default class Reports {
 
             if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
 
-            const embed = this.container.util
+            const embed = util
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
@@ -79,7 +81,9 @@ export default class Reports {
     }
 
     async get(member: GuildMember) {
-        const db = await this.container.database.users.get(member.user);
+        const { database } = this.container;
+
+        const db = await database.users.get(member.user);
         if (!db) return;
 
         return db.reports.filter(

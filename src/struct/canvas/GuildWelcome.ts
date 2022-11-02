@@ -17,9 +17,11 @@ export default class GuildWelcome {
     }
 
     async banner(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         if (!guild.banner)
@@ -39,9 +41,11 @@ export default class GuildWelcome {
     }
 
     async icon(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         if (!guild.icon)
@@ -61,9 +65,11 @@ export default class GuildWelcome {
     }
 
     async color(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const color = options.getString("color");
@@ -101,9 +107,11 @@ export default class GuildWelcome {
     }
 
     async image(interaction: CommandInteraction<"cached">) {
+        const { database, util } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
@@ -119,7 +127,7 @@ export default class GuildWelcome {
                         "You don't have any images uploaded as your background before"
                 });
 
-            const newAttachment = this.container.util.attachment(
+            const newAttachment = util.attachment(
                 db.welcomeMessage.card.image,
                 "current_image.png"
             );
@@ -140,9 +148,7 @@ export default class GuildWelcome {
                 content: "File has to be a static image"
             });
 
-        const imageBuffer = await this.container.util.imageToBuffer(
-            attachment.url
-        );
+        const imageBuffer = await util.imageToBuffer(attachment.url);
 
         db.welcomeMessage.card.image = imageBuffer;
 
@@ -155,9 +161,11 @@ export default class GuildWelcome {
     }
 
     async imageURL(interaction: CommandInteraction<"cached">) {
+        const { database, util } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
@@ -173,7 +181,7 @@ export default class GuildWelcome {
                         "You do not have any images saved to use as the background"
                 });
 
-            const newAttachment = this.container.util.attachment(
+            const newAttachment = util.attachment(
                 db.welcomeMessage.card.image,
                 "current_image.png"
             );
@@ -190,7 +198,7 @@ export default class GuildWelcome {
 
         await db.save();
 
-        const attachment = this.container.util.attachment(url);
+        const attachment = util.attachment(url);
 
         return interaction.editReply({
             content: "Set custom image URL as the background",
@@ -199,9 +207,11 @@ export default class GuildWelcome {
     }
 
     async channel(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild, options } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const channel = options.getChannel("text_channel", true);
@@ -217,9 +227,11 @@ export default class GuildWelcome {
     }
 
     async toggle(interaction: CommandInteraction<"cached">) {
+        const { database } = this.container;
+
         const { guild } = interaction;
         if (!guild) return;
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         db.welcomeMessage.enabled = !db.welcomeMessage.enabled;
@@ -235,6 +247,8 @@ export default class GuildWelcome {
     }
 
     async card(member: GuildMember) {
+        const { database, util } = this.container;
+
         await member.user.fetch();
 
         const canvas = new CanvasM(1024, 450);
@@ -242,7 +256,7 @@ export default class GuildWelcome {
 
         const guild = await member.guild.fetch();
 
-        const db = await this.container.database.guilds.get(guild);
+        const db = await database.guilds.get(guild);
         if (!db) return;
 
         const settings = db.welcomeMessage;
@@ -331,9 +345,7 @@ export default class GuildWelcome {
         // Avatar
         ctx.beginPath();
         ctx.lineWidth = 10;
-        ctx.strokeStyle = this.container.util.member.statusColor(
-            member.presence as Presence
-        );
+        ctx.strokeStyle = util.member.statusColor(member.presence as Presence);
         ctx.arc(canvas.width - 525, 135, 64, 0, Math.PI * 2, true);
         ctx.stroke();
         ctx.closePath();
@@ -343,7 +355,7 @@ export default class GuildWelcome {
         );
         ctx.drawImage(avatar, canvas.width - 590, 70, 128, 128);
 
-        const attachment = this.container.util.attachment(
+        const attachment = util.attachment(
             await canvas.toBuffer("png"),
             `welcome-${member.user.username}.png`
         );

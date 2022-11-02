@@ -24,13 +24,13 @@ export class PlaylistAddACListener extends Listener {
 
         let playlists = await database.playlists.getAll(user.id);
 
-        const focused = options.getFocused();
+        const focused = options.getFocused(true);
 
-        switch (options.getFocused(true).name) {
+        switch (focused.name) {
             case "playlist_name": {
-                if (focused.length > 0)
+                if (focused.value.length > 0)
                     playlists = playlists.filter((playlist) =>
-                        playlist.name.startsWith(focused)
+                        playlist.name.startsWith(focused.value)
                     );
 
                 return interaction.respond(
@@ -41,7 +41,7 @@ export class PlaylistAddACListener extends Listener {
                 );
             }
             case "query": {
-                const result = await music.search(focused, {
+                const result = await music.search(focused.value, {
                     requestedBy: interaction.user
                 });
 
@@ -79,7 +79,7 @@ export class PlaylistAddACListener extends Listener {
                 );
             }
             case "playlist_url": {
-                const result = await music.search(focused, {
+                const result = await music.search(focused.value, {
                     requestedBy: interaction.user
                 });
 

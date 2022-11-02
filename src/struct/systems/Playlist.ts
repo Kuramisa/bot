@@ -13,7 +13,8 @@ export default class Playlist {
     async play(interaction: CommandInteraction<"cached">) {
         const {
             database,
-            systems: { music }
+            systems: { music },
+            util
         } = this.container;
 
         const { options, guild, channel, member } = interaction;
@@ -75,6 +76,7 @@ export default class Playlist {
                 });
             }
         }
+        ("");
 
         const tracks = playlist.tracks.map(
             (track) => new Track(queue?.player as Player, track)
@@ -84,8 +86,7 @@ export default class Playlist {
 
         if (!queue.playing) await queue.play();
 
-        const embed = this.container.util.embed().setTitle(`Playlist ${name}`)
-            .setDescription(`
+        const embed = util.embed().setTitle(`Playlist ${name}`).setDescription(`
                 ${tracks
                     .map((track, index) => {
                         const duration = music.util.parseMS(
@@ -142,7 +143,8 @@ export default class Playlist {
     async import(interaction: CommandInteraction<"cached">) {
         const {
             database,
-            systems: { music }
+            systems: { music },
+            util
         } = this.container;
 
         const { options, member } = interaction;
@@ -190,9 +192,9 @@ export default class Playlist {
         return interaction.reply({
             content: `Imported \`${title} by ${author.name} - ${
                 tracks.length
-            } Tracks - ${this.container.util.capFirstLetter(
-                source
-            )} ${this.container.util.capFirstLetter(type)}\``,
+            } Tracks - ${util.capFirstLetter(source)} ${util.capFirstLetter(
+                type
+            )}\``,
             ephemeral: true
         });
     }
@@ -200,7 +202,8 @@ export default class Playlist {
     async importMultiple(interaction: CommandInteraction<"cached">) {
         const {
             database,
-            systems: { music }
+            systems: { music },
+            util
         } = this.container;
 
         const { options } = interaction;
@@ -211,10 +214,10 @@ export default class Playlist {
         const rows = [];
 
         for (let i = 1; i <= amount; i++) {
-            const row = this.container.util
+            const row = util
                 .modalRow()
                 .setComponents(
-                    this.container.util
+                    util
                         .input()
                         .setCustomId(`playlist_url_${i}`)
                         .setLabel(`Playlist #${i} URL`)
@@ -226,7 +229,7 @@ export default class Playlist {
             rows.push(row);
         }
 
-        const modal = this.container.util
+        const modal = util
             .modal()
             .setCustomId("import_multiple_playlists")
             .setTitle(`Importing ${amount} Playlists as ${name}`)
@@ -292,7 +295,7 @@ export default class Playlist {
     }
 
     async delete(interaction: CommandInteraction<"cached">) {
-        const { database } = this.container;
+        const { database, util } = this.container;
 
         const { options, member } = interaction;
 
@@ -308,15 +311,15 @@ export default class Playlist {
 
         const confirmText = `${member.user.username}/${playlist.name}`;
 
-        const modal = this.container.util
+        const modal = util
             .modal()
             .setCustomId("delete_playlist")
             .setTitle(`Deleting Playlist: ${name}`)
             .setComponents(
-                this.container.util
+                util
                     .modalRow()
                     .setComponents(
-                        this.container.util
+                        util
                             .input()
                             .setCustomId("confirm_playlist_name")
                             .setLabel("Confirm Playlist Name")
@@ -411,7 +414,8 @@ export default class Playlist {
     async addMultiple(interaction: CommandInteraction<"cached">) {
         const {
             database,
-            systems: { music }
+            systems: { music },
+            util
         } = this.container;
 
         const { options, member } = interaction;
@@ -445,9 +449,8 @@ export default class Playlist {
 
         await playlist.save();
 
-        const embed = this.container.util
-            .embed()
-            .setTitle("Added Tracks to the playlist").setDescription(`
+        const embed = util.embed().setTitle("Added Tracks to the playlist")
+            .setDescription(`
                         ${tracksChosen
                             .map(
                                 (track, index) =>

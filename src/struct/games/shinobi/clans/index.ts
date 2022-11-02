@@ -41,24 +41,26 @@ export default class ShinobiClans {
             .setFooter({ text: `Members: ${clan.members}` });
 
     async pagination(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const clans = this.getAll();
 
         let page = 0;
 
         const buttons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
                 .setStyle("SECONDARY"),
-            this.container.util
+            util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
                 .setStyle("SECONDARY")
         ];
 
-        const row = this.container.util.row().addComponents(buttons);
+        const row = util.row().addComponents(buttons);
 
         const embeds = clans.map((clan) => this.embed(clan));
 

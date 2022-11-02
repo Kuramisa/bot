@@ -34,20 +34,19 @@ export default class Music extends Player {
             | ContextMenuInteraction<"cached">,
         tracks: Track[]
     ) {
+        const { util } = this.container;
+
         const options = tracks
             .filter((_, i) => i <= 25)
             .map((track, i) => ({
-                label: this.container.util.shorten(
-                    `${track.title} - ${track.author}`,
-                    99
-                ),
+                label: util.shorten(`${track.title} - ${track.author}`, 99),
                 value: `${i}`
             }));
 
-        const row = this.container.util
+        const row = util
             .row()
             .setComponents(
-                this.container.util
+                util
                     .dropdown()
                     .setCustomId("queue_track_select")
                     .setPlaceholder("Which track to queue?")
@@ -79,20 +78,19 @@ export default class Music extends Player {
     }
 
     async selectTrackDM(user: User, tracks: Track[]) {
+        const { util } = this.container;
+
         const options = tracks
             .filter((_, i) => i <= 25)
             .map((track, i) => ({
-                label: this.container.util.shorten(
-                    `${track.title} - ${track.author}`,
-                    99
-                ),
+                label: util.shorten(`${track.title} - ${track.author}`, 99),
                 value: `${i}`
             }));
 
-        const row = this.container.util
+        const row = util
             .row()
             .setComponents(
-                this.container.util
+                util
                     .dropdown()
                     .setCustomId("queue_track_select")
                     .setPlaceholder("Which track to queue?")
@@ -121,40 +119,42 @@ export default class Music extends Player {
     }
 
     async startButtons(message: Message) {
-        const topRow = this.container.util
+        const { util } = this.container;
+
+        const topRow = util
             .row()
             .addComponents([
-                this.container.util
+                util
                     .button()
                     .setCustomId("add_tracks")
                     .setLabel("Add Track(s)")
                     .setStyle("PRIMARY"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("show_queue")
                     .setLabel("Current Queue")
                     .setStyle("PRIMARY"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("show_track_progress")
                     .setLabel("Track Progress")
                     .setStyle("PRIMARY")
             ]);
 
-        const midRow = this.container.util
+        const midRow = util
             .row()
             .addComponents([
-                this.container.util
+                util
                     .button()
                     .setCustomId("pause_track")
                     .setLabel("Pause")
                     .setStyle("DANGER"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("skip_current_track")
                     .setLabel("Skip Current")
                     .setStyle("DANGER"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("skip_to_track")
                     .setLabel("Skip to")

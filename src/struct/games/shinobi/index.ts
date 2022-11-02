@@ -33,6 +33,8 @@ export default class ShinobiGame {
     }
 
     async start(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const { user } = interaction;
 
         const player = await Shinobi.findOne({ memberId: user.id });
@@ -43,22 +45,22 @@ export default class ShinobiGame {
                 ephemeral: true
             });
 
-        const embed = this.container.util
+        const embed = util
             .embed()
             .setTitle("Rules of Shinobi Adventure")
             .setDescription(
                 "**DO NOT create multiple accounts to start multiple adventures** *we ask this because we want to make the game fair for all players* (more rules coming soon)"
             );
 
-        const row = this.container.util
+        const row = util
             .row()
             .setComponents([
-                this.container.util
+                util
                     .button()
                     .setCustomId("accept_game_rules")
                     .setLabel("Accept")
                     .setStyle("SUCCESS"),
-                this.container.util
+                util
                     .button()
                     .setCustomId("decline_game_rules")
                     .setLabel("Decline")
@@ -125,9 +127,11 @@ export default class ShinobiGame {
     }
 
     async delete(interaction: CommandInteraction<"cached">) {
+        const { owners } = this.container;
+
         const { options, user } = interaction;
 
-        if (!this.container.owners.includes(user.id))
+        if (!owners.includes(user.id))
             return interaction.reply({
                 content: "You cannot use this command",
                 ephemeral: true
@@ -221,6 +225,8 @@ export default class ShinobiGame {
     }
 
     async fight(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const { options, member } = interaction;
 
         const player1 = this.players.get(member.id);
@@ -229,7 +235,7 @@ export default class ShinobiGame {
         if (!player1) return;
         if (!player2) return;
 
-        const embed = this.container.util
+        const embed = util
             .embed()
             .setTitle(`${player1.name} is fighting ${player2.name}`);
 

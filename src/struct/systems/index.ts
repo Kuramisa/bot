@@ -20,7 +20,7 @@ export default class Systems {
     constructor(container: Container) {
         this.container = container;
 
-        this.crypt = new Crypt(this.container);
+        this.crypt = new Crypt();
         this.marriage = new Marriage(this.container);
         this.music = new Music(this.container);
         this.patreon = new Patreon(this.container);

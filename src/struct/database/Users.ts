@@ -11,7 +11,7 @@ export default class DatabaseUsers {
     }
 
     async create(user: DiscordUser) {
-        const {logger } = this.container;
+        const { logger } = this.container;
 
         if (user.bot) return;
 

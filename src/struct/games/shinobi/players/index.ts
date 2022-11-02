@@ -19,9 +19,11 @@ export default class ShinobiPlayers {
     }
 
     async init() {
+        const { client } = this.container;
+
         const players = await Shinobi.find();
         players.forEach((player) => {
-            if (!this.container.client.users.cache.get(player.memberId)) return;
+            if (!client.users.cache.get(player.memberId)) return;
             this.set(player.memberId, new ShinobiPlayer(this.game, player));
         });
     }
@@ -48,13 +50,15 @@ export default class ShinobiPlayers {
     }
 
     embed(player: ShinobiPlayer) {
+        const { client, util } = this.container;
+
         const clan = player.clan;
         const village = player.village;
-        const user = this.container.client.users.cache.get(player.id);
+        const user = client.users.cache.get(player.id);
 
         if (!clan || !village || !user) return;
 
-        return this.container.util
+        return util
             .embed()
             .setTitle(`${user.username}'s Shinobi Info`)
             .setDescription(
@@ -62,7 +66,7 @@ export default class ShinobiPlayers {
                 \`Born in\` ${village.name.en} (${village.name.jp})
                 \`Clan\` ${clan.name}
 
-                \`Rank\`: ${this.container.util.capFirstLetter(player.rank)}
+                \`Rank\`: ${util.capFirstLetter(player.rank)}
                 \`Ryo\`: ${player.currencies.ryo}
 
                 **Stats**
@@ -79,24 +83,26 @@ export default class ShinobiPlayers {
     }
 
     async pagination(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const players = this.getAll();
 
         let page = 0;
 
         const buttons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
                 .setStyle("SECONDARY"),
-            this.container.util
+            util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
                 .setStyle("SECONDARY")
         ];
 
-        const row = this.container.util.row().addComponents(buttons);
+        const row = util.row().addComponents(buttons);
 
         const embeds = players.map((player) =>
             this.embed(player)

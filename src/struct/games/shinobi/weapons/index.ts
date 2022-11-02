@@ -112,24 +112,26 @@ export default class ShinobiWeapons {
     }
 
     async pagination(interaction: CommandInteraction<"cached">) {
+        const { util } = this.container;
+
         const weapons = this.getAll();
 
         let page = 0;
 
         const buttons = [
-            this.container.util
+            util
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
                 .setStyle("SECONDARY"),
-            this.container.util
+            util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
                 .setStyle("SECONDARY")
         ];
 
-        const row = this.container.util.row().addComponents(buttons);
+        const row = util.row().addComponents(buttons);
 
         const embeds = weapons.map((weapon) => this.embed(weapon));
 

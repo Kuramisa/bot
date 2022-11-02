@@ -106,6 +106,7 @@ export default class Canvas {
                 break;
             }
         }
+
         return num;
     }
 

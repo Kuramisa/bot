@@ -61,7 +61,7 @@ export default class Dashboard extends ApolloServer {
 
         this.container = container;
 
-        this.auth = new Auth(this.container, this);
+        this.auth = new Auth(this.container);
     }
 
     async init() {

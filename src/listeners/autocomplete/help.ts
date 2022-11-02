@@ -14,11 +14,13 @@ export class HelpACListener extends Listener {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "help") return;
 
+        const { stores } = this.container;
+
         const { options } = interaction;
 
         const focused = options.getFocused();
 
-        const commands = this.container.stores.get("commands");
+        const commands = stores.get("commands");
 
         switch (options.getSubcommand()) {
             case "category": {
