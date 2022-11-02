@@ -37,7 +37,7 @@ export class LogsCommand extends Subcommand {
                             option
                                 .setName("toggle")
                                 .setDescription("Log Setting")
-                                .setRequired(true)
+                                .setRequired(false)
                                 .setAutocomplete(true)
                         )
                 )
@@ -85,25 +85,108 @@ export class LogsCommand extends Subcommand {
                 });
             }
             case "toggles": {
-                const toggle = options.getString("toggle", true);
+                const toggle = options.getString("toggle");
 
-                const oldValue = db.logs[toggle as keyof typeof db.logs]
-                    ? "On"
-                    : "Off";
+                if (toggle) {
+                    const toggleName = util.capFirstLetter(
+                        toggle.split(/(?=[A-Z])/).join(" ")
+                    );
 
-                db.logs.types[toggle as keyof typeof db.logs.types] =
-                    !db.logs.types[toggle as keyof typeof db.logs.types];
+                    db.logs.types[toggle as keyof typeof db.logs.types] =
+                        !db.logs.types[toggle as keyof typeof db.logs.types];
+
+                    await db.save();
+
+                    const newValue = db.logs.types[
+                        toggle as keyof typeof db.logs.types
+                    ]
+                        ? "Enabled"
+                        : "Disabled";
+
+                    return interaction.reply({
+                        content: `\`${toggleName}\` - **${newValue}**`,
+                        ephemeral: true
+                    });
+                }
+
+                const toggles = Object.keys(db.logs.types)
+                    .map((toggle) => toggle.split(/(?=[A-Z])/).join(" "))
+                    .map((toggle) => {
+                        const currentStatus = db.logs.types[
+                            toggle
+                                .split(" ")
+                                .join("") as keyof typeof db.logs.types
+                        ]
+                            ? "Enabled"
+                            : "Disabled";
+
+                        return {
+                            label: `${util.capFirstLetter(
+                                toggle
+                            )} - ${currentStatus}`,
+                            value: toggle.split(" ").join("")
+                        };
+                    });
+
+                const row = util
+                    .row()
+                    .setComponents(
+                        util
+                            .dropdown()
+                            .setCustomId("choose_toggles")
+                            .setOptions(toggles)
+                            .setPlaceholder("Event - Current Status")
+                            .setMinValues(1)
+                            .setMaxValues(toggles.length)
+                    );
+
+                const message = await interaction.reply({
+                    content: "⬇ Choose Toggles From Below ⬇",
+                    components: [row],
+                    fetchReply: true
+                });
+
+                const sInteraction = await message.awaitMessageComponent({
+                    componentType: "SELECT_MENU",
+                    filter: (i) =>
+                        i.customId === "choose_toggles" &&
+                        i.user.id === interaction.user.id
+                });
+
+                const chosenToggles = sInteraction.values;
+                const messages = [];
+                await message.delete();
+                await sInteraction.deferReply({ ephemeral: true });
+                for (let i = 0; i < chosenToggles.length; i++) {
+                    const chosenToggle = chosenToggles[i];
+
+                    const toggleName = util.capFirstLetter(
+                        chosenToggle.split(/(?=[A-Z])/).join(" ")
+                    );
+
+                    db.logs.types[chosenToggle as keyof typeof db.logs.types] =
+                        !db.logs.types[
+                            chosenToggle as keyof typeof db.logs.types
+                        ];
+
+                    const newValue = db.logs.types[
+                        chosenToggle as keyof typeof db.logs.types
+                    ]
+                        ? "Enabled"
+                        : "Disabled";
+
+                    messages.push(`\`${toggleName}\` - **${newValue}**`);
+                }
 
                 await db.save();
 
-                return interaction.reply({
-                    content: `Old Value: **${oldValue}** - New Value: **${
-                        db.logs.types[toggle as keyof typeof db.logs.types]
-                            ? "On"
-                            : "Off"
-                    }**`,
-                    ephemeral: true
-                });
+                const embed = util
+                    .embed()
+                    .setTitle("Toggled Logs")
+                    .setDescription(messages.join("\n"));
+
+                await sInteraction.editReply({ embeds: [embed] });
+                break;
             }
             case "status": {
                 const channel = guild.channels.cache.get(db.logs.channel);
