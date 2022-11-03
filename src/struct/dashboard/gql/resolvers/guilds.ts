@@ -1,6 +1,6 @@
 import { Container } from "@sapphire/pieces";
 import Dashboard from "@struct/dashboard";
-import { UserInputError } from "apollo-server-core";
+import { GraphQLError } from "graphql";
 import { Request } from "express";
 
 export default {
@@ -16,7 +16,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
 
                 const iconURL = guild.icon
                     ? util.cdn.icon(guild.id, guild.icon, {
@@ -151,12 +151,11 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
 
                 const member = guild.members.cache.get(memberId);
-                if (!member) throw new UserInputError("Member not found");
-                if (member.user.bot)
-                    throw new UserInputError("Member is a bot");
+                if (!member) throw new GraphQLError("Member not found");
+                if (member.user.bot) throw new GraphQLError("Member is a bot");
 
                 const avatarURL = member.user.avatar
                     ? util.cdn.avatar(member.id, member.user.avatar)
@@ -185,7 +184,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
 
                 const members = await Promise.all(
                     (
@@ -226,11 +225,11 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 const role =
                     guild.roles.cache.get(roleId) ||
                     guild.roles.cache.find((role) => role.name === roleId);
-                if (!role) throw new UserInputError("Role not found");
+                if (!role) throw new GraphQLError("Role not found");
                 return role.toJSON();
             } catch (err) {
                 console.error(err);
@@ -244,7 +243,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 return guild.roles.cache.toJSON();
             } catch (err) {
                 console.error(err);
@@ -259,11 +258,11 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 const emoji =
                     guild.emojis.cache.get(emojiId) ||
                     guild.emojis.cache.find((emoji) => emoji.name === emojiId);
-                if (!emoji) throw new UserInputError("Emoji not found");
+                if (!emoji) throw new GraphQLError("Emoji not found");
                 return emoji.toJSON();
             } catch (err) {
                 console.error(err);
@@ -277,7 +276,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 return guild.emojis.cache.toJSON();
             } catch (err) {
                 console.error(err);

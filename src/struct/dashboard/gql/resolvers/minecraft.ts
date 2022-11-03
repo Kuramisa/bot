@@ -1,6 +1,6 @@
 import { Container } from "@sapphire/pieces";
 import Minecraft from "@schemas/Minecraft";
-import { UserInputError } from "apollo-server-core";
+import { GraphQLError } from "graphql";
 
 export default {
     Query: {
@@ -20,12 +20,12 @@ export default {
         ) => {
             const db = await Minecraft.findOne({ ip });
             if (!db)
-                throw new UserInputError("This minecraft server is not linked");
+                throw new GraphQLError("This minecraft server is not linked");
 
             if (!db.logs.chat) return;
 
             if (!db.logs.channel && db.logs.channel.length < 1)
-                throw new UserInputError("Minecraft Logs channel is not setup");
+                throw new GraphQLError("Minecraft Logs channel is not setup");
 
             const guild = client.guilds.cache.get(db.guildId);
             if (!guild) throw new Error("Guild not found");
@@ -45,10 +45,10 @@ export default {
             { container: { client } }: { container: Container }
         ) => {
             const db = await Minecraft.findOne({ code });
-            if (!db) throw new UserInputError("Invalid Code");
+            if (!db) throw new GraphQLError("Invalid Code");
 
             const guild = client.guilds.cache.get(db.guildId);
-            if (!guild) throw new UserInputError("Guild not found");
+            if (!guild) throw new GraphQLError("Guild not found");
 
             if (db.ip && db.ip.length > 0)
                 throw new Error(
@@ -89,10 +89,10 @@ export default {
                 (user) => user.minecraft.code === code
             );
 
-            if (!db) throw new UserInputError("Invalid Code");
+            if (!db) throw new GraphQLError("Invalid Code");
 
             const user = client.users.cache.get(db.id);
-            if (!user) throw new UserInputError("User not found");
+            if (!user) throw new GraphQLError("User not found");
 
             if (db.minecraft.username && db.minecraft.username.length > 0)
                 throw new Error(`This Minecraft already linked to ${user.tag}`);
@@ -171,12 +171,12 @@ export default {
             );
 
             if (!db)
-                throw new UserInputError(
+                throw new GraphQLError(
                     "You do not have any Discord account linked to your Minecraft account"
                 );
 
             const user = client.users.cache.get(db.id);
-            if (!user) throw new UserInputError("User not found");
+            if (!user) throw new GraphQLError("User not found");
 
             const dbUsername = db.minecraft.username;
 

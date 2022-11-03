@@ -1,7 +1,6 @@
 import { Container } from "@sapphire/pieces";
 import Dashboard from "@struct/dashboard";
-import { UserInputError } from "apollo-server-core";
-import { AuthenticationError } from "apollo-server-express";
+import { GraphQLError } from "graphql";
 import { Request } from "express";
 
 export default {
@@ -13,8 +12,8 @@ export default {
         ) => {
             try {
                 const user = client.users.cache.get(userId);
-                if (!user) throw new UserInputError("User not found");
-                if (user.bot) throw new UserInputError("User is a bot");
+                if (!user) throw new GraphQLError("User not found");
+                if (user.bot) throw new GraphQLError("User is a bot");
 
                 const avatarURL = user.avatar
                     ? util.cdn.avatar(user.id, user.avatar)
@@ -40,8 +39,8 @@ export default {
         ) => {
             try {
                 const user = client.users.cache.get(userId);
-                if (!user) throw new UserInputError("User not found");
-                if (user.bot) throw new UserInputError("User is a bot");
+                if (!user) throw new GraphQLError("User not found");
+                if (user.bot) throw new GraphQLError("User is a bot");
 
                 const image = await canvas.member.card(user, "buffer");
 

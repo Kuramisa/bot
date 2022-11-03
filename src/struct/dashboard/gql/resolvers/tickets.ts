@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container } from "@sapphire/pieces";
-import { UserInputError } from "apollo-server-core";
+import { GraphQLError } from "graphql";
 
 export default {
     Query: {
@@ -11,7 +11,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
 
                 const tickets = (await database.tickets.getAll())
                     .filter((ticket) => ticket.guildId === guild.id)
@@ -34,7 +34,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
 
                 const tckt = (await database.tickets.getAll()).find(
                     (ticket) =>
@@ -42,7 +42,7 @@ export default {
                         ticket.ticketId === ticketId
                 );
 
-                if (!tckt) throw new UserInputError("Ticket not found");
+                if (!tckt) throw new GraphQLError("Ticket not found");
 
                 const { transcript, ...ticket } = tckt._doc;
 
@@ -59,7 +59,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
 
                 const tickets = (await database.tickets.getAll())
                     .filter(
@@ -86,7 +86,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
 
                 const tckt = (await database.tickets.getAll()).find(
                     (ticket) =>
@@ -94,7 +94,7 @@ export default {
                         ticket.ticketId === ticketId
                 );
 
-                if (!tckt) throw new UserInputError("Ticket not found");
+                if (!tckt) throw new GraphQLError("Ticket not found");
 
                 return tckt.transcript;
             } catch (err) {

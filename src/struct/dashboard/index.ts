@@ -1,17 +1,14 @@
-import { ApolloServer } from "apollo-server-express";
-import {
-    ApolloServerPluginDrainHttpServer,
-    ApolloServerPluginLandingPageLocalDefault
-} from "apollo-server-core";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { WebSocketServer } from "ws";
-import { useServer } from "graphql-ws/lib/use/ws";
-import { PubSub } from "graphql-subscriptions";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
 import { Container } from "@sapphire/pieces";
 
 import express from "express";
 import http from "http";
+import cors from "cors";
+import bodyParser from "body-parser";
+
 import Auth from "./Auth";
 
 import resolvers from "./gql/resolvers";
@@ -19,15 +16,6 @@ import typeDefs from "./gql/typeDefs";
 
 const app = express();
 const httpServer = http.createServer(app);
-const schema = makeExecutableSchema({ typeDefs, resolvers });
-const wsServer = new WebSocketServer({
-    server: httpServer,
-    path: "/subscriptions"
-});
-
-const pubsub = new PubSub();
-
-const serverCleanup = useServer({ schema }, wsServer);
 
 export default class Dashboard extends ApolloServer {
     private readonly container: Container;
@@ -35,28 +23,10 @@ export default class Dashboard extends ApolloServer {
 
     constructor(container: Container) {
         super({
-            schema,
+            resolvers,
+            typeDefs,
             csrfPrevention: true,
-            cache: "bounded",
-            plugins: [
-                ApolloServerPluginDrainHttpServer({ httpServer }),
-                {
-                    async serverWillStart() {
-                        return {
-                            async drainServer() {
-                                await serverCleanup.dispose();
-                            }
-                        };
-                    }
-                },
-                ApolloServerPluginLandingPageLocalDefault({ embed: true })
-            ],
-            context: ({ req }) => ({
-                container,
-                server: this,
-                req,
-                pubsub
-            })
+            plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
         });
 
         this.container = container;
@@ -66,12 +36,26 @@ export default class Dashboard extends ApolloServer {
 
     async init() {
         await this.start();
-        this.applyMiddleware({ app, path: "/" });
+
+        app.use(
+            "/",
+            cors<cors.CorsRequest>(),
+            bodyParser.json(),
+            expressMiddleware(this, {
+                context: async ({ req }) => ({
+                    req,
+                    container: this.container,
+                    server: this
+                })
+            })
+        );
 
         await new Promise<void>((resolve) =>
             httpServer.listen({ port: process.env.PORT || 4000 }, resolve)
         );
 
-        this.container.logger.info(`Server ready at port: ${this.graphqlPath}`);
+        this.container.logger.info(
+            `Server ready at port: ${process.env.PORT || 4000}`
+        );
     }
 }

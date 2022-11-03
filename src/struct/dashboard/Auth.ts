@@ -3,7 +3,7 @@ import { Container } from "@sapphire/pieces";
 import { Permissions, User } from "discord.js";
 
 import jwt from "jsonwebtoken";
-import { AuthenticationError } from "apollo-server-express";
+import { GraphQLError } from "graphql";
 import DiscordOAuth2 from "discord-oauth2";
 import { Request } from "express";
 
@@ -25,13 +25,13 @@ export default class Auth {
     }
 
     async getUser(auth: any) {
-        if (!auth) throw new AuthenticationError("User not logged in");
+        if (!auth) throw new GraphQLError("User not logged in");
 
         return await this.oauth.getUser(auth.token.access_token);
     }
 
     async getUserGuilds(auth: string, db?: boolean) {
-        if (!auth) throw new AuthenticationError("User not logged in");
+        if (!auth) throw new GraphQLError("User not logged in");
 
         const {
             client,
@@ -99,7 +99,7 @@ export default class Auth {
             return user;
         } catch (err) {
             console.error(err);
-            throw new AuthenticationError(
+            throw new GraphQLError(
                 "Session timed out, please refresh the page and login again"
             );
         }
@@ -155,15 +155,12 @@ export default class Auth {
             );
         } catch (err) {
             console.error(err);
-            throw new AuthenticationError(
-                "Authentication failed, please try again"
-            );
+            throw new GraphQLError("Authentication failed, please try again");
         }
     }
 
     async authUser(auth: string) {
-        if (!auth)
-            throw new AuthenticationError("Authentication data not provided");
+        if (!auth) throw new GraphQLError("Authentication data not provided");
 
         const {
             client,
@@ -207,9 +204,7 @@ export default class Auth {
             return info;
         } catch (err) {
             console.error(err);
-            throw new AuthenticationError(
-                "Authentication failed, please try again"
-            );
+            throw new GraphQLError("Authentication failed, please try again");
         }
     }
 }

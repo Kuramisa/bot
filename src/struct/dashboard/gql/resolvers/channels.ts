@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { UserInputError } from "apollo-server-core";
+import { GraphQLError } from "graphql";
 
 export default {
     Query: {
@@ -10,9 +10,9 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 const channel = guild.channels.cache.get(channelId);
-                if (!channel) throw new UserInputError("Channel not found");
+                if (!channel) throw new GraphQLError("Channel not found");
                 return channel.toJSON();
             } catch (err) {
                 console.error(err);
@@ -26,7 +26,7 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 return guild.channels.cache.toJSON();
             } catch (err) {
                 console.error(err);
@@ -45,16 +45,16 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 const channel = guild.channels.cache.get(channelId);
-                if (!channel) throw new UserInputError("Channel not found");
+                if (!channel) throw new GraphQLError("Channel not found");
                 if (!channel.isText())
-                    throw new UserInputError(
+                    throw new GraphQLError(
                         "Channel provided is not text based"
                     );
                 const messages = await channel.messages.fetch();
                 const message = messages.get(messageId);
-                if (!message) throw new UserInputError("Message not found");
+                if (!message) throw new GraphQLError("Message not found");
                 return message.toJSON();
             } catch (err) {
                 console.error(err);
@@ -68,11 +68,11 @@ export default {
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
-                if (!guild) throw new UserInputError("Guild not found");
+                if (!guild) throw new GraphQLError("Guild not found");
                 const channel = guild.channels.cache.get(channelId);
-                if (!channel) throw new UserInputError("Channel not found");
+                if (!channel) throw new GraphQLError("Channel not found");
                 if (!channel.isText())
-                    throw new UserInputError(
+                    throw new GraphQLError(
                         "Channel provided is not text based"
                     );
                 const messages = await channel.messages.fetch();
