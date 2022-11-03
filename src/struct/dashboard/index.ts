@@ -6,6 +6,7 @@ import { Container } from "@sapphire/pieces";
 
 import express from "express";
 import http from "http";
+import https from "https";
 import cors from "cors";
 import bodyParser from "body-parser";
 
@@ -15,7 +16,17 @@ import resolvers from "./gql/resolvers";
 import typeDefs from "./gql/typeDefs";
 
 const app = express();
-const httpServer = http.createServer(app);
+
+const configurations = {
+    production: { ssl: true, port: 4000, hostname: "api.kuramisa.com" },
+    development: { ssl: false, port: 4000, hostname: "localhost" }
+};
+
+const environment = process.env.NODE_ENV || "production";
+const config = configurations[environment as keyof typeof configurations];
+
+let httpServer = http.createServer(app);
+if (config.ssl) httpServer = https.createServer(app);
 
 export default class Dashboard extends ApolloServer {
     private readonly container: Container;
@@ -51,11 +62,13 @@ export default class Dashboard extends ApolloServer {
         );
 
         await new Promise<void>((resolve) =>
-            httpServer.listen({ port: process.env.PORT || 4000 }, resolve)
+            httpServer.listen({ port: config.port }, resolve)
         );
 
         this.container.logger.info(
-            `Server ready at port: ${process.env.PORT || 4000}`
+            `Server ready at port: http${config.ssl ? "s" : ""}://${
+                config.hostname
+            }:${config.port}`
         );
     }
 }
