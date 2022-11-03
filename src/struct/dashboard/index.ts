@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { ApolloServerPluginUsageReporting } from "@apollo/server/plugin/usageReporting";
 
 import { Container } from "@sapphire/pieces";
 
@@ -37,7 +38,28 @@ export default class Dashboard extends ApolloServer {
             resolvers,
             typeDefs,
             csrfPrevention: true,
-            plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+            plugins: [
+                ApolloServerPluginDrainHttpServer({ httpServer }),
+                ApolloServerPluginUsageReporting({
+                    generateClientInfo: ({ request }) => {
+                        const headers = request.http && request.http.headers;
+                        if (headers) {
+                            return {
+                                clientName: headers.get(
+                                    "apollographql-client-name"
+                                ),
+                                clientVersion: headers.get(
+                                    "apollographql-client-version"
+                                )
+                            };
+                        }
+                        return {
+                            clientName: "Unknown Client",
+                            clientVersion: "Unversioned"
+                        };
+                    }
+                })
+            ]
         });
 
         this.container = container;
