@@ -159,9 +159,9 @@ export default class Valorant {
                 ephemeral: true
             });
 
-        const puuid = web.getSubject(web.toJSON().access_token);
-
         const playerInfo = (await web.Player.getUserInfo()).data;
+        const puuid = playerInfo.sub;
+
         const rankInfo = (await web.MMR.fetchPlayer(puuid)).data;
 
         this.accounts.set(user.id, {
@@ -665,6 +665,12 @@ export default class Valorant {
         if (!account)
             return interaction.reply({
                 content: "User not logged in",
+                ephemeral: true
+            });
+
+        if (account.rank.httpStatus === 404)
+            return interaction.reply({
+                content: "Could not fetch rank",
                 ephemeral: true
             });
 
