@@ -1,6 +1,6 @@
 {
     "ignore": ["node_modules"],
     "watch": ["src"],
-    "exec": "yarn dev",
+    "exec": "node ./build/index.js",
     "ext": "ts"
 }
