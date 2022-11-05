@@ -10,7 +10,9 @@ export class MessageEditedLogListener extends Listener {
         });
     }
 
-    public async run(oldMessage: Message<true>, newMessage: Message<true>) {
+    public async run(oldMessage: Message, newMessage: Message) {
+        if (!newMessage.inGuild()) return;
+        if (!oldMessage.author || !newMessage.author) return;
         if (newMessage.author.bot) return;
         if (oldMessage.content === newMessage.content) return;
 
