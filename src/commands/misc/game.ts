@@ -246,6 +246,7 @@ export class GameCommand extends Command {
                         }
                     );
 
+                    db.games.settings[forObj].jtc.enabled = true;
                     db.games.settings[forObj].jtc.channel = jtcChannel.id;
 
                     embed.setDescription(
