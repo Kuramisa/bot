@@ -1,12 +1,15 @@
 {
   "name": "kuramisa",
   "version": "Alpha 5.1",
-  "main": "build/index.js",
+  "main": "./build/index.js",
   "scripts": {
-    "build": "rimraf ./build && ttsc -P ./tsconfig.json",
+    "build": "rimraf ./build && tsc",
     "start": "node ./build/index.js",
-    "dev": "yarn build && node .",
-    "watch": "ttsc -P ./tsconfig.json --watch"
+    "watch": "tsc-watch"
+  },
+  "imports": {
+    "#struct/*": "./build/struct/*.js",
+    "#schemas/*": "./build/schemas/*.js"
   },
   "author": "S&B",
   "license": "MIT",

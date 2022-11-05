@@ -1,6 +1,6 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import { Message } from "discord.js";
-import Minecraft from "@schemas/Minecraft";
+import Minecraft from "#schemas/Minecraft";
 
 export class MinecraftCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {

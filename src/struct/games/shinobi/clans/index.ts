@@ -4,7 +4,7 @@ import { Collection, CommandInteraction } from "discord.js";
 import { ShinobiClan } from "@types";
 
 import Clans from "./Clans";
-import Shinobi from "@schemas/Shinobi";
+import Shinobi from "#schemas/Shinobi";
 
 export default class ShinobiClans {
     private readonly container: Container;

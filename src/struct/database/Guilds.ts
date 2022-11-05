@@ -1,7 +1,7 @@
 import { Container } from "@sapphire/pieces";
 import { Guild as DiscordGuild } from "discord.js";
 
-import Guild from "@schemas/Guild";
+import Guild from "#schemas/Guild";
 
 export default class DatabaseGuilds {
     private readonly container: Container;

@@ -4,7 +4,7 @@ import { Naruto } from "anime-info";
 import ms from "ms";
 import moment from "moment";
 
-import Shinobi from "@schemas/Shinobi";
+import Shinobi from "#schemas/Shinobi";
 
 import ShinobiClans from "./clans";
 import ShinobiPlayers from "./players";

@@ -4,9 +4,9 @@ import { Collection, Guild } from "discord.js";
 import mc from "minecraft_head";
 import crafatar from "crafatar";
 
-import { DUser } from "@schemas/User";
+import { DUser } from "#schemas/User";
 
-import Mc from "@schemas/Minecraft";
+import Mc from "#schemas/Minecraft";
 
 export default class Minecraft {
     private readonly container: Container;

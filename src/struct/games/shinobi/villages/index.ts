@@ -2,7 +2,7 @@ import ShinobiGame from "..";
 import { Collection, CommandInteraction } from "discord.js";
 import { ShinobiVillage } from "@types";
 import Villages from "./Villages";
-import Shinobi from "@schemas/Shinobi";
+import Shinobi from "#schemas/Shinobi";
 import { Container } from "@sapphire/pieces";
 
 export default class ShinobiVillages {

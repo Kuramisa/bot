@@ -1,7 +1,7 @@
 import { Container } from "@sapphire/pieces";
 import { User as DiscordUser } from "discord.js";
 
-import User from "@schemas/User";
+import User from "#schemas/User";
 
 export default class DatabaseUsers {
     private readonly container: Container;

@@ -4,7 +4,7 @@ import ShinobiGame from "../";
 import Weapons from "./Weapons";
 import { ShinobiWeapon } from "@types";
 
-import Shinobi from "@schemas/Shinobi";
+import Shinobi from "#schemas/Shinobi";
 
 export default class ShinobiWeapons {
     private readonly container: Container;

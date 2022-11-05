@@ -1,4 +1,4 @@
-import Playlist from "@schemas/Playlist";
+import Playlist from "#schemas/Playlist";
 import { GuildMember } from "discord.js";
 
 export default class DatabasePlaylists {

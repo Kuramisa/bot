@@ -1,4 +1,4 @@
-import Shinobi, { IShinobi } from "@schemas/Shinobi";
+import Shinobi, { IShinobi } from "#schemas/Shinobi";
 
 import {
     ShinobiStats,

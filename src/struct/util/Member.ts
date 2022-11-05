@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { IUser } from "@schemas/User";
+import { IUser } from "#schemas/User";
 import {
     Presence,
     GuildMember,

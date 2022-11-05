@@ -15,13 +15,8 @@
         "declaration": true,
         "experimentalDecorators": true,
         "paths": {
-            "@struct/*": ["./struct/*"],
-            "@schemas/*": ["./schemas/*"],
+            "#struct/*": ["./struct/*"],
+            "#schemas/*": ["./schemas/*"],
         },
-        "plugins": [
-            {
-                "transform": "typescript-transform-paths"
-            }
-        ],
     }
 }

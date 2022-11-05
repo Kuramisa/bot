@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import Dashboard from "@struct/dashboard";
+import Dashboard from "#struct/dashboard";
 import { GraphQLError } from "graphql";
 import { Request } from "express";
 

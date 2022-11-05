@@ -1,4 +1,4 @@
-import Ticket from "@schemas/Ticket";
+import Ticket from "#schemas/Ticket";
 import { Guild, GuildMember, TextBasedChannel } from "discord.js";
 
 export default class DatabaseTickets {

@@ -3,7 +3,7 @@ import { Collection, CommandInteraction, MessageEmbed } from "discord.js";
 import { Container } from "@sapphire/pieces";
 import ShinobiGame from "..";
 import ShinobiPlayer from "./Player";
-import Shinobi from "@schemas/Shinobi";
+import Shinobi from "#schemas/Shinobi";
 
 export default class ShinobiPlayers {
     private readonly container: Container;

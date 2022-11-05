@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import Minecraft from "@schemas/Minecraft";
+import Minecraft from "#schemas/Minecraft";
 import { GraphQLError } from "graphql";
 
 export default {
@@ -11,12 +11,7 @@ export default {
                 message,
                 ip
             }: { username: string; message: string; ip: string },
-            {
-                container: {
-                    client,
-                    games: { minecraft }
-                }
-            }: { container: Container }
+            { container: { client } }: { container: Container }
         ) => {
             const db = await Minecraft.findOne({ ip });
             if (!db)
