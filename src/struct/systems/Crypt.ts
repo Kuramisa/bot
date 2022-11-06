@@ -1,4 +1,3 @@
-import { Container } from "@sapphire/pieces";
 import Cryptr from "cryptr";
 
 const { CRYPT_SECRET } = process.env;
