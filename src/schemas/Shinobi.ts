@@ -1,10 +1,5 @@
 import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
-import {
-    ShinobiStats,
-    ShinobiWeapon,
-    ShinobiCurrencies,
-    ShinobiRanks
-} from "@types";
+import { ShinobiStats, ShinobiWeapon, ShinobiRanks } from "@types";
 
 export interface IShinobi extends HydratedDocument<any> {
     memberId: string;
@@ -15,7 +10,6 @@ export interface IShinobi extends HydratedDocument<any> {
     xp: number;
     level: number;
     stats: ShinobiStats;
-    currencies: ShinobiCurrencies;
     weapons: ShinobiWeapon[];
     equipped: {
         weapon: ShinobiWeapon | null;

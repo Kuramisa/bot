@@ -42,7 +42,7 @@ export interface ShinobiStats {
     kenjutsu: number;
 }
 
-export interface ShinobiCurrencies {
+export interface Currencies {
     ryo: number;
 }
 

@@ -67,7 +67,6 @@ export default class ShinobiPlayers {
                 \`Clan\` ${clan.name}
 
                 \`Rank\`: ${util.capFirstLetter(player.rank)}
-                \`Ryo\`: ${player.currencies.ryo}
 
                 **Stats**
                 \`XP\`: ${player.xp}

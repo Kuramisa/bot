@@ -1,11 +1,6 @@
 import Shinobi, { IShinobi } from "#schemas/Shinobi";
 
-import {
-    ShinobiStats,
-    ShinobiWeapon,
-    ShinobiRanks,
-    ShinobiCurrencies
-} from "@types";
+import { ShinobiStats, ShinobiWeapon, ShinobiRanks, Currencies } from "@types";
 
 import { CommandInteraction, ContextMenuInteraction } from "discord.js";
 
@@ -22,7 +17,6 @@ export default class ShinobiPlayer {
     xp: number;
     level: number;
     stats: ShinobiStats;
-    currencies: ShinobiCurrencies;
     weapons: ShinobiWeapon[];
     equipped: IShinobi["equipped"];
 
@@ -36,7 +30,6 @@ export default class ShinobiPlayer {
         this.xp = player.xp;
         this.level = player.level;
         this.stats = player.stats;
-        this.currencies = player.currencies;
         this.weapons = player.weapons;
         this.equipped = player.equipped;
     }
