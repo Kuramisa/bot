@@ -77,11 +77,9 @@ export const Shinobi: Schema = new Schema<IShinobi>({
     }
 });
 
-export type DShinobi = Document<unknown, any, IShinobi> &
+export type TShinobi = Document<unknown, any, IShinobi> &
     IShinobi & {
         _id: Types.ObjectId;
     };
 
-const name = "shinobis";
-
-export default model<IShinobi>(name, Shinobi, name);
+export default model<IShinobi>("shinobis", Shinobi);

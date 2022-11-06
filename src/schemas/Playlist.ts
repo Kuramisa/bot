@@ -15,11 +15,9 @@ export const Playlist: Schema = new Schema<IPlaylist>({
     sharedWith: []
 });
 
-export type DPlaylist = Document<unknown, any, IPlaylist> &
+export type TPlaylist = Document<unknown, any, IPlaylist> &
     IPlaylist & {
         _id: Types.ObjectId;
     };
 
-const name = "playlists";
-
-export default model<IPlaylist>(name, Playlist, name);
+export default model<IPlaylist>("playlists", Playlist);

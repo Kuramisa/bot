@@ -140,11 +140,9 @@ export const User: Schema = new Schema<IUser>({
     ]
 });
 
-export type DUser = Document<unknown, any, IUser> &
+export type TUser = Document<unknown, any, IUser> &
     IUser & {
         _id: Types.ObjectId;
     };
 
-const name = "users";
-
-export default model<IUser>(name, User, name);
+export default model<IUser>("users", User);

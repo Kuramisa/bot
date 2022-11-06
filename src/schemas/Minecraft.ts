@@ -20,11 +20,9 @@ export const Minecraft: Schema = new Schema<IMinecraft>({
     }
 });
 
-export type DMinecraft = Document<unknown, any, IMinecraft> &
+export type TMinecraft = Document<unknown, any, IMinecraft> &
     IMinecraft & {
         _id: Types.ObjectId;
     };
 
-const name = "minecraft";
-
-export default model<IMinecraft>(name, Minecraft, name);
+export default model<IMinecraft>("minecraft", Minecraft);

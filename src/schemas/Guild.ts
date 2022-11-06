@@ -179,11 +179,9 @@ export const Guild: Schema = new Schema<IGuild>({
     }
 });
 
-export type DGuild = Document<unknown, any, IGuild> &
+export type TGuild = Document<unknown, any, IGuild> &
     IGuild & {
         _id: Types.ObjectId;
     };
 
-const name = "guilds";
-
-export default model<IGuild>(name, Guild, name);
+export default model<IGuild>("guilds", Guild);

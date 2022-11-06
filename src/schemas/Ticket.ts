@@ -22,11 +22,9 @@ export const Ticket: Schema = new Schema<ITicket>({
     type: String
 });
 
-export type DTicket = Document<unknown, any, ITicket> &
+export type TTIcket = Document<unknown, any, ITicket> &
     ITicket & {
         _id: Types.ObjectId;
     };
 
-const name = "tickets";
-
-export default model<ITicket>(name, Ticket, name);
+export default model<ITicket>("tickets", Ticket);
