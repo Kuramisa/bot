@@ -55,9 +55,7 @@ export class EightBallCommand extends Command {
      * Execute Slash Command
      */
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    public async chatInputRun(interaction: Command.ChatInputInteraction) {
         let question = interaction.options.getString("question", true);
 
         const { util } = this.container;

@@ -27,7 +27,7 @@ export class OwOCommand extends Command {
         );
 
         registry.registerContextMenuCommand((builder) =>
-            builder.setName("OwOify").setType(3)
+            builder.setName("OwOify").setDMPermission(false).setType(3)
         );
     }
 

@@ -62,6 +62,7 @@ export default class Valorant {
                             .setRequired(true)
                     )
             );
+
         await interaction.showModal(loginModal);
 
         const loginSubmit = await interaction.awaitModalSubmit({ time: 0 });

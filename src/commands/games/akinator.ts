@@ -32,9 +32,7 @@ export class AkinatorCommand extends Command {
         );
     }
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    public async chatInputRun(interaction: Command.ChatInputInteraction) {
         const gameType = interaction.options.getString("game_type")
             ? interaction.options.getString("game_type")
             : "character";

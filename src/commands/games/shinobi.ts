@@ -16,6 +16,7 @@ export class ShinobiCommand extends Subcommand {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                .setDMPermission(false)
                 .addSubcommand((command) =>
                     command
                         .setName("start")
@@ -148,7 +149,7 @@ export class ShinobiCommand extends Subcommand {
         );
 
         registry.registerContextMenuCommand((builder) =>
-            builder.setName("Shinobi Info").setType(2)
+            builder.setName("Shinobi Info").setDMPermission(false).setType(2)
         );
     }
 

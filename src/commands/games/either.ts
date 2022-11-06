@@ -8,7 +8,7 @@ export class EitherCommand extends Command {
             ...opts,
             name: "either",
             description: "Would you rather?",
-            aliases: ["wouldyourather"]
+            aliases: ["wouldyourather", "wyr"]
         });
     }
 
