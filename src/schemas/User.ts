@@ -1,5 +1,6 @@
 import { Currencies } from "@types";
 import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
+import { IItem } from "./Item";
 
 export interface IUser extends HydratedDocument<any> {
     id: string;
@@ -13,6 +14,7 @@ export interface IUser extends HydratedDocument<any> {
     xp: number;
     level: number;
     currencies: Currencies;
+    items: IItem[];
     valorant: {
         name: string | null | undefined;
         tag: string | null | undefined;
@@ -86,6 +88,7 @@ export const User: Schema = new Schema<IUser>({
             default: 0
         }
     },
+    items: [],
     valorant: {
         name: String,
         tag: String,
