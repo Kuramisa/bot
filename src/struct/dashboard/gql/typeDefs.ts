@@ -66,13 +66,5 @@ export default `#graphql
 
         warnUser(guildId: String!, userId: String!, reason: String): Warn!
         reportUser(guildId: String!, userId: String!, reason: String): Report!
-
-        linkServer(code: String!, ip: String!): String!
-
-        checkPlayer(username: String!): Boolean!
-        linkPlayer(username: String!, code: String!): String!
-        unlinkPlayer(username: String!): String!
-
-        music(username: String!, action: String!, query: String): String!
     }
 `;
