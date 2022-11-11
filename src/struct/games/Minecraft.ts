@@ -6,8 +6,6 @@ import crafatar from "crafatar";
 
 import { TUser } from "#schemas/User";
 
-import Mc from "#schemas/Minecraft";
-
 export default class Minecraft {
     private readonly container: Container;
 
