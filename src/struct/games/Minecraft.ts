@@ -16,36 +16,7 @@ export default class Minecraft {
         this.guilds = new Collection();
     }
 
-    async generateCode(db: TUser) {
-        const code = Math.random().toString(36).substring(6);
-
-        db.minecraft.code = code;
-
-        await db.save();
-
-        return code;
-    }
-
-    async generateServerCode(guild: Guild) {
-        const code = Math.random().toString(36).substring(6);
-
-        await Mc.create({
-            guildId: guild.id,
-            code
-        });
-
-        return code;
-    }
-
-    async unlinkServer(guild: Guild) {
-        await Mc.deleteOne({ guildId: guild.id });
-    }
-
-    async unlinkAccounts(db: TUser) {
-        db.minecraft = { code: null, username: null };
-
-        await db.save();
-    }
+    generateCode = () => Math.random().toString(36).substring(6);
 
     async getAvatar(username: string) {
         const player = await mc.nameToUuid(username);
