@@ -74,7 +74,7 @@ export default class Valorant {
 
         await web.login(username, password).catch(console.error);
 
-        if (web.isMultifactor) {
+        if (web.isMultifactorAccount) {
             const row = util
                 .row()
                 .setComponents(
@@ -160,7 +160,7 @@ export default class Valorant {
                 ephemeral: true
             });
 
-        const playerInfo = (await web.Player.getUserInfo()).data;
+        const playerInfo = (await web.getUserInfo()).data;
         const puuid = playerInfo.sub;
 
         const rankInfo = (await web.MMR.fetchPlayer(puuid)).data;
@@ -191,7 +191,7 @@ export default class Valorant {
                 ephemeral: true
             });
 
-        await account.auth.refresh(true);
+        await account.auth.refresh();
 
         return interaction.reply({
             content: "Refreshed your account",
@@ -212,11 +212,11 @@ export default class Valorant {
                 ephemeral: true
             });
 
-        const { data: wallet, isError } = await account.auth.Store.getWallet(
+        const { data: wallet } = await account.auth.Store.getWallet(
             account.puuid
         );
 
-        if (isError && !wallet)
+        if (!wallet)
             return interaction.reply({
                 content: "Could not fetch your wallet",
                 ephemeral: true
@@ -259,11 +259,11 @@ export default class Valorant {
 
         const storeType = options.getString("store_type", true);
 
-        const { data: store, isError } = await account.auth.Store.getStorefront(
+        const { data: store } = await account.auth.Store.getStorefront(
             account.puuid
         );
 
-        if (isError && !store)
+        if (!store)
             return interaction.reply({
                 content:
                     "Failed to fetch the store try logging in or refreshing your account",
@@ -467,11 +467,10 @@ export default class Valorant {
 
         await interaction.deferReply();
 
-        const { data: loadout, isError } = await account.auth.Player.loadout(
-            account.puuid
-        );
+        const { data: loadout } =
+            await account.auth.Personalization.getPlayerLoadout(account.puuid);
 
-        if (!loadout && isError)
+        if (!loadout)
             return interaction.reply({
                 content: "Could not fetch your loadout",
                 ephemeral: true

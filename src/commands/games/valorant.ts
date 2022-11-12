@@ -163,7 +163,7 @@ export class ValorantCommand extends Subcommand {
         const account = valorant.accounts.get(user.id);
         if (!account) return message.reply("You are not logged in");
 
-        await account.auth.refresh(true);
+        await account.auth.refresh();
 
         return message.reply("Refreshed your account");
     }
@@ -181,12 +181,11 @@ export class ValorantCommand extends Subcommand {
         const account = valorant.accounts.get(user.id);
         if (!account) return message.reply("You are not logged in");
 
-        const { data: wallet, isError } = await account.auth.Store.getWallet(
+        const { data: wallet } = await account.auth.Store.getWallet(
             account.puuid
         );
 
-        if (isError && !wallet)
-            return message.reply("Failed to fetch your wallet");
+        if (!wallet) return message.reply("Failed to fetch your wallet");
 
         const currencies = await account.assets.Currencies.get();
 
@@ -218,9 +217,8 @@ export class ValorantCommand extends Subcommand {
 
         if (!account) return message.reply("You/User not logged in");
 
-        const { data: loadout, isError } = await account.auth.Player.loadout(
-            account.puuid
-        );
+        const { data: loadout } =
+            await account.auth.Personalization.getPlayerLoadout(account.puuid);
 
         let page = 0;
 
@@ -562,11 +560,11 @@ export class ValorantCommand extends Subcommand {
                 "Please provide store type: `personal` *or* `featured`"
             );
 
-        const { data: store, isError } = await account.auth.Store.getStorefront(
+        const { data: store } = await account.auth.Store.getStorefront(
             account.puuid
         );
 
-        if (isError && !store)
+        if (!store)
             return message.reply({
                 content:
                     "Failed to fetch the store try logging in or refreshing your account"
