@@ -48,6 +48,7 @@ export interface IUser extends HydratedDocument<any> {
     reports: {
         guildId: string;
         by: string;
+        message?: { id: string; content: string };
         reason: string;
     }[];
 }
@@ -139,6 +140,10 @@ export const User: Schema = new Schema<IUser>({
         {
             guildId: String,
             by: String,
+            message: {
+                id: String,
+                content: String
+            },
             reason: String
         }
     ],

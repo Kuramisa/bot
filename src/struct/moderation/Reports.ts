@@ -2,7 +2,9 @@ import { Container } from "@sapphire/pieces";
 import {
     ButtonInteraction,
     CommandInteraction,
+    ContextMenuInteraction,
     GuildMember,
+    Message,
     ModalSubmitInteraction
 } from "discord.js";
 
@@ -78,6 +80,68 @@ export default class Reports {
             content: `You reported ${member} for **${reason}**`,
             ephemeral: true
         });
+    }
+
+    async createMessageReport(
+        interaction: ContextMenuInteraction<"cached">,
+        member: GuildMember,
+        message: Message,
+        reason: string
+    ) {
+        const { database, util } = this.container;
+
+        const { guild, member: by } = interaction;
+
+        const dbUser = await database.users.get(member.user);
+        const dbGuild = await database.guilds.get(guild);
+
+        if (!dbUser || !dbGuild) return;
+
+        dbUser.reports.push({
+            guildId: guild.id,
+            by: by.id,
+            message: { id: message.id, content: message.content },
+            reason
+        });
+
+        await dbUser.save();
+
+        if (dbGuild.channels.reports) {
+            const channel = guild.channels.cache.get(dbGuild.channels.reports);
+
+            if (!channel || !channel.isText()) return;
+            if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+
+            const embed = util
+                .embed()
+                .setAuthor({
+                    name: by.user.tag,
+                    iconURL: by.displayAvatarURL({ dynamic: true })
+                })
+                .setTitle(`${by.user.tag} reported ${member.user.tag}`)
+                .addFields({ name: "Reason", value: reason });
+
+            channel.send({ embeds: [embed] });
+        }
+
+        if (dbGuild.logs.types.memberReported) {
+            const channel = guild.channels.cache.get(dbGuild.logs.channel);
+            if (!channel || !channel.isText()) return;
+
+            if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+
+            const embed = util
+                .embed()
+                .setAuthor({
+                    name: `${guild.name} Logs`,
+                    iconURL: guild.iconURL({ dynamic: true }) as string
+                })
+                .setThumbnail(member.displayAvatarURL({ dynamic: true }))
+                .setDescription(`${by} **Reported** ${member}`)
+                .addFields({ name: "Reason", value: reason });
+
+            channel.send({ embeds: [embed] });
+        }
     }
 
     async get(member: GuildMember) {
