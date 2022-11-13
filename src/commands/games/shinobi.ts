@@ -147,10 +147,6 @@ export class ShinobiCommand extends Subcommand {
                         .setDescription("Claim your weekly reward")
                 )
         );
-
-        registry.registerContextMenuCommand((builder) =>
-            builder.setName("Shinobi Info").setDMPermission(false).setType(2)
-        );
     }
 
     public async chatInputRun(
