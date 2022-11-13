@@ -51,7 +51,7 @@ export class ReadyListener extends Listener {
                 status: "online",
                 activities: [
                     {
-                        name: `to ${client.users.cache.size} Users`,
+                        name: `${client.users.cache.size} Users`,
                         type: "LISTENING"
                     }
                 ]
@@ -60,8 +60,8 @@ export class ReadyListener extends Listener {
                 status: "online",
                 activities: [
                     {
-                        name: `in ${client.guilds.cache.size} Servers`,
-                        type: "PLAYING"
+                        name: `${client.guilds.cache.size} Servers`,
+                        type: "WATCHING"
                     }
                 ]
             }
