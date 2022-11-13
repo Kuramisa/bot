@@ -181,6 +181,24 @@ export default class Valorant {
             });
     }
 
+    async logout(interaction: CommandInteraction) {
+        const { user } = interaction;
+
+        const account = this.accounts.get(user.id);
+        if (!account)
+            return interaction.reply({
+                content: "You are not logged in",
+                ephemeral: true
+            });
+
+        this.accounts.delete(user.id);
+
+        await interaction.reply({
+            content: `You have been logged out from your account, ${account.player.acct.game_name}#${account.player.acct.tag_line}`,
+            ephemeral: true
+        });
+    }
+
     async refresh(interaction: CommandInteraction) {
         const { user } = interaction;
 
