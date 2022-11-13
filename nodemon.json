@@ -1,6 +1,6 @@
 {
     "ignore": ["node_modules"],
     "watch": ["src"],
-    "exec": "node ./build/index.js",
+    "exec": "rimraf ./build/ && tsc && node ./build/index.js",
     "ext": "ts"
 }
