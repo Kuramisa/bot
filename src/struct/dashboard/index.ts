@@ -41,8 +41,6 @@ if (config.ssl) {
     );
 }
 
-console.log(httpServer);
-
 export default class Dashboard extends ApolloServer {
     private readonly container: Container;
     readonly auth: Auth;
