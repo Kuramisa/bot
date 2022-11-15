@@ -21,7 +21,7 @@ app.use(helmet());
 
 const configurations = {
     // Note: You may need sudo to run on port 443
-    production: { ssl: true, port: 443, hostname: "api.kuramisa.com" },
+    production: { ssl: true, port: 4000, hostname: "api.kuramisa.com" },
     development: { ssl: false, port: 4000, hostname: "localhost" }
 };
 
