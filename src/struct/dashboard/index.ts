@@ -33,9 +33,9 @@ let httpServer = http.createServer(app);
 if (config.ssl) {
     httpServer = https.createServer(
         {
-            key: fs.readFileSync(__dirname + "/private.key", "utf-8"),
-            cert: fs.readFileSync(__dirname + "/public.cer", "utf-8"),
-            ca: fs.readFileSync(__dirname + "/ca.cer", "utf-8")
+            key: fs.readFileSync(process.cwd() + "/private.key", "utf-8"),
+            cert: fs.readFileSync(process.cwd() + "/public.cer", "utf-8"),
+            ca: fs.readFileSync(process.cwd() + "/ca.cer", "utf-8")
         },
         app
     );
