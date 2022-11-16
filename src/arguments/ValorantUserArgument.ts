@@ -8,7 +8,7 @@ export class ValorantUserArgument extends Argument<ValorantAccount> {
         });
     }
 
-    public async run(parameter: string, context: Argument.Context) {
+    async run(parameter: string, context: Argument.Context) {
         const resolve = await Resolvers.resolveUser(parameter);
 
         if (resolve.isErr())

@@ -13,7 +13,7 @@ export class CommandArguments extends Argument<Command<Args, CommandOptions>> {
         });
     }
 
-    public run(parameter: string, context: Argument.Context) {
+    run(parameter: string, context: Argument.Context) {
         const command = this.container.client.stores
             .get("commands")
             .find((command) => command.name === parameter);

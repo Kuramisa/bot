@@ -10,7 +10,7 @@ export class MemberActionsModalListener extends Listener {
         });
     }
 
-    public async run(interaction: ModalSubmitInteraction<"cached">) {
+    async run(interaction: ModalSubmitInteraction<"cached">) {
         if (!interaction.isModalSubmit()) return;
 
         const id = interaction.customId.split("_")[2];

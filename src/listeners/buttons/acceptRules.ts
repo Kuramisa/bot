@@ -10,7 +10,7 @@ export class AcceptRulesBtnListener extends Listener {
         });
     }
 
-    public async run(interaction: ButtonInteraction<"cached">) {
+    async run(interaction: ButtonInteraction<"cached">) {
         if (!interaction.isButton()) return;
         if (interaction.customId !== "accept_rules") return;
 

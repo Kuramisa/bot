@@ -13,13 +13,13 @@ export class OwnerOnlyPrecondition extends Precondition {
         });
     }
 
-    public override messageRun = (message: Message) =>
+    override messageRun = (message: Message) =>
         this.checkOwner(message.author.id);
 
-    public override chatInputRun = (interaction: CommandInteraction) =>
+    override chatInputRun = (interaction: CommandInteraction) =>
         this.checkOwner(interaction.user.id);
 
-    public override contextMenuRun = (interaction: ContextMenuInteraction) =>
+    override contextMenuRun = (interaction: ContextMenuInteraction) =>
         this.checkOwner(interaction.user.id);
 
     private checkOwner = (userId: string) =>

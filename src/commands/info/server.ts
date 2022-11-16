@@ -3,7 +3,7 @@ import { Guild } from "discord.js";
 import { Message } from "discord.js";
 
 export class ServerCommand extends Command {
-    public constructor(ctx: Command.Context, opts: Command.Options) {
+    constructor(ctx: Command.Context, opts: Command.Options) {
         super(ctx, {
             ...opts,
             name: "server",
@@ -16,7 +16,7 @@ export class ServerCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -28,15 +28,13 @@ export class ServerCommand extends Command {
     /**
      * Execute Message Command
      */
-    public messageRun = async (message: Message<true>) =>
+    messageRun = async (message: Message<true>) =>
         message.reply({ embeds: [this.generateEmbed(message.guild)] });
 
     /**
      * Execute Slash Command
      */
-    public chatInputRun = (
-        interaction: Command.ChatInputInteraction<"cached">
-    ) =>
+    chatInputRun = (interaction: Command.ChatInputInteraction<"cached">) =>
         interaction.reply({
             embeds: [this.generateEmbed(interaction.guild)],
             ephemeral: true

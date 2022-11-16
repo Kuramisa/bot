@@ -15,7 +15,7 @@
 			"});",
 			"}",
 			"",
-			"public async run(${5}) {",
+			"async run(${5}) {",
 			"throw Error('Unimplemented Method')",
 			"}",
 			"}"

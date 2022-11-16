@@ -8,7 +8,7 @@ export class ValorantActArgument extends Argument<Seasons.Seasons> {
         });
     }
 
-    public async run(parameter: string, context: Argument.Context) {
+    async run(parameter: string, context: Argument.Context) {
         const season = (
             await this.container.games.valorant.assets.Seasons.get()
         ).data.data?.find((act) =>

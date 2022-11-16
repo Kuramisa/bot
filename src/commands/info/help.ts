@@ -32,7 +32,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -72,7 +72,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Message Subcommand (All)
      */
-    public async messageAll(message: Message, args: Args) {
+    async messageAll(message: Message, args: Args) {
         const { client, util, stores } = this.container;
 
         const categories: string[] = stores.get("commands").categories;
@@ -108,7 +108,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (All)
      */
-    public async chatInputAll(interaction: Subcommand.ChatInputInteraction) {
+    async chatInputAll(interaction: Subcommand.ChatInputInteraction) {
         const { client, util, stores } = this.container;
 
         const categories = stores.get("commands").categories;
@@ -144,7 +144,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Category)
      */
-    public async messageCategory(message: Message, args: Args) {
+    async messageCategory(message: Message, args: Args) {
         const { client, util } = this.container;
 
         const category = await args.pick("category").catch(() => null);
@@ -169,9 +169,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Category)
      */
-    public async chatInputCategory(
-        interaction: Subcommand.ChatInputInteraction
-    ) {
+    async chatInputCategory(interaction: Subcommand.ChatInputInteraction) {
         const { options } = interaction;
         const { client, util, stores } = this.container;
 
@@ -204,7 +202,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Command)
      */
-    public async messageCommand(message: Message, args: Args) {
+    async messageCommand(message: Message, args: Args) {
         const { util } = this.container;
 
         const command = await args.pick("command").catch(() => null);
@@ -233,9 +231,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Command)
      */
-    public async chatInputCommand(
-        interaction: Subcommand.ChatInputInteraction
-    ) {
+    async chatInputCommand(interaction: Subcommand.ChatInputInteraction) {
         const { util, stores } = this.container;
         const { options } = interaction;
 

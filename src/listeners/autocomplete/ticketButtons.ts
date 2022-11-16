@@ -10,7 +10,7 @@ export class TicketButtonsACListener extends Listener {
         });
     }
 
-    public async run(interaction: AutocompleteInteraction<"cached">) {
+    async run(interaction: AutocompleteInteraction<"cached">) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "tickets") return;
 

@@ -13,7 +13,7 @@ export class UrbanCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -27,9 +27,7 @@ export class UrbanCommand extends Command {
         );
     }
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const { util } = this.container;
 
         const word = interaction.options.getString("word", true);
@@ -125,7 +123,7 @@ export class UrbanCommand extends Command {
             });
     }
 
-    public async messageRun(message: Message, args: Args) {
+    async messageRun(message: Message, args: Args) {
         const { util } = this.container;
 
         const word = await args.pick("string").catch(() => null);

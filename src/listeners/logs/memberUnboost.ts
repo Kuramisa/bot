@@ -10,7 +10,7 @@ export class MemberUnboostLogListener extends Listener {
         });
     }
 
-    public async run(member: GuildMember) {
+    async run(member: GuildMember) {
         if (member.user.bot) return;
 
         const { database, util } = this.container;

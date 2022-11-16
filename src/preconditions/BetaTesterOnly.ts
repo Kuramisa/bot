@@ -14,15 +14,14 @@ export class BetaTesterOnlyPrecondition extends Precondition {
         });
     }
 
-    public override messageRun = async (message: Message) =>
+    override messageRun = async (message: Message) =>
         await this.checkBetaTester(message.author);
 
-    public override chatInputRun = async (interaction: CommandInteraction) =>
+    override chatInputRun = async (interaction: CommandInteraction) =>
         await this.checkBetaTester(interaction.user);
 
-    public override contextMenuRun = async (
-        interaction: ContextMenuInteraction
-    ) => await this.checkBetaTester(interaction.user);
+    override contextMenuRun = async (interaction: ContextMenuInteraction) =>
+        await this.checkBetaTester(interaction.user);
 
     private async checkBetaTester(user: User) {
         const { database, owners } = this.container;

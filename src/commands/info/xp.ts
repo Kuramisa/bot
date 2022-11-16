@@ -13,7 +13,7 @@ export class XPCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder.setName(this.name).setDescription(this.description)
         );
@@ -22,7 +22,7 @@ export class XPCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message) {
+    async messageRun(message: Message) {
         const {
             systems: { xp }
         } = this.container;
@@ -43,7 +43,7 @@ export class XPCommand extends Command {
     /**
      * Execute Slash Command
      */
-    public async chatInputCommand(interaction: Command.ChatInputInteraction) {
+    async chatInputCommand(interaction: Command.ChatInputInteraction) {
         const {
             systems: { xp }
         } = this.container;

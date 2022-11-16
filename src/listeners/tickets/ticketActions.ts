@@ -11,7 +11,7 @@ export class TicketActionsListener extends Listener {
         });
     }
 
-    public async run(interaction: ButtonInteraction<"cached">) {
+    async run(interaction: ButtonInteraction<"cached">) {
         if (!interaction.isButton()) return;
 
         if (

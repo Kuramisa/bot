@@ -11,7 +11,7 @@ export class ShinobiCommand extends Subcommand {
         });
     }
 
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -149,9 +149,7 @@ export class ShinobiCommand extends Subcommand {
         );
     }
 
-    public async chatInputRun(
-        interaction: Subcommand.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
         const { options, user } = interaction;
 
         const {
@@ -277,7 +275,7 @@ export class ShinobiCommand extends Subcommand {
         }
     }
 
-    public async contextMenuRun(
+    async contextMenuRun(
         interaction: Subcommand.ContextMenuInteraction<"cached">
     ) {
         const {

@@ -10,7 +10,7 @@ export class WarnCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -34,9 +34,7 @@ export class WarnCommand extends Command {
         );
     }
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const {
             moderation: { warns }
         } = this.container;
@@ -57,7 +55,7 @@ export class WarnCommand extends Command {
         return warns.create(interaction, member, reason);
     }
 
-    public async contextMenuRun(
+    async contextMenuRun(
         interaction: Command.ContextMenuInteraction<"cached">
     ) {
         const {

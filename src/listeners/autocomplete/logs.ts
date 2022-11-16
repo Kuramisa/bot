@@ -10,7 +10,7 @@ export class LogsACListener extends Listener {
         });
     }
 
-    public async run(interaction: AutocompleteInteraction<"cached">) {
+    async run(interaction: AutocompleteInteraction<"cached">) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "logs") return;
 

@@ -10,7 +10,7 @@ export class ChannelsCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -32,9 +32,7 @@ export class ChannelsCommand extends Command {
         );
     }
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;

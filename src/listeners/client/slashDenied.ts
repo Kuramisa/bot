@@ -13,7 +13,7 @@ export class SlashCommandListener extends Listener {
         });
     }
 
-    public async run(
+    async run(
         error: UserError,
         { interaction }: ChatInputCommandDeniedPayload
     ) {

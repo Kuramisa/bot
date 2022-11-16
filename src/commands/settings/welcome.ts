@@ -10,7 +10,7 @@ export class WelcomeCommand extends Subcommand {
         });
     }
 
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -79,9 +79,7 @@ export class WelcomeCommand extends Subcommand {
         );
     }
 
-    public async chatInputRun(
-        interaction: Subcommand.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
         const {
             canvas: { welcome }
         } = this.container;

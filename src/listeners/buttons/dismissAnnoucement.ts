@@ -10,7 +10,7 @@ export class DismissAnnoucementListener extends Listener {
         });
     }
 
-    public async run(interaction: ButtonInteraction) {
+    async run(interaction: ButtonInteraction) {
         if (!interaction.isButton()) return;
         if (interaction.customId !== "dismiss-announcement") return;
         const message = interaction.message as Message;

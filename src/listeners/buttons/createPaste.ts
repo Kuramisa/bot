@@ -10,7 +10,7 @@ export class CreatePasteWarframeListener extends Listener {
         });
     }
 
-    public async run(interaction: ButtonInteraction) {
+    async run(interaction: ButtonInteraction) {
         if (!interaction.isButton()) return;
         if (interaction.customId !== "create_paste") return;
 

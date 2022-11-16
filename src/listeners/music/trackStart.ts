@@ -12,7 +12,7 @@ export class PlayerTrackStartListener extends Listener {
         });
     }
 
-    public async run(queue: Queue, track: Track) {
+    async run(queue: Queue, track: Track) {
         const {
             systems: { music },
             util

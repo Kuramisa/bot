@@ -10,7 +10,7 @@ export class DestoryQueueMusicListener extends Listener {
         });
     }
 
-    public async run(member: GuildMember) {
+    async run(member: GuildMember) {
         const {
             client,
             systems: { music }

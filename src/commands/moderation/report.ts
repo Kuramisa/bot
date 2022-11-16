@@ -9,7 +9,7 @@ export class ReportCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -36,9 +36,7 @@ export class ReportCommand extends Command {
         );
     }
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const {
             moderation: { reports }
         } = this.container;
@@ -59,7 +57,7 @@ export class ReportCommand extends Command {
         return reports.create(interaction, member, reason);
     }
 
-    public async contextMenuRun(
+    async contextMenuRun(
         interaction: Command.ContextMenuInteraction<"cached">
     ) {
         const {

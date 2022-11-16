@@ -18,7 +18,7 @@ export default class Database {
     readonly tickets: DatabaseTickets;
     readonly users: DatabaseUsers;
 
-    public constructor(container: Container) {
+    constructor(container: Container) {
         this.container = container;
         this.connection = mongoose;
 

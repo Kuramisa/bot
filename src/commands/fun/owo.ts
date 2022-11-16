@@ -13,7 +13,7 @@ export class OwOCommand extends Command {
     /**
      * Register Slash Command and Context Menu
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -34,7 +34,7 @@ export class OwOCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message, args: Args) {
+    async messageRun(message: Message, args: Args) {
         const text = await args.rest("string").catch(() => null);
 
         if (!text) return message.reply("Provide some text");
@@ -47,9 +47,7 @@ export class OwOCommand extends Command {
     /**
      * Execute Slash Command
      */
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const text = interaction.options.getString("text", true);
 
         const { owo } = await this.container.util.nekos.OwOify({
@@ -62,7 +60,7 @@ export class OwOCommand extends Command {
     /**
      * Execute Context Menu
      */
-    public async contextMenuRun(
+    async contextMenuRun(
         interaction: Command.ContextMenuInteraction<"cached">
     ) {
         const { channel, targetId } = interaction;

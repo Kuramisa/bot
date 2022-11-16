@@ -10,7 +10,7 @@ export class GiveXPListener extends Listener {
         });
     }
 
-    public async run(message: Message<true>) {
+    async run(message: Message<true>) {
         if (message.author.bot) return;
 
         const {

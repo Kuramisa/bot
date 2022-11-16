@@ -15,7 +15,7 @@ export class JTCListener extends Listener {
         });
     }
 
-    public async run(_: any, state: VoiceState) {
+    async run(_: any, state: VoiceState) {
         if (!state.channel) return;
         const { database, util } = this.container;
         const { guild, member, channel } = state;

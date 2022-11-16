@@ -12,7 +12,7 @@ export class MockCommand extends Command {
     /**
      * Register Context Menu
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerContextMenuCommand((builder) =>
             builder.setName("Mock").setDMPermission(false).setType(3)
         );
@@ -21,7 +21,7 @@ export class MockCommand extends Command {
     /**
      * Execute Context Menu
      */
-    public async contextMenuRun(
+    async contextMenuRun(
         interaction: Command.ContextMenuInteraction<"cached">
     ) {
         const { guild, channel, targetId, member } = interaction;

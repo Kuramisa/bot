@@ -14,7 +14,7 @@ export class NSFWFilterListener extends Listener {
         });
     }
 
-    public async run(message: Message<true>) {
+    async run(message: Message<true>) {
         const types = ["jpg", "png", "bmp", "gif", "webp"];
         if (!types.some((type) => message.content.includes(type))) return;
 

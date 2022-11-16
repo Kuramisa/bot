@@ -11,7 +11,7 @@ export class PremiumInfoCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -102,7 +102,7 @@ export class PremiumInfoCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message) {
+    async messageRun(message: Message) {
         const { client, util } = this.container;
 
         const info = util
@@ -185,9 +185,7 @@ export class PremiumInfoCommand extends Command {
             });
     }
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const { options, user } = interaction;
         const {
             client,

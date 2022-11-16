@@ -13,7 +13,7 @@ export class CardCommand extends Subcommand {
         });
     }
 
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -105,9 +105,7 @@ export class CardCommand extends Subcommand {
         );
     }
 
-    public async chatInputRun(
-        interaction: Subcommand.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { options, user } = interaction;

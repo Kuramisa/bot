@@ -14,13 +14,13 @@ export class EvalCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder.setName(this.name).setDescription(this.description)
         );
     }
 
-    public async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: Command.ChatInputInteraction) {
         const { util } = this.container;
 
         const modal = util

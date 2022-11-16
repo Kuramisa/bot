@@ -41,7 +41,7 @@ export class ValorantCommand extends Subcommand {
     /**
      * Register Slash Cocmmand
      */
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -113,9 +113,7 @@ export class ValorantCommand extends Subcommand {
         );
     }
 
-    public async chatInputRun(
-        interaction: Subcommand.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
         const {
             games: { valorant }
         } = this.container;
@@ -145,7 +143,7 @@ export class ValorantCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Login)
      */
-    public messageLogin = (message: Message) =>
+    messageLogin = (message: Message) =>
         message.reply(
             "You can only login using </valorant login:1027546596398858310> (for security purposes)"
         );
@@ -153,7 +151,7 @@ export class ValorantCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Refresh)
      */
-    public async messageRefresh(message: Message) {
+    async messageRefresh(message: Message) {
         const {
             games: { valorant }
         } = this.container;
@@ -171,7 +169,7 @@ export class ValorantCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Wallet)
      */
-    public async messageWallet(message: Message) {
+    async messageWallet(message: Message) {
         const {
             games: { valorant }
         } = this.container;
@@ -205,7 +203,7 @@ export class ValorantCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Loadout)
      */
-    public async messageLoadout(message: Message, args: Args) {
+    async messageLoadout(message: Message, args: Args) {
         const {
             games: { valorant }
         } = this.container;
@@ -389,7 +387,7 @@ export class ValorantCommand extends Subcommand {
     /**
      * Execute Message Subcommand (MMR)
      */
-    public async messageMmr(message: Message, args: Args) {
+    async messageMmr(message: Message, args: Args) {
         const {
             games: { valorant }
         } = this.container;
@@ -541,7 +539,7 @@ export class ValorantCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Store)
      */
-    public async messageStore(message: Message, args: Args) {
+    async messageStore(message: Message, args: Args) {
         const {
             games: { valorant }
         } = this.container;

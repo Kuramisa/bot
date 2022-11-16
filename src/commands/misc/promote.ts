@@ -15,7 +15,7 @@ export class PromoteCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -28,7 +28,7 @@ export class PromoteCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message) {
+    async messageRun(message: Message) {
         const { database, promoteChannel, util } = this.container;
 
         const { guild, author } = message;
@@ -79,9 +79,7 @@ export class PromoteCommand extends Command {
     /**
      * Execute Slash Command
      */
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const { database, promoteChannel, util } = this.container;
 
         const { guild, user } = interaction;

@@ -10,7 +10,7 @@ export class SettingsACListener extends Listener {
         });
     }
 
-    public async run(interaction: AutocompleteInteraction<"cached">) {
+    async run(interaction: AutocompleteInteraction<"cached">) {
         if (!interaction.isAutocomplete()) return;
 
         const { database, util } = this.container;

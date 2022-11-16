@@ -14,7 +14,7 @@ export class SteamCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -31,7 +31,7 @@ export class SteamCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message, args: Args) {
+    async messageRun(message: Message, args: Args) {
         let urlOrId = await args.pick("string").catch(() => null);
         if (!urlOrId)
             return message.reply("Please provide a steam profile URL/ID");
@@ -195,9 +195,7 @@ export class SteamCommand extends Command {
     /**
      * Execute Slash Command
      */
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const {
             games: { steam },
             util

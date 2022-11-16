@@ -22,7 +22,7 @@ export class DevCommand extends Subcommand {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -59,7 +59,7 @@ export class DevCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Report)
      */
-    public async chatInputReport(interaction: Subcommand.ChatInputInteraction) {
+    async chatInputReport(interaction: Subcommand.ChatInputInteraction) {
         const { devReports, util } = this.container;
         const { options, user } = interaction;
 
@@ -114,9 +114,7 @@ export class DevCommand extends Subcommand {
     /**
      * Excute Slash Subcommand (Suggest)
      */
-    public async chatInputSuggest(
-        interaction: Subcommand.ChatInputInteraction
-    ) {
+    async chatInputSuggest(interaction: Subcommand.ChatInputInteraction) {
         const { devSuggestions, util } = this.container;
         const { options, user } = interaction;
 

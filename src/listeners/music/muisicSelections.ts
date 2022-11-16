@@ -10,7 +10,7 @@ export class MusicSelectionsDropListener extends Listener {
         });
     }
 
-    public async run(interaction: SelectMenuInteraction<"cached">) {
+    async run(interaction: SelectMenuInteraction<"cached">) {
         if (!interaction.isSelectMenu()) return;
 
         if (interaction.customId !== "select_track") return;

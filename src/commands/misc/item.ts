@@ -11,7 +11,7 @@ export class MarryCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -63,7 +63,7 @@ export class MarryCommand extends Command {
         );
     }
 
-    public async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: Command.ChatInputInteraction) {
         const { util } = this.container;
 
         const { options } = interaction;

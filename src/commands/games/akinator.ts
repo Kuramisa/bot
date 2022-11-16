@@ -12,7 +12,7 @@ export class AkinatorCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -32,7 +32,7 @@ export class AkinatorCommand extends Command {
         );
     }
 
-    public async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: Command.ChatInputInteraction) {
         const gameType = interaction.options.getString("game_type")
             ? interaction.options.getString("game_type")
             : "character";
@@ -43,7 +43,7 @@ export class AkinatorCommand extends Command {
         });
     }
 
-    public async messageRun(message: Message, args: Args) {
+    async messageRun(message: Message, args: Args) {
         const gameType = await args.pick("string").catch(() => "character");
 
         akinator(message, {

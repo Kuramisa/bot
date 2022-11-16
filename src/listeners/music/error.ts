@@ -10,7 +10,7 @@ export class MusicErrorListener extends Listener {
         });
     }
 
-    public async run(_: any, error: any) {
+    async run(_: any, error: any) {
         container.logger.error(error);
     }
 }

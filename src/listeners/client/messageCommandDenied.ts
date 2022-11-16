@@ -13,10 +13,7 @@ export class MessageCommandListener extends Listener {
         });
     }
 
-    public async run(
-        error: UserError,
-        { message }: MessageCommandDeniedPayload
-    ) {
+    async run(error: UserError, { message }: MessageCommandDeniedPayload) {
         if (Reflect.get(Object(error.context), "silent")) return;
         return message.reply(error.message);
     }

@@ -10,7 +10,7 @@ export class MusicActionsModalListener extends Listener {
         });
     }
 
-    public async run(interaction: ModalSubmitInteraction<"cached">) {
+    async run(interaction: ModalSubmitInteraction<"cached">) {
         if (!interaction.isModalSubmit()) return;
         if (interaction.customId !== "add_tracks_modal") return;
 

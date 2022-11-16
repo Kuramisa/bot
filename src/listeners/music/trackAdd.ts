@@ -12,7 +12,7 @@ export class PlayerTrackAddListener extends Listener {
         });
     }
 
-    public async run(queue: Queue, track: Track) {
+    async run(queue: Queue, track: Track) {
         if (queue.previousTracks.length < 1) return;
 
         const { util } = container;

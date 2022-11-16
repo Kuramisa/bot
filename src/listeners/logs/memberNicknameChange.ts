@@ -10,7 +10,7 @@ export class MemberNicknameChangLogListener extends Listener {
         });
     }
 
-    public async run(member: GuildMember, oldNick: string, newNick: string) {
+    async run(member: GuildMember, oldNick: string, newNick: string) {
         if (member.user.bot) return;
 
         const { database, util } = this.container;

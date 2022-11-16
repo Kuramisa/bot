@@ -15,7 +15,7 @@ export class PremiumOnlyPrecondition extends Precondition {
         });
     }
 
-    public override async messageRun(message: Message<true>) {
+    override async messageRun(message: Message<true>) {
         const resultUser = await this.checkPremiumUser(message.author);
         const resultGuild = await this.checkPremiumGuild(message.guild);
 
@@ -24,9 +24,7 @@ export class PremiumOnlyPrecondition extends Precondition {
             : this.error({ message: "Guild or User not premium" });
     }
 
-    public override async chatInputRun(
-        interaction: CommandInteraction<"cached">
-    ) {
+    override async chatInputRun(interaction: CommandInteraction<"cached">) {
         const resultUser = await this.checkPremiumUser(interaction.user);
         const resultGuild = await this.checkPremiumGuild(interaction.guild);
 
@@ -35,7 +33,7 @@ export class PremiumOnlyPrecondition extends Precondition {
             : this.error({ message: "User or Server not premium" });
     }
 
-    public override async contextMenuRun(
+    override async contextMenuRun(
         interaction: ContextMenuInteraction<"cached">
     ) {
         const resultUser = await this.checkPremiumUser(interaction.user);

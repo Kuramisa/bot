@@ -10,7 +10,7 @@ export class GuildJoinListener extends Listener {
         });
     }
 
-    public async run(guild: Guild) {
+    async run(guild: Guild) {
         this.container.database.guilds.verify(guild);
     }
 }

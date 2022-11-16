@@ -15,7 +15,7 @@ import Canvas from "./canvas";
 import Systems from "./systems";
 
 export class Kuramisa extends SapphireClient {
-    public constructor() {
+    constructor() {
         super({
             caseInsensitiveCommands: true,
             caseInsensitivePrefixes: true,
@@ -59,18 +59,18 @@ export class Kuramisa extends SapphireClient {
         container.util = new Util(container);
     }
 
-    public override async login(token?: string) {
+    override async login(token?: string) {
         await container.database.connect();
         await container.dashboard.init();
         return super.login(token);
     }
 
-    public override async destroy() {
+    override async destroy() {
         await container.database.disconnect();
         return super.destroy();
     }
 
-    public override fetchPrefix = async (message: Message) => {
+    override fetchPrefix = async (message: Message) => {
         if (message.inGuild()) {
             const guild = await container.database.guilds.get(message.guild);
             if (guild && guild.prefix) return guild.prefix;

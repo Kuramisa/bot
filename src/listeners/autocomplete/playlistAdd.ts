@@ -10,7 +10,7 @@ export class PlaylistAddACListener extends Listener {
         });
     }
 
-    public async run(interaction: AutocompleteInteraction) {
+    async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "playlist") return;
 

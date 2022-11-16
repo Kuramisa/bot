@@ -10,7 +10,7 @@ export class MemberLeaveListener extends Listener {
         });
     }
 
-    public async run(member: GuildMember) {
+    async run(member: GuildMember) {
         if (member.user.bot) return;
 
         const { canvas, client, database } = this.container;

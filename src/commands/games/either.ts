@@ -12,15 +12,13 @@ export class EitherCommand extends Command {
         });
     }
 
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder.setName(this.name).setDescription(this.description)
         );
     }
 
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const { util } = this.container;
 
         let wyr = await this.getQuestion();
@@ -88,7 +86,7 @@ export class EitherCommand extends Command {
             });
     }
 
-    public async messageRun(message: Message) {
+    async messageRun(message: Message) {
         const { util } = this.container;
 
         let wyr = await this.getQuestion();

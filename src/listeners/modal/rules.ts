@@ -10,7 +10,7 @@ export class RulesModalListener extends Listener {
         });
     }
 
-    public async run(interaction: ModalSubmitInteraction<"cached">) {
+    async run(interaction: ModalSubmitInteraction<"cached">) {
         if (!interaction.isModalSubmit()) return;
 
         if (!["rules_create", "rules_edit"].includes(interaction.customId))

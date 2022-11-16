@@ -10,7 +10,7 @@ export class MusicSearchACListener extends Listener {
         });
     }
 
-    public async run(interaction: AutocompleteInteraction) {
+    async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "music") return;
 

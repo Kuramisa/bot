@@ -10,7 +10,7 @@ export class MessageDeletedLogListener extends Listener {
         });
     }
 
-    public async run(message: Message) {
+    async run(message: Message) {
         if (!message.inGuild()) return;
         if (!message.author) return;
         if (message.author.bot) return;

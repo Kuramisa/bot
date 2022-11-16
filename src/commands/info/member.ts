@@ -15,7 +15,7 @@ export class MemberCommand extends Command {
     /**
      * Register Slash Command and Context Menu
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -39,7 +39,7 @@ export class MemberCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message, args: Args) {
+    async messageRun(message: Message, args: Args) {
         const member = await args.pick("member").catch(() => message.member);
 
         if (!member || !message.member)
@@ -58,9 +58,7 @@ export class MemberCommand extends Command {
     /**
      * Execute Slash Command
      */
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         let member = interaction.options.getMember("member");
 
         if (!member) member = interaction.member;
@@ -82,7 +80,7 @@ export class MemberCommand extends Command {
     /**
      * Execute Context Menu
      */
-    public async contextMenuRun(
+    async contextMenuRun(
         interaction: Command.ContextMenuInteraction<"cached">
     ) {
         const { guild, targetId } = interaction;

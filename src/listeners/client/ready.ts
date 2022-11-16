@@ -11,7 +11,7 @@ export class ReadyListener extends Listener {
         });
     }
 
-    public async run() {
+    async run() {
         const { container } = this;
         const {
             client,

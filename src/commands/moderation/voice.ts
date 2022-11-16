@@ -10,7 +10,7 @@ export class VoiceCommand extends Subcommand {
         });
     }
 
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -46,9 +46,7 @@ export class VoiceCommand extends Subcommand {
         );
     }
 
-    public async chatInputRun(
-        interaction: Subcommand.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
         const { util } = this.container;
 
         const { options, guild, member } = interaction;

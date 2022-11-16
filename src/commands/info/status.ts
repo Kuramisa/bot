@@ -15,7 +15,7 @@ export class StatusCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder.setName(this.name).setDescription(this.description)
         );
@@ -24,13 +24,13 @@ export class StatusCommand extends Command {
     /**
      * Execute Message Command
      */
-    public messageRun = async (message: Message) =>
+    messageRun = async (message: Message) =>
         message.reply({ embeds: [await this.generateEmbed()] });
 
     /**
      * Execute Slash Command
      */
-    public chatInputRun = async (interaction: Command.ChatInputInteraction) =>
+    chatInputRun = async (interaction: Command.ChatInputInteraction) =>
         interaction.reply({
             embeds: [await this.generateEmbed()],
             ephemeral: true

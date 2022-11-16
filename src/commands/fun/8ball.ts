@@ -14,7 +14,7 @@ export class EightBallCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -31,7 +31,7 @@ export class EightBallCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message, args: Args) {
+    async messageRun(message: Message, args: Args) {
         let question = await args.rest("string").catch(() => null);
 
         const { util } = this.container;
@@ -55,7 +55,7 @@ export class EightBallCommand extends Command {
      * Execute Slash Command
      */
 
-    public async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: Command.ChatInputInteraction) {
         let question = interaction.options.getString("question", true);
 
         const { util } = this.container;

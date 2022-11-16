@@ -10,7 +10,7 @@ export class OpenTicketListener extends Listener {
         });
     }
 
-    public async run(interaction: ButtonInteraction<"cached">) {
+    async run(interaction: ButtonInteraction<"cached">) {
         if (!interaction.isButton()) return;
 
         const { database, util } = this.container;

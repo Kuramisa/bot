@@ -20,7 +20,7 @@ export class WarframCommand extends Subcommand {
         });
     }
 
-    public override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -54,7 +54,7 @@ export class WarframCommand extends Subcommand {
     /**
      * Execute Message Subcommand (Market)
      */
-    public async messageMarket(message: Message, args: Args) {
+    async messageMarket(message: Message, args: Args) {
         const {
             games: { warframe },
             util
@@ -242,7 +242,7 @@ export class WarframCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Market)
      */
-    public chatInputMarket = (
+    chatInputMarket = (
         interaction: Subcommand.ChatInputInteraction<"cached">
     ) => this.container.games.warframe.orders(interaction);
 }

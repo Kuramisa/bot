@@ -16,7 +16,7 @@ export class CategoryArgument extends Argument<
         });
     }
 
-    public run(parameter: string, context: Argument.Context) {
+    run(parameter: string, context: Argument.Context) {
         const category = this.container.client.stores
             .get("commands")
             .filter((command) => command.fullCategory[0] === parameter);

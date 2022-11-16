@@ -10,7 +10,7 @@ export class HelpACListener extends Listener {
         });
     }
 
-    public async run(interaction: AutocompleteInteraction) {
+    async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "help") return;
 

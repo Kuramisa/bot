@@ -15,7 +15,7 @@ export class OsuCommand extends Command {
     /**
      * Register Slash Command
      */
-    public override registerApplicationCommands(registry: Command.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -33,7 +33,7 @@ export class OsuCommand extends Command {
     /**
      * Execute Message Command
      */
-    public async messageRun(message: Message, args: Args) {
+    async messageRun(message: Message, args: Args) {
         const player = await args.pick("string").catch(() => null);
 
         if (!player) return message.reply("Provide a player name");
@@ -54,9 +54,7 @@ export class OsuCommand extends Command {
     /**
      * Execute Slash Comman
      */
-    public async chatInputRun(
-        interaction: Command.ChatInputInteraction<"cached">
-    ) {
+    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
         const {
             games: { osu }
         } = this.container;

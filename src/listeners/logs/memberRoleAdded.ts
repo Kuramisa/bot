@@ -10,7 +10,7 @@ export class MemberRoleAddLogListener extends Listener {
         });
     }
 
-    public async run(member: GuildMember, role: Role) {
+    async run(member: GuildMember, role: Role) {
         if (member.user.bot) return;
 
         const { database, util } = this.container;
