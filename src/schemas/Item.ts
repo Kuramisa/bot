@@ -6,6 +6,7 @@ export interface IItem extends HydratedDocument<any> {
     description: string;
     usage: string;
     price?: number;
+    amount?: number;
 }
 
 export const Item: Schema = new Schema<IItem>({
@@ -25,7 +26,8 @@ export const Item: Schema = new Schema<IItem>({
         type: String,
         required: true
     },
-    price: Number
+    price: Number,
+    amount: Number
 });
 
 export type TItem = Document<unknown, any, IItem> &

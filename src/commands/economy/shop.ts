@@ -115,12 +115,14 @@ export class ShopCommand extends Command {
                         ephemeral: true
                     });
 
+                item.amount = buyCount;
+
                 db.items.push(item);
                 db.currencies.ryo -= needsToPay;
                 await db.save();
 
                 return interaction.reply({
-                    content: `Bought ${buyCount} **${item.name}**`,
+                    content: `Bought ${buyCount} **${item.name}** for ${needsToPay} Ryo`,
                     ephemeral: true
                 });
             }
@@ -142,10 +144,32 @@ export class ShopCommand extends Command {
                         ephemeral: true
                     });
 
+                const owned = db.items.find((it) => item.id === it.id);
+                if (!owned || !owned.amount)
+                    return interaction.reply({
+                        content: `You do not own any **${item.name}**`,
+                        ephemeral: true
+                    });
+
+                if (sellCount > owned.amount)
+                    return interaction.reply({
+                        content: `You do not have enough items to sell, you have ${owned.amount} **${item.name}**`,
+                        ephemeral: true
+                    });
+
                 const sellPrice = (item.price * sellCount) / 2;
 
+                if (owned.amount < 2) {
+                    db.items = db.items.filter((it) => it.id !== item.id);
+                } else {
+                    owned.amount -= sellCount;
+                }
+
+                db.markModified("items");
+                await db.save();
+
                 return interaction.reply({
-                    content: `Sold ${sellCount} **${item.name}**`,
+                    content: `Sold ${sellCount} **${item.name}** for ${sellPrice} Ryo`,
                     ephemeral: true
                 });
             }
@@ -166,6 +190,23 @@ export class ShopCommand extends Command {
                         content: "This item does not have a price",
                         ephemeral: true
                     });
+
+                const owned = db.items.find((it) => it.id === item.id);
+
+                if (!owned || !owned.amount)
+                    return interaction.reply({
+                        content: `You do not own any **${item.name}**`,
+                        ephemeral: true
+                    });
+
+                if (owned.amount < 2) {
+                    db.items = db.items.filter((it) => it.id === item.id);
+                } else {
+                    owned.amount -= discardCount;
+                }
+
+                db.markModified("items");
+                await db.save();
 
                 return interaction.reply({
                     content: `Discarded ${discardCount} **${item.name}**`,
