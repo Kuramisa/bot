@@ -8,7 +8,8 @@ export class PromoteCommand extends Command {
             name: "promote",
             description: "Request a promotion for your server on our website",
             runIn: "GUILD_ANY",
-            requiredUserPermissions: "ADMINISTRATOR"
+            requiredUserPermissions: "Administrator",
+            preconditions: ["OwnerOnly"]
         });
     }
 
