@@ -1,4 +1,8 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import {
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction
+} from "discord.js";
 
 export class ShinobiCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -149,7 +153,9 @@ export class ShinobiCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ): Promise<any> {
         const { options, user } = interaction;
 
         const {
@@ -275,9 +281,7 @@ export class ShinobiCommand extends Subcommand {
         }
     }
 
-    async contextMenuRun(
-        interaction: Subcommand.ContextMenuInteraction<"cached">
-    ) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const {
             games: { shinobi }
         } = this.container;

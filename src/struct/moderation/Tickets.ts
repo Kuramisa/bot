@@ -1,5 +1,9 @@
 import { Container } from "@sapphire/pieces";
-import { CommandInteraction, OverwriteResolvable } from "discord.js";
+import {
+    ChannelType,
+    ChatInputCommandInteraction,
+    OverwriteResolvable
+} from "discord.js";
 
 export default class Tickets {
     private readonly container: Container;
@@ -8,7 +12,7 @@ export default class Tickets {
         this.container = container;
     }
 
-    async addButton(interaction: CommandInteraction<"cached">) {
+    async addButton(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
@@ -32,7 +36,7 @@ export default class Tickets {
             db.tickets.channels.openTicket
         );
 
-        if (!channel || !channel.isText()) return;
+        if (!channel || !channel.isTextBased()) return;
 
         const message = (await channel.messages.fetch()).get(
             db.tickets.message
@@ -103,7 +107,7 @@ export default class Tickets {
         }
     }
 
-    async removeButton(interaction: CommandInteraction<"cached">) {
+    async removeButton(interaction: ChatInputCommandInteraction<"cached">) {
         const { database } = this.container;
 
         const { options, guild } = interaction;
@@ -122,7 +126,7 @@ export default class Tickets {
                 ephemeral: true
             });
 
-        if (!channel.isText()) return;
+        if (!channel.isTextBased()) return;
 
         const message = channel.messages.cache.get(db.tickets.message);
 
@@ -162,7 +166,7 @@ export default class Tickets {
         });
     }
 
-    async resetButtons(interaction: CommandInteraction<"cached">) {
+    async resetButtons(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { guild } = interaction;
@@ -180,7 +184,7 @@ export default class Tickets {
                 ephemeral: true
             });
 
-        if (!channel.isText()) return;
+        if (!channel.isTextBased()) return;
 
         const message = channel.messages.cache.get(db.tickets.message);
 
@@ -196,7 +200,7 @@ export default class Tickets {
         });
     }
 
-    async editDescription(interaction: CommandInteraction<"cached">) {
+    async editDescription(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
@@ -220,7 +224,7 @@ export default class Tickets {
                 content: "Open Ticket channel is incorrectly setup",
                 ephemeral: true
             });
-        if (!channel.isText()) return;
+        if (!channel.isTextBased()) return;
 
         const message = (await channel.messages.fetch()).get(
             db.tickets.message
@@ -241,12 +245,12 @@ export default class Tickets {
         });
     }
 
-    async autoSetup(interaction: CommandInteraction<"cached">) {
+    async autoSetup(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { guild } = interaction;
 
-        if (!guild.me?.permissions.has("MANAGE_CHANNELS"))
+        if (!guild.members.me?.permissions.has("ManageChannels"))
             return interaction.reply({
                 content: "Bot missing permissions `ManageChannels`",
                 ephemeral: true
@@ -259,8 +263,9 @@ export default class Tickets {
 
         const setupEmbed = util.embed().setTitle("Ticket System Auto Setup");
 
-        const category = await guild.channels.create("Ticket System", {
-            type: "GUILD_CATEGORY",
+        const category = await guild.channels.create({
+            name: "Ticket System",
+            type: ChannelType.GuildCategory,
             position: 0
         });
 
@@ -270,14 +275,15 @@ export default class Tickets {
             embeds: [setupEmbed]
         });
 
-        const openTicket = await guild.channels.create("open-ticket", {
+        const openTicket = await guild.channels.create({
+            name: "open-ticket",
             parent: category,
-            type: "GUILD_TEXT",
+            type: ChannelType.GuildText,
             permissionOverwrites: [
                 {
                     id: guild.roles.everyone.id,
-                    deny: ["SEND_MESSAGES"],
-                    allow: ["USE_APPLICATION_COMMANDS"]
+                    deny: ["SendMessages"],
+                    allow: ["UseApplicationCommands"]
                 }
             ]
         });
@@ -285,7 +291,7 @@ export default class Tickets {
         await interaction.editReply({
             embeds: [
                 setupEmbed.setDescription(
-                    setupEmbed.description +
+                    setupEmbed.toJSON().description +
                         `\n✅ Open Ticket channel created: ${openTicket}`
                 )
             ]
@@ -293,36 +299,33 @@ export default class Tickets {
 
         const transcriptPerms: OverwriteResolvable[] = guild.roles.cache.map(
             (role) =>
-                role.permissions.has("MODERATE_MEMBERS")
+                role.permissions.has("ModerateMembers")
                     ? {
                           id: role.id,
                           allow: [
-                              "VIEW_CHANNEL",
-                              "SEND_MESSAGES",
-                              "READ_MESSAGE_HISTORY"
+                              "ViewChannel",
+                              "SendMessages",
+                              "ReadMessageHistory"
                           ]
                       }
                     : {
                           id: role.id,
                           allow: [
-                              "VIEW_CHANNEL",
-                              "SEND_MESSAGES",
-                              "READ_MESSAGE_HISTORY"
+                              "ViewChannel",
+                              "SendMessages",
+                              "ReadMessageHistory"
                           ]
                       }
         );
 
-        const transcripts = await guild.channels.create("transcripts", {
+        const transcripts = await guild.channels.create({
+            name: "transcripts",
             parent: category,
-            type: "GUILD_TEXT",
+            type: ChannelType.GuildText,
             permissionOverwrites: [
                 {
                     id: guild.roles.everyone.id,
-                    deny: [
-                        "VIEW_CHANNEL",
-                        "SEND_MESSAGES",
-                        "READ_MESSAGE_HISTORY"
-                    ]
+                    deny: ["ViewChannel", "SendMessages", "ReadMessageHistory"]
                 },
                 ...transcriptPerms
             ]
@@ -331,7 +334,7 @@ export default class Tickets {
         await interaction.editReply({
             embeds: [
                 setupEmbed.setDescription(
-                    setupEmbed.description +
+                    setupEmbed.toJSON().description +
                         `\n✅ Transcripts channel created: ${transcripts}`
                 )
             ]
@@ -356,7 +359,8 @@ export default class Tickets {
         return interaction.editReply({
             embeds: [
                 setupEmbed.setDescription(
-                    setupEmbed.description + "\n\nTicket System Setup finished"
+                    setupEmbed.toJSON().description +
+                        "\n\nTicket System Setup finished"
                 )
             ]
         });

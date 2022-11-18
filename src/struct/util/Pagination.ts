@@ -1,7 +1,11 @@
 import { Container } from "@sapphire/pieces";
 import Util from ".";
 
-import { ButtonInteraction, CommandInteraction } from "discord.js";
+import {
+    ButtonInteraction,
+    ChatInputCommandInteraction,
+    ButtonStyle
+} from "discord.js";
 
 export default class UtilPagination {
     private readonly container: Container;
@@ -13,7 +17,9 @@ export default class UtilPagination {
     }
 
     async default(
-        interaction: ButtonInteraction<"cached"> | CommandInteraction<"cached">,
+        interaction:
+            | ButtonInteraction<"cached">
+            | ChatInputCommandInteraction<"cached">,
         contents: string[] | string[][],
         title?: string,
         ephemeral = false,
@@ -26,12 +32,12 @@ export default class UtilPagination {
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             this.util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const row = this.util.row().addComponents(buttons);

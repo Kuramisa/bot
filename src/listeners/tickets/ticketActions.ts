@@ -1,6 +1,6 @@
 import { Listener } from "@sapphire/framework";
-import { ButtonInteraction } from "discord.js";
-import { createTranscript } from "discord-html-transcripts";
+import { ButtonInteraction, ButtonStyle } from "discord.js";
+import { createTranscript, ExportReturnType } from "discord-html-transcripts";
 
 export class TicketActionsListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -28,7 +28,7 @@ export class TicketActionsListener extends Listener {
         if (!channel) return;
         if (channel.isThread()) return;
 
-        if (!member.permissions.has("MODERATE_MEMBERS"))
+        if (!member.permissions.has("ModerateMembers"))
             return interaction.reply({
                 content: "You do not have permissions to perform this action",
                 ephemeral: true
@@ -57,7 +57,7 @@ export class TicketActionsListener extends Listener {
                     .button()
                     .setCustomId("unlock_ticket")
                     .setLabel("Unlock")
-                    .setStyle("SUCCESS")
+                    .setStyle(ButtonStyle.Success)
                     .setEmoji("🔓") as any;
 
                 message.components[0].components[0] = unlockBtn;
@@ -70,7 +70,7 @@ export class TicketActionsListener extends Listener {
                 });
 
                 await channel.permissionOverwrites.edit(ticket.memberId, {
-                    SEND_MESSAGES: false
+                    SendMessages: false
                 });
 
                 return interaction.deferUpdate();
@@ -82,7 +82,7 @@ export class TicketActionsListener extends Listener {
                     .button()
                     .setCustomId("lock_ticket")
                     .setLabel("Lock")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
                     .setEmoji("🔒") as any;
 
                 message.components[0].components[0] = lockBtn;
@@ -95,7 +95,7 @@ export class TicketActionsListener extends Listener {
                 });
 
                 await channel.permissionOverwrites.edit(ticket.memberId, {
-                    SEND_MESSAGES: true
+                    SendMessages: true
                 });
 
                 return interaction.deferUpdate();
@@ -117,12 +117,12 @@ export class TicketActionsListener extends Listener {
                         ephemeral: true
                     });
 
-                if (!transcripts.isText()) return;
+                if (!transcripts.isTextBased()) return;
 
                 const filename = `${ticket.type}-${ticket.ticketId}.html`;
 
                 const transcript = await createTranscript(channel, {
-                    returnType: "buffer",
+                    returnType: ExportReturnType.Buffer,
                     filename,
                     poweredBy: false,
                     saveImages: true
@@ -130,7 +130,7 @@ export class TicketActionsListener extends Listener {
 
                 await database.tickets.close(channel.id);
 
-                ticket.transcript = transcript;
+                ticket.transcript = transcript as any;
 
                 // Ticket Creator
                 const ticketC = guild.members.cache.get(ticket.memberId);
@@ -146,7 +146,7 @@ export class TicketActionsListener extends Listener {
                             .setAuthor({
                                 name: ticketC.user.tag,
                                 iconURL: ticketC.displayAvatarURL({
-                                    dynamic: true
+                                    extension: "gif"
                                 })
                             })
                             .setTitle(

@@ -1,6 +1,6 @@
 import { Args } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { Message } from "discord.js";
+import { ButtonStyle, ChatInputCommandInteraction, Message } from "discord.js";
 import moment from "moment";
 import { Platform } from "warframe-market/lib/typings";
 
@@ -96,12 +96,12 @@ export class WarframCommand extends Subcommand {
                 .button()
                 .setCustomId("orders_sellers")
                 .setLabel("Sellers")
-                .setStyle("PRIMARY"),
+                .setStyle(ButtonStyle.Primary),
             util
                 .button()
                 .setCustomId("orders_buyers")
                 .setLabel("Buyers")
-                .setStyle("SUCCESS")
+                .setStyle(ButtonStyle.Success)
         ];
 
         const navButtons = [
@@ -110,13 +110,13 @@ export class WarframCommand extends Subcommand {
                 .setCustomId("previous_order")
                 .setLabel("Order")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             util
                 .button()
                 .setCustomId("next_order")
                 .setLabel("Order")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const bottomButtons = [
@@ -124,7 +124,7 @@ export class WarframCommand extends Subcommand {
                 .button()
                 .setCustomId("create_paste")
                 .setLabel("Create Paste")
-                .setStyle("SUCCESS")
+                .setStyle(ButtonStyle.Success)
         ];
 
         const typeRow = util.row().setComponents(typeButtons);
@@ -242,7 +242,6 @@ export class WarframCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Market)
      */
-    chatInputMarket = (
-        interaction: Subcommand.ChatInputInteraction<"cached">
-    ) => this.container.games.warframe.orders(interaction);
+    chatInputMarket = (interaction: ChatInputCommandInteraction<"cached">) =>
+        this.container.games.warframe.orders(interaction);
 }

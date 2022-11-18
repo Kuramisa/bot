@@ -1,4 +1,8 @@
 import { Command } from "@sapphire/framework";
+import {
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction
+} from "discord.js";
 
 export class WarnCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -6,7 +10,7 @@ export class WarnCommand extends Command {
             ...opts,
             name: "warn",
             description: "Warn a member",
-            requiredUserPermissions: "MODERATE_MEMBERS"
+            requiredUserPermissions: "ModerateMembers"
         });
     }
 
@@ -34,7 +38,7 @@ export class WarnCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             moderation: { warns }
         } = this.container;
@@ -55,9 +59,7 @@ export class WarnCommand extends Command {
         return warns.create(interaction, member, reason);
     }
 
-    async contextMenuRun(
-        interaction: Command.ContextMenuInteraction<"cached">
-    ) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const {
             moderation: { warns }
         } = this.container;

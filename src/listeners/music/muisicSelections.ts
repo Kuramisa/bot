@@ -39,7 +39,7 @@ export class MusicSelectionsDropListener extends Listener {
 
         if (queue.connection.channel.id !== voiceChannel.id)
             return interaction.reply({
-                content: `I'm already playing music in ${guild.me?.voice.channel}`,
+                content: `I'm already playing music in ${guild.members.me?.voice.channel}`,
                 ephemeral: true
             });
 

@@ -1,5 +1,5 @@
 import { Listener } from "@sapphire/framework";
-import { GuildMember } from "discord.js";
+import { ChannelType, GuildMember } from "discord.js";
 
 export class MemberJoinListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -27,22 +27,21 @@ export class MemberJoinListener extends Listener {
         const channel = guild.channels.cache.get(db.welcomeMessage.channel);
 
         if (!channel) return;
-        if (channel.type !== "GUILD_TEXT") return;
+        if (channel.type !== ChannelType.GuildText) return;
 
-        if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+        if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
+            return;
 
         const attachment = await canvas.welcome.card(member);
         if (!attachment) return;
 
-        if (!guild.me.permissions.has("MANAGE_WEBHOOKS"))
+        if (!guild.members.me.permissions.has("ManageWebhooks"))
             return channel.send({ files: [attachment] });
 
-        const webhook = await channel.createWebhook(
-            `${member.displayName} Joined the Server`,
-            {
-                avatar: client.user?.displayAvatarURL({ dynamic: true })
-            }
-        );
+        const webhook = await channel.createWebhook({
+            name: `${member.displayName} Joined the Server`,
+            avatar: client.user?.displayAvatarURL({ extension: "gif" })
+        });
 
         await webhook.send({ files: [attachment] });
 

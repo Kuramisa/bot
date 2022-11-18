@@ -1,9 +1,9 @@
 import "@sapphire/plugin-logger/register";
 
 import { container, LogLevel, SapphireClient } from "@sapphire/framework";
-import type { Message } from "discord.js";
+import { Message, Partials, REST, Routes } from "discord.js";
 
-import logs from "@mateie/discord-logs";
+import logs from "discord-logs";
 
 import Dashboard from "./dashboard";
 
@@ -21,19 +21,19 @@ export class Kuramisa extends SapphireClient {
             caseInsensitivePrefixes: true,
             defaultPrefix: "k!",
             intents: [
-                "GUILD_BANS",
-                "GUILD_INVITES",
-                "GUILDS",
-                "GUILD_EMOJIS_AND_STICKERS",
-                "GUILD_MEMBERS",
-                "GUILD_MESSAGES",
-                "GUILD_VOICE_STATES",
-                "GUILD_PRESENCES",
-                "GUILD_INTEGRATIONS",
-                "MESSAGE_CONTENT",
-                "DIRECT_MESSAGES"
+                "GuildBans",
+                "GuildInvites",
+                "Guilds",
+                "GuildEmojisAndStickers",
+                "GuildMembers",
+                "GuildMessages",
+                "GuildVoiceStates",
+                "GuildPresences",
+                "GuildIntegrations",
+                "MessageContent",
+                "DirectMessages"
             ],
-            partials: ["CHANNEL", "MESSAGE", "USER"],
+            partials: [Partials.Channel, Partials.Message, Partials.User],
             loadMessageCommandListeners: true,
             loadSubcommandErrorListeners: true,
             loadDefaultErrorListeners: true,

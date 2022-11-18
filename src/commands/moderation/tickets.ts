@@ -1,4 +1,5 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class TicketsCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -6,7 +7,7 @@ export class TicketsCommand extends Subcommand {
             ...opts,
             name: "tickets",
             description: "TIcket System",
-            requiredUserPermissions: "MANAGE_GUILD"
+            requiredUserPermissions: "ManageGuild"
         });
     }
 
@@ -142,7 +143,9 @@ export class TicketsCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ): Promise<any> {
         const {
             database,
             moderation: { tickets }

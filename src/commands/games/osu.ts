@@ -1,5 +1,11 @@
 import { Args, Command } from "@sapphire/framework";
-import { ButtonInteraction, Message } from "discord.js";
+import {
+    ButtonInteraction,
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    Message
+} from "discord.js";
 import moment from "moment";
 import { User } from "node-osu";
 
@@ -54,7 +60,7 @@ export class OsuCommand extends Command {
     /**
      * Execute Slash Comman
      */
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             games: { osu }
         } = this.container;
@@ -74,7 +80,7 @@ export class OsuCommand extends Command {
     }
 
     private async createMessage(
-        interaction: Message | Command.ChatInputInteraction<"cached">,
+        interaction: Message | ChatInputCommandInteraction<"cached">,
         user: User
     ) {
         const { games, util } = this.container;
@@ -118,7 +124,7 @@ export class OsuCommand extends Command {
                     .button()
                     .setCustomId("best-user-beatmaps")
                     .setLabel("Best Beatmaps")
-                    .setStyle("PRIMARY")
+                    .setStyle(ButtonStyle.Primary)
             );
 
         const message = await interaction.reply({
@@ -128,7 +134,7 @@ export class OsuCommand extends Command {
         });
 
         const collector = message.createMessageComponentCollector({
-            componentType: "BUTTON",
+            componentType: ComponentType.Button,
             filter: (i) => i.customId === "best-user-beatmaps"
         });
 

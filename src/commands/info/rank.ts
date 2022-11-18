@@ -1,5 +1,5 @@
 import { Command, Args } from "@sapphire/framework";
-import { Message } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "discord.js";
 
 export class RankCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -46,7 +46,7 @@ export class RankCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         let user = interaction.options.getUser("user");
 
         if (!user) user = interaction.user;

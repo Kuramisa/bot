@@ -3,6 +3,7 @@ import { Subcommand } from "@sapphire/plugin-subcommands";
 import toHex from "colornames";
 import fromHex from "color-namer";
 import isHexColor from "is-hex-color";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class CardCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -105,7 +106,9 @@ export class CardCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ): Promise<any> {
         const { database, util } = this.container;
 
         const { options, user } = interaction;

@@ -1,4 +1,10 @@
 import { Command } from "@sapphire/framework";
+import {
+    ButtonStyle,
+    ChannelType,
+    ChatInputCommandInteraction,
+    ComponentType
+} from "discord.js";
 import { BREAK } from "graphql";
 
 export class GameCommand extends Command {
@@ -7,8 +13,8 @@ export class GameCommand extends Command {
             ...opts,
             name: "game",
             description: "Setup Game channels, join to create or more",
-            requiredClientPermissions: ["MANAGE_CHANNELS"],
-            requiredUserPermissions: ["MANAGE_CHANNELS"],
+            requiredClientPermissions: "ManageChannels",
+            requiredUserPermissions: "ManageChannels",
             preconditions: ["PremiumOnly"]
         });
     }
@@ -127,7 +133,7 @@ export class GameCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, games, util } = this.container;
         const { options, guild, channel } = interaction;
 
@@ -174,8 +180,9 @@ export class GameCommand extends Command {
                     fetchReply: true
                 });
 
-                const category = await guild.channels.create(gameToUse, {
-                    type: "GUILD_CATEGORY"
+                const category = await guild.channels.create({
+                    name: gameToUse,
+                    type: ChannelType.GuildCategory
                 });
 
                 db.games.settings[forObj].category = category.id;
@@ -184,18 +191,16 @@ export class GameCommand extends Command {
 
                 await message.edit({ embeds: [embed] });
 
-                const textChannel = await guild.channels.create(
-                    `${gameToUse}-chat`,
-                    {
-                        parent: category,
-                        type: "GUILD_TEXT"
-                    }
-                );
+                const textChannel = await guild.channels.create({
+                    name: `${gameToUse}-chat`,
+                    parent: category,
+                    type: ChannelType.GuildText
+                });
 
                 db.games.settings[forObj].channels.chat = textChannel.id;
 
                 embed.setDescription(
-                    embed.description + `\n✅ ${textChannel} created`
+                    embed.toJSON().description + `\n✅ ${textChannel} created`
                 );
 
                 await message.edit({ embeds: [embed] });
@@ -207,18 +212,18 @@ export class GameCommand extends Command {
                             .button()
                             .setCustomId("predefined_channels")
                             .setLabel("Predefined")
-                            .setStyle("SUCCESS"),
+                            .setStyle(ButtonStyle.Success),
                         util
                             .button()
                             .setCustomId("jtc_channel")
                             .setLabel("Join to Create")
-                            .setStyle("PRIMARY")
+                            .setStyle(ButtonStyle.Primary)
                     );
 
                 const differentEmbed = util
                     .embed()
                     .setDescription(
-                        embed.description +
+                        embed.toJSON().description +
                             "What kind of Channel/s do you want?"
                     );
 
@@ -228,7 +233,7 @@ export class GameCommand extends Command {
                 });
 
                 const buttonClick = await message.awaitMessageComponent({
-                    componentType: "BUTTON",
+                    componentType: ComponentType.Button,
                     filter: (i) =>
                         (i.customId === "predefined_channels" ||
                             i.customId === "jtc_channel") &&
@@ -236,19 +241,18 @@ export class GameCommand extends Command {
                 });
 
                 if (buttonClick.customId === "jtc_channel") {
-                    const jtcChannel = await guild.channels.create(
-                        "Join to Create",
-                        {
-                            type: "GUILD_VOICE",
-                            parent: category
-                        }
-                    );
+                    const jtcChannel = await guild.channels.create({
+                        name: "Join to Create",
+                        type: ChannelType.GuildVoice,
+                        parent: category
+                    });
 
                     db.games.settings[forObj].jtc.enabled = true;
                     db.games.settings[forObj].jtc.channel = jtcChannel.id;
 
                     embed.setDescription(
-                        embed.description + `\n✅ ${jtcChannel} created`
+                        embed.toJSON().description +
+                            `\n✅ ${jtcChannel} created`
                     );
 
                     await message.edit({ embeds: [embed], components: [] });
@@ -286,7 +290,7 @@ export class GameCommand extends Command {
                         });
 
                     embed.setDescription(
-                        embed.description + "\n\n**Voice Channels**\n"
+                        embed.toJSON().description + "\n\n**Voice Channels**\n"
                     );
 
                     await message.edit({ embeds: [embed], components: [] });
@@ -296,20 +300,21 @@ export class GameCommand extends Command {
                         const field = fields[i];
                         const channelName = field.customId.split("_")[0];
                         for (let j = 1; j <= parseInt(field.value); j++) {
-                            const channel = await guild.channels.create(
-                                `${util.capFirstLetter(channelName)} #${j}`,
-                                {
-                                    parent: category,
-                                    type: "GUILD_VOICE"
-                                }
-                            );
+                            const channel = await guild.channels.create({
+                                name: `${util.capFirstLetter(
+                                    channelName
+                                )} #${j}`,
+                                parent: category,
+                                type: ChannelType.GuildVoice
+                            });
 
                             db.games.settings[forObj].channels[
                                 channelName + j
                             ] = channel.id;
 
                             embed.setDescription(
-                                embed.description + `✅ ${channel} created\n`
+                                embed.toJSON().description +
+                                    `✅ ${channel} created\n`
                             );
 
                             if (message)
@@ -320,7 +325,7 @@ export class GameCommand extends Command {
                                 });
                         }
 
-                        embed.setDescription(`${embed.description}\n`);
+                        embed.setDescription(`${embed.toJSON().description}\n`);
                     }
 
                     embed.setTitle(`${gameToUse} Setup has finished`);
@@ -356,9 +361,9 @@ export class GameCommand extends Command {
 
                 await interaction.deferReply({ ephemeral: true });
 
-                if (category.type !== "GUILD_CATEGORY") return;
+                if (category.type !== ChannelType.GuildCategory) return;
 
-                const channels = category.children.toJSON();
+                const channels = category.children.cache.toJSON();
 
                 for (let i = 0; i < channels.length; i++) {
                     const channel = channels[i];

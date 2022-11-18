@@ -3,7 +3,11 @@ import moment from "moment";
 import WarframeMarket from "warframe-market";
 import WarframeItems from "warframe-items";
 import { Platform } from "warframe-market/lib/typings";
-import { CommandInteraction, AutocompleteInteraction } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    AutocompleteInteraction,
+    ButtonStyle
+} from "discord.js";
 
 const { MARKET_API } = process.env;
 
@@ -43,7 +47,7 @@ export default class Warframe {
         );
     }
 
-    async orders(interaction: CommandInteraction<"cached">) {
+    async orders(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const { options, user } = interaction;
@@ -88,12 +92,12 @@ export default class Warframe {
                 .button()
                 .setCustomId("orders_sellers")
                 .setLabel("Sellers")
-                .setStyle("PRIMARY"),
+                .setStyle(ButtonStyle.Primary),
             util
                 .button()
                 .setCustomId("orders_buyers")
                 .setLabel("Buyers")
-                .setStyle("SUCCESS")
+                .setStyle(ButtonStyle.Success)
         ];
 
         const navButtons = [
@@ -102,13 +106,13 @@ export default class Warframe {
                 .setCustomId("previous_order")
                 .setLabel("Order")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             util
                 .button()
                 .setCustomId("next_order")
                 .setLabel("Order")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const bottomButtons = [
@@ -116,7 +120,7 @@ export default class Warframe {
                 .button()
                 .setCustomId("create_paste")
                 .setLabel("Create Paste")
-                .setStyle("SUCCESS")
+                .setStyle(ButtonStyle.Success)
         ];
 
         const typeRow = util.row().setComponents(typeButtons);

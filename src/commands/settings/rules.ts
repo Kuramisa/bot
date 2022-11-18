@@ -1,4 +1,6 @@
+import database from "#struct/database";
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ChatInputCommandInteraction, TextInputStyle } from "discord.js";
 
 export class RulesCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -6,7 +8,7 @@ export class RulesCommand extends Subcommand {
             ...opts,
             name: "rules",
             description: "Set/Check/Edit Rules",
-            requiredUserPermissions: "MANAGE_GUILD"
+            requiredUserPermissions: "ManageGuild"
         });
     }
 
@@ -31,7 +33,9 @@ export class RulesCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ): Promise<any> {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
@@ -49,7 +53,7 @@ export class RulesCommand extends Subcommand {
                 ephemeral: true
             });
 
-        if (!channel.isText())
+        if (!channel.isTextBased())
             return interaction.reply({
                 content: "Make sure your rules channel is text based",
                 ephemeral: true
@@ -85,7 +89,7 @@ export class RulesCommand extends Subcommand {
                                     .input()
                                     .setCustomId("rules_input_create")
                                     .setLabel("New Rules")
-                                    .setStyle("PARAGRAPH")
+                                    .setStyle(TextInputStyle.Paragraph)
                             )
                     );
 
@@ -118,7 +122,7 @@ export class RulesCommand extends Subcommand {
                                     .input()
                                     .setCustomId("rules_input_edit")
                                     .setLabel("Current Rules")
-                                    .setStyle("PARAGRAPH")
+                                    .setStyle(TextInputStyle.Paragraph)
                                     .setValue(message.content)
                             )
                     );

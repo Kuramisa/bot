@@ -1,4 +1,8 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import {
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction
+} from "discord.js";
 
 export class MusicCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -113,7 +117,9 @@ export class MusicCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ): Promise<any> {
         const {
             systems: { music },
             util
@@ -133,11 +139,11 @@ export class MusicCommand extends Subcommand {
             });
 
         if (
-            guild.me?.voice.channelId &&
-            voiceChannel.id !== guild.me.voice.channelId
+            guild.members.me?.voice.channelId &&
+            voiceChannel.id !== guild.members.me.voice.channelId
         )
             return interaction.reply({
-                content: `I'm already playing music in ${guild.me.voice.channel}`,
+                content: `I'm already playing music in ${guild.members.me.voice.channel}`,
                 ephemeral: true
             });
 
@@ -360,7 +366,7 @@ export class MusicCommand extends Subcommand {
                         });
                     }
                     case "stop": {
-                        if (!member.permissions.has("MOVE_MEMBERS"))
+                        if (!member.permissions.has("MoveMembers"))
                             return interaction.reply({
                                 content:
                                     "You cannot stop the player, not enough permissions",
@@ -478,9 +484,7 @@ export class MusicCommand extends Subcommand {
         }
     }
 
-    async contextMenuRun(
-        interaction: Subcommand.ContextMenuInteraction<"cached">
-    ) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const {
             systems: { music },
             util
@@ -507,11 +511,11 @@ export class MusicCommand extends Subcommand {
             });
 
         if (
-            guild.me?.voice.channelId &&
-            voiceChannel.id !== guild.me.voice.channelId
+            guild.members.me?.voice.channelId &&
+            voiceChannel.id !== guild.members.me.voice.channelId
         )
             return interaction.reply({
-                content: `You have to be in ${guild.me.voice.channel} to queue a track`,
+                content: `You have to be in ${guild.members.me.voice.channel} to queue a track`,
                 ephemeral: true
             });
 

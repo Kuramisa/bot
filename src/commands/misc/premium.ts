@@ -1,5 +1,10 @@
 import { Command, PreconditionContainerSingle } from "@sapphire/framework";
-import { Message } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    Message
+} from "discord.js";
 
 export class PremiumInfoCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -131,17 +136,17 @@ export class PremiumInfoCommand extends Command {
                     .button()
                     .setCustomId("prices_page")
                     .setLabel("Prices")
-                    .setStyle("DANGER"),
+                    .setStyle(ButtonStyle.Danger),
                 util
                     .button()
                     .setCustomId("info_page")
                     .setLabel("Info")
-                    .setStyle("SECONDARY"),
+                    .setStyle(ButtonStyle.Secondary),
                 util
                     .button()
                     .setCustomId("commands_page")
                     .setLabel("Commands")
-                    .setStyle("SUCCESS")
+                    .setStyle(ButtonStyle.Success)
             );
 
         let currentEmbed = [info];
@@ -152,7 +157,7 @@ export class PremiumInfoCommand extends Command {
         });
 
         const collector = msg.createMessageComponentCollector({
-            componentType: "BUTTON",
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "info_page" ||
                     i.customId === "prices_page" ||
@@ -185,7 +190,7 @@ export class PremiumInfoCommand extends Command {
             });
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { options, user } = interaction;
         const {
             client,
@@ -229,17 +234,17 @@ export class PremiumInfoCommand extends Command {
                             .button()
                             .setCustomId("prices_page")
                             .setLabel("Prices")
-                            .setStyle("DANGER"),
+                            .setStyle(ButtonStyle.Danger),
                         util
                             .button()
                             .setCustomId("info_page")
                             .setLabel("Info")
-                            .setStyle("SECONDARY"),
+                            .setStyle(ButtonStyle.Secondary),
                         util
                             .button()
                             .setCustomId("commands_page")
                             .setLabel("Commands")
-                            .setStyle("SUCCESS")
+                            .setStyle(ButtonStyle.Success)
                     );
 
                 let currentEmbed = [info];
@@ -251,7 +256,7 @@ export class PremiumInfoCommand extends Command {
                 });
 
                 const collector = msg.createMessageComponentCollector({
-                    componentType: "BUTTON",
+                    componentType: ComponentType.Button,
                     filter: (i) =>
                         (i.customId === "info_page" ||
                             i.customId === "prices_page" ||

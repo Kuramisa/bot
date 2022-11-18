@@ -1,4 +1,9 @@
-import { Collection, CommandInteraction, MessageEmbed } from "discord.js";
+import {
+    Collection,
+    ChatInputCommandInteraction,
+    EmbedBuilder,
+    ButtonStyle
+} from "discord.js";
 
 import { Container } from "@sapphire/pieces";
 import ShinobiGame from "..";
@@ -28,7 +33,7 @@ export default class ShinobiPlayers {
         });
     }
 
-    me(interaction: CommandInteraction<"cached">) {
+    me(interaction: ChatInputCommandInteraction<"cached">) {
         const { user } = interaction;
 
         const player = this.get(user.id);
@@ -81,7 +86,7 @@ export default class ShinobiPlayers {
             .setThumbnail(clan.icon);
     }
 
-    async pagination(interaction: CommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const players = this.getAll();
@@ -93,19 +98,19 @@ export default class ShinobiPlayers {
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const row = util.row().addComponents(buttons);
 
         const embeds = players.map((player) =>
             this.embed(player)
-        ) as MessageEmbed[];
+        ) as EmbedBuilder[];
 
         if (interaction.deferred === false) await interaction.deferReply();
 

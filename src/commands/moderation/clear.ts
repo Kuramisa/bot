@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class ClearCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -6,7 +7,7 @@ export class ClearCommand extends Command {
             ...opts,
             name: "clear",
             description: "Clear channel messages",
-            requiredUserPermissions: "MANAGE_MESSAGES"
+            requiredUserPermissions: "ManageMessages"
         });
     }
 
@@ -31,18 +32,18 @@ export class ClearCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const { options, guild, channel } = interaction;
 
-        if (!guild.me?.permissions.has("MANAGE_MESSAGES"))
+        if (!guild.members.me?.permissions.has("ManageMessages"))
             return interaction.reply({
                 content: "Bot missing permissiosns `ManageMessages`",
                 ephemeral: true
             });
 
-        if (!channel || !channel.isText()) return;
+        if (!channel || !channel.isTextBased()) return;
 
         const amount = options.getNumber("amount", true);
         const member = options.getMember("target");

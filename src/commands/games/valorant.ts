@@ -1,6 +1,12 @@
 import { Args } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { Message, MessageEmbed } from "discord.js";
+import {
+    Message,
+    EmbedBuilder,
+    ChatInputCommandInteraction,
+    ButtonStyle,
+    ComponentType
+} from "discord.js";
 
 export class ValorantCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -113,7 +119,7 @@ export class ValorantCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             games: { valorant }
         } = this.container;
@@ -220,7 +226,7 @@ export class ValorantCommand extends Subcommand {
 
         let page = 0;
 
-        let embeds: MessageEmbed[];
+        let embeds: EmbedBuilder[];
 
         const pageRow = this.container.util
             .row()
@@ -229,12 +235,12 @@ export class ValorantCommand extends Subcommand {
                     .button()
                     .setCustomId("previous_page")
                     .setEmoji("⬅️")
-                    .setStyle("SECONDARY"),
+                    .setStyle(ButtonStyle.Secondary),
                 this.container.util
                     .button()
                     .setCustomId("next_page")
                     .setEmoji("➡️")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         const menuRow = this.container.util
@@ -244,17 +250,17 @@ export class ValorantCommand extends Subcommand {
                     .button()
                     .setCustomId("profile_page")
                     .setLabel("Profile")
-                    .setStyle("SUCCESS"),
+                    .setStyle(ButtonStyle.Success),
                 this.container.util
                     .button()
                     .setCustomId("sprays_page")
                     .setLabel("Sprays")
-                    .setStyle("PRIMARY"),
+                    .setStyle(ButtonStyle.Primary),
                 this.container.util
                     .button()
                     .setCustomId("weapons_page")
                     .setLabel("Weapons")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         const weapons = await Promise.all(
@@ -515,7 +521,7 @@ export class ValorantCommand extends Subcommand {
         const msg = await message.reply({ components: [row] });
 
         const collector = msg.createMessageComponentCollector({
-            componentType: "SELECT_MENU",
+            componentType: ComponentType.SelectMenu,
             filter: (i) =>
                 i.customId === "choose_act_rank" && i.user.id === author.id,
             time: 35000
@@ -577,17 +583,17 @@ export class ValorantCommand extends Subcommand {
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             this.container.util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const row = this.container.util.row().addComponents(buttons);
 
-        let embeds: MessageEmbed[] = [];
+        let embeds: EmbedBuilder[] = [];
 
         switch (storeType) {
             case "featured": {
@@ -701,7 +707,7 @@ export class ValorantCommand extends Subcommand {
         });
 
         const collector = msg.createMessageComponentCollector({
-            componentType: "BUTTON",
+            componentType: ComponentType.Button,
             filter: (i) =>
                 i.user.id === author.id &&
                 (i.customId === "previous_page" || i.customId === "next_page"),

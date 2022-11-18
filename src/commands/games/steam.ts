@@ -1,5 +1,10 @@
 import { Args, Command } from "@sapphire/framework";
-import { Message } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    Message
+} from "discord.js";
 import moment from "moment";
 
 export class SteamCommand extends Command {
@@ -60,12 +65,12 @@ export class SteamCommand extends Command {
                         .button()
                         .setCustomId("steam-profile")
                         .setLabel("Profile")
-                        .setStyle("SUCCESS"),
+                        .setStyle(ButtonStyle.Success),
                     util
                         .button()
                         .setCustomId("steam-games")
                         .setLabel("Games")
-                        .setStyle("PRIMARY")
+                        .setStyle(ButtonStyle.Primary)
                 );
 
             const navRow = util
@@ -75,12 +80,12 @@ export class SteamCommand extends Command {
                         .button()
                         .setCustomId("prev_page")
                         .setEmoji("◀")
-                        .setStyle("SECONDARY"),
+                        .setStyle(ButtonStyle.Secondary),
                     util
                         .button()
                         .setCustomId("next_page")
                         .setEmoji("▶")
-                        .setStyle("SECONDARY")
+                        .setStyle(ButtonStyle.Secondary)
                 );
 
             let page = 0;
@@ -91,7 +96,7 @@ export class SteamCommand extends Command {
             });
 
             const collector = msg.createMessageComponentCollector({
-                componentType: "BUTTON",
+                componentType: ComponentType.Button,
                 filter: (i) =>
                     i.customId === "steam-profile" ||
                     i.customId === "steam-games" ||
@@ -195,7 +200,7 @@ export class SteamCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             games: { steam },
             util
@@ -224,12 +229,12 @@ export class SteamCommand extends Command {
                         .button()
                         .setCustomId("steam-profile")
                         .setLabel("Profile")
-                        .setStyle("SUCCESS"),
+                        .setStyle(ButtonStyle.Success),
                     util
                         .button()
                         .setCustomId("steam-games")
                         .setLabel("Games")
-                        .setStyle("PRIMARY")
+                        .setStyle(ButtonStyle.Primary)
                 );
 
             const navRow = util
@@ -239,12 +244,12 @@ export class SteamCommand extends Command {
                         .button()
                         .setCustomId("prev_page")
                         .setEmoji("◀")
-                        .setStyle("SECONDARY"),
+                        .setStyle(ButtonStyle.Secondary),
                     util
                         .button()
                         .setCustomId("next_page")
                         .setEmoji("▶")
-                        .setStyle("SECONDARY")
+                        .setStyle(ButtonStyle.Secondary)
                 );
 
             let page = 0;
@@ -256,7 +261,7 @@ export class SteamCommand extends Command {
             });
 
             const collector = message.createMessageComponentCollector({
-                componentType: "BUTTON",
+                componentType: ComponentType.Button,
                 filter: (i) =>
                     i.customId === "steam-profile" ||
                     i.customId === "steam-games" ||

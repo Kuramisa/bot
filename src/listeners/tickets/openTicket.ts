@@ -1,5 +1,5 @@
 import { Listener } from "@sapphire/framework";
-import { ButtonInteraction } from "discord.js";
+import { ButtonInteraction, ButtonStyle, ChannelType } from "discord.js";
 
 export class OpenTicketListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -30,31 +30,24 @@ export class OpenTicketListener extends Listener {
                 ephemeral: true
             });
 
-        if (category.type !== "GUILD_CATEGORY") return;
+        if (category.type !== ChannelType.GuildCategory) return;
 
         const id = Math.floor(Math.random() * 99999) + 10000;
 
         const type = customId.split("_ticket")[0];
         const name = type.concat(`-${id}`);
 
-        const channel = await guild.channels.create(name, {
+        const channel = await guild.channels.create({
+            name,
             parent: category,
             permissionOverwrites: [
                 {
                     id: guild.roles.everyone.id,
-                    deny: [
-                        "SEND_MESSAGES",
-                        "VIEW_CHANNEL",
-                        "READ_MESSAGE_HISTORY"
-                    ]
+                    deny: ["SendMessages", "ViewChannel", "ReadMessageHistory"]
                 },
                 {
                     id: member.id,
-                    allow: [
-                        "SEND_MESSAGES",
-                        "VIEW_CHANNEL",
-                        "READ_MESSAGE_HISTORY"
-                    ]
+                    allow: ["SendMessages", "ViewChannel", "ReadMessageHistory"]
                 }
             ]
         });
@@ -81,13 +74,13 @@ export class OpenTicketListener extends Listener {
                     .button()
                     .setCustomId("lock_ticket")
                     .setLabel("Lock")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
                     .setEmoji("🔒"),
                 util
                     .button()
                     .setCustomId("close_ticket")
                     .setLabel("Save & Close")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
                     .setEmoji("💾")
             );
 

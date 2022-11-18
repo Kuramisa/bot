@@ -1,5 +1,5 @@
 import { Args, Command } from "@sapphire/framework";
-import { Message } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "discord.js";
 import akinator from "discord.js-akinator";
 
 export class AkinatorCommand extends Command {
@@ -32,7 +32,7 @@ export class AkinatorCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const gameType = interaction.options.getString("game_type")
             ? interaction.options.getString("game_type")
             : "character";

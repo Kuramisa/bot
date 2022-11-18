@@ -1,7 +1,7 @@
 import { Piece, Precondition } from "@sapphire/framework";
 import {
-    CommandInteraction,
-    ContextMenuInteraction,
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction,
     Message,
     Guild,
     User
@@ -24,7 +24,9 @@ export class PremiumOnlyPrecondition extends Precondition {
             : this.error({ message: "Guild or User not premium" });
     }
 
-    override async chatInputRun(interaction: CommandInteraction<"cached">) {
+    override async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ) {
         const resultUser = await this.checkPremiumUser(interaction.user);
         const resultGuild = await this.checkPremiumGuild(interaction.guild);
 
@@ -34,7 +36,7 @@ export class PremiumOnlyPrecondition extends Precondition {
     }
 
     override async contextMenuRun(
-        interaction: ContextMenuInteraction<"cached">
+        interaction: ContextMenuCommandInteraction<"cached">
     ) {
         const resultUser = await this.checkPremiumUser(interaction.user);
         const resultGuild = await this.checkPremiumGuild(interaction.guild);

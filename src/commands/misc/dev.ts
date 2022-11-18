@@ -1,4 +1,5 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ChatInputCommandInteraction, TextInputStyle } from "discord.js";
 
 export class DevCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -59,7 +60,7 @@ export class DevCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Report)
      */
-    async chatInputReport(interaction: Subcommand.ChatInputInteraction) {
+    async chatInputReport(interaction: ChatInputCommandInteraction) {
         const { devReports, util } = this.container;
         const { options, user } = interaction;
 
@@ -80,7 +81,7 @@ export class DevCommand extends Subcommand {
                             .setPlaceholder(
                                 "Please provide as much details if you can (You can use Discord Markdown)"
                             )
-                            .setStyle("PARAGRAPH")
+                            .setStyle(TextInputStyle.Paragraph)
                             .setMinLength(10)
                             .setMaxLength(1000)
                             .setRequired(true)
@@ -114,7 +115,7 @@ export class DevCommand extends Subcommand {
     /**
      * Excute Slash Subcommand (Suggest)
      */
-    async chatInputSuggest(interaction: Subcommand.ChatInputInteraction) {
+    async chatInputSuggest(interaction: ChatInputCommandInteraction) {
         const { devSuggestions, util } = this.container;
         const { options, user } = interaction;
 
@@ -135,7 +136,7 @@ export class DevCommand extends Subcommand {
                             .setPlaceholder(
                                 "Please provide as much details if you can (You can use Discord Markdown)"
                             )
-                            .setStyle("PARAGRAPH")
+                            .setStyle(TextInputStyle.Paragraph)
                             .setMinLength(10)
                             .setMaxLength(1000)
                             .setRequired(true)

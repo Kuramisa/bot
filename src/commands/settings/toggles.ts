@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class TogglesCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -6,7 +7,7 @@ export class TogglesCommand extends Command {
             ...opts,
             name: "toggles",
             description: "Manage your toggles",
-            requiredUserPermissions: "MANAGE_GUILD"
+            requiredUserPermissions: "ManageGuild"
         });
     }
 
@@ -35,7 +36,7 @@ export class TogglesCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;

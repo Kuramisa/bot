@@ -1,5 +1,5 @@
 import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
-import { RawTrackData } from "@mateie/discord-player";
+import { RawTrackData } from "discord-player";
 
 export interface IPlaylist extends HydratedDocument<any> {
     memberId: string;

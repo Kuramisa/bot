@@ -1,9 +1,11 @@
 import { Listener } from "@sapphire/framework";
 import {
-    MessageButton,
-    MessageButtonStyleResolvable,
+    ButtonBuilder,
+    ButtonStyle,
     VoiceState,
-    Collection
+    Collection,
+    ChannelType,
+    ComponentType
 } from "discord.js";
 
 export class JTCListener extends Listener {
@@ -20,7 +22,11 @@ export class JTCListener extends Listener {
         const { database, util } = this.container;
         const { guild, member, channel } = state;
         if (!member) return;
-        if (!channel || !channel.parent || channel.type !== "GUILD_VOICE")
+        if (
+            !channel ||
+            !channel.parent ||
+            channel.type !== ChannelType.GuildVoice
+        )
             return;
 
         const db = await database.guilds.get(guild);
@@ -46,14 +52,14 @@ export class JTCListener extends Listener {
             .setTitle(`${gameName} - Join to Create`)
             .setDescription("⬇ Choose from below ⬇");
 
-        const colors: MessageButtonStyleResolvable[] = [
-            "PRIMARY",
-            "DANGER",
-            "SECONDARY"
+        const colors: ButtonStyle[] = [
+            ButtonStyle.Primary,
+            ButtonStyle.Danger,
+            ButtonStyle.Secondary
         ];
 
         try {
-            const buttons: Collection<number, MessageButton> = new Collection();
+            const buttons: Collection<number, ButtonBuilder> = new Collection();
 
             gameSettings.types.forEach((type, i) =>
                 buttons.set(
@@ -75,13 +81,16 @@ export class JTCListener extends Listener {
             });
 
             const buttonClick = await message.awaitMessageComponent({
-                componentType: "BUTTON",
+                componentType: ComponentType.Button,
                 filter: (i) =>
-                    buttons.some((button) => button.customId === i.customId)
+                    buttons.some(
+                        (button) =>
+                            (button.toJSON() as any).customId === i.customId
+                    )
             });
 
             await message.edit({
-                components: message.components.map((row) =>
+                components: message.components.map((row: any) =>
                     row.setComponents(
                         buttons.map((button) => button.setDisabled(true))
                     )
@@ -97,30 +106,28 @@ export class JTCListener extends Listener {
             await buttonClick.deferUpdate();
 
             const button = buttons.find(
-                (button) => buttonClick.customId === button.customId
-            );
+                (button: any) => buttonClick.customId === button.customId
+            ) as any;
             if (!button) return;
 
-            const channels = channel.parent.children.filter((channel) =>
+            const channels = channel.parent.children.cache.filter((channel) =>
                 channel.name.includes(button.label as string)
             );
 
-            const newChannel = await channel.parent.createChannel(
-                `${button.label} #${channels.size + 1}`,
-                {
-                    type: "GUILD_VOICE",
-                    permissionOverwrites: [
-                        {
-                            id: member.id,
-                            allow: [
-                                "MUTE_MEMBERS",
-                                "MOVE_MEMBERS",
-                                "CREATE_INSTANT_INVITE"
-                            ]
-                        }
-                    ]
-                }
-            );
+            const newChannel = await channel.parent.children.create({
+                name: `${button.label} #${channels.size + 1}`,
+                type: ChannelType.GuildVoice,
+                permissionOverwrites: [
+                    {
+                        id: member.id,
+                        allow: [
+                            "MuteMembers",
+                            "MoveMembers",
+                            "CreateInstantInvite"
+                        ]
+                    }
+                ]
+            });
 
             await member.voice.setChannel(newChannel);
 

@@ -1,5 +1,10 @@
 import { Command } from "@sapphire/framework";
-import { Message, MessageActionRowComponent, MessageButton } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    Message
+} from "discord.js";
 import WYR from "either-wyr";
 
 export class EitherCommand extends Command {
@@ -18,7 +23,7 @@ export class EitherCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         let wyr = await this.getQuestion();
@@ -30,7 +35,7 @@ export class EitherCommand extends Command {
         });
 
         const collector = message.createMessageComponentCollector({
-            componentType: "BUTTON",
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "question_1_btn" ||
                     i.customId === "question_2_btn" ||
@@ -97,7 +102,7 @@ export class EitherCommand extends Command {
         });
 
         const collector = msg.createMessageComponentCollector({
-            componentType: "BUTTON",
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "question_1_btn" ||
                     i.customId === "question_2_btn" ||
@@ -169,17 +174,17 @@ export class EitherCommand extends Command {
                     .button()
                     .setCustomId("question_1_btn")
                     .setLabel(util.shorten(wyr.questions[0].question, 79))
-                    .setStyle("PRIMARY"),
+                    .setStyle(ButtonStyle.Primary),
                 util
                     .button()
                     .setCustomId("question_2_btn")
                     .setLabel(util.shorten(wyr.questions[1].question, 79))
-                    .setStyle("DANGER"),
+                    .setStyle(ButtonStyle.Danger),
                 util
                     .button()
                     .setCustomId("next_question")
                     .setLabel("Next Question")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         return { questions: wyr.questions, embed, row };

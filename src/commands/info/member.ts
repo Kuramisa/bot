@@ -1,5 +1,9 @@
 import { Command, Args } from "@sapphire/framework";
-import { Message } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction,
+    Message
+} from "discord.js";
 
 export class MemberCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -52,13 +56,13 @@ export class MemberCommand extends Command {
             member
         );
 
-        return message.reply(options);
+        return message.reply(options as any);
     }
 
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         let member = interaction.options.getMember("member");
 
         if (!member) member = interaction.member;
@@ -74,15 +78,13 @@ export class MemberCommand extends Command {
             member
         );
 
-        return interaction.reply(options);
+        return interaction.reply(options as any);
     }
 
     /**
      * Execute Context Menu
      */
-    async contextMenuRun(
-        interaction: Command.ContextMenuInteraction<"cached">
-    ) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const { guild, targetId } = interaction;
 
         const member = await guild.members.fetch(targetId);
@@ -103,6 +105,6 @@ export class MemberCommand extends Command {
             member
         );
 
-        return interaction.reply(options);
+        return interaction.reply(options as any);
     }
 }

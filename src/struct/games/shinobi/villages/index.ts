@@ -1,5 +1,9 @@
 import ShinobiGame from "..";
-import { Collection, CommandInteraction } from "discord.js";
+import {
+    Collection,
+    ChatInputCommandInteraction,
+    ButtonStyle
+} from "discord.js";
 import { ShinobiVillage } from "@types";
 import Villages from "./Villages";
 import Shinobi from "#schemas/Shinobi";
@@ -29,7 +33,7 @@ export default class ShinobiVillages {
             .setThumbnail(village.icon)
             .setFooter({ text: `Population: ${village.population}` });
 
-    async pagination(interaction: CommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const villages = this.getAll();
@@ -41,12 +45,12 @@ export default class ShinobiVillages {
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const row = util.row().addComponents(buttons);

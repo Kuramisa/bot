@@ -1,7 +1,7 @@
 import { Piece, Precondition } from "@sapphire/framework";
 import {
-    CommandInteraction,
-    ContextMenuInteraction,
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction,
     Message
 } from "discord.js";
 
@@ -16,10 +16,10 @@ export class OwnerOnlyPrecondition extends Precondition {
     override messageRun = (message: Message) =>
         this.checkOwner(message.author.id);
 
-    override chatInputRun = (interaction: CommandInteraction) =>
+    override chatInputRun = (interaction: ChatInputCommandInteraction) =>
         this.checkOwner(interaction.user.id);
 
-    override contextMenuRun = (interaction: ContextMenuInteraction) =>
+    override contextMenuRun = (interaction: ContextMenuCommandInteraction) =>
         this.checkOwner(interaction.user.id);
 
     private checkOwner = (userId: string) =>

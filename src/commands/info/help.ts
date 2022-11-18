@@ -1,6 +1,6 @@
 import { Args } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { Message } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "discord.js";
 
 export class HelpCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -98,7 +98,7 @@ export class HelpCommand extends Subcommand {
             .embed()
             .setTitle(`${client.user?.username} Help`)
             .setThumbnail(
-                client.user?.displayAvatarURL({ dynamic: true }) as string
+                client.user?.displayAvatarURL({ extension: "gif" }) as string
             )
             .setDescription(description);
 
@@ -108,7 +108,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (All)
      */
-    async chatInputAll(interaction: Subcommand.ChatInputInteraction) {
+    async chatInputAll(interaction: ChatInputCommandInteraction) {
         const { client, util, stores } = this.container;
 
         const categories = stores.get("commands").categories;
@@ -134,7 +134,7 @@ export class HelpCommand extends Subcommand {
             .embed()
             .setTitle(`${client.user?.username} Help`)
             .setThumbnail(
-                client.user?.displayAvatarURL({ dynamic: true }) as string
+                client.user?.displayAvatarURL({ extension: "gif" }) as string
             )
             .setDescription(description);
 
@@ -169,7 +169,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Category)
      */
-    async chatInputCategory(interaction: Subcommand.ChatInputInteraction) {
+    async chatInputCategory(interaction: ChatInputCommandInteraction) {
         const { options } = interaction;
         const { client, util, stores } = this.container;
 
@@ -231,7 +231,7 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Command)
      */
-    async chatInputCommand(interaction: Subcommand.ChatInputInteraction) {
+    async chatInputCommand(interaction: ChatInputCommandInteraction) {
         const { util, stores } = this.container;
         const { options } = interaction;
 

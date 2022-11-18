@@ -1,6 +1,10 @@
 import { Container } from "@sapphire/pieces";
 import ShinobiGame from "..";
-import { Collection, CommandInteraction } from "discord.js";
+import {
+    Collection,
+    ChatInputCommandInteraction,
+    ButtonStyle
+} from "discord.js";
 import { ShinobiClan } from "@types";
 
 import Clans from "./Clans";
@@ -40,7 +44,7 @@ export default class ShinobiClans {
             .setThumbnail(clan.icon)
             .setFooter({ text: `Members: ${clan.members}` });
 
-    async pagination(interaction: CommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const clans = this.getAll();
@@ -52,12 +56,12 @@ export default class ShinobiClans {
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const row = util.row().addComponents(buttons);

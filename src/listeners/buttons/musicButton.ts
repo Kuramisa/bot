@@ -1,5 +1,5 @@
 import { Listener } from "@sapphire/framework";
-import { ButtonInteraction } from "discord.js";
+import { ButtonInteraction, ButtonStyle, TextInputStyle } from "discord.js";
 
 export class MusicButtonsListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -52,7 +52,7 @@ export class MusicButtonsListener extends Listener {
 
         if (queue.connection.channel.id !== voiceChannel.id)
             return interaction.reply({
-                content: `I'm already playing music in ${guild.me?.voice.channel}`,
+                content: `I'm already playing music in ${guild.members.me?.voice.channel}`,
                 ephemeral: true
             });
 
@@ -122,7 +122,7 @@ export class MusicButtonsListener extends Listener {
                     .button()
                     .setCustomId("resume_track")
                     .setLabel("Resume")
-                    .setStyle("SUCCESS") as any;
+                    .setStyle(ButtonStyle.Success) as any;
 
                 rows[1].components[0] = playButton;
 
@@ -146,7 +146,7 @@ export class MusicButtonsListener extends Listener {
                     .button()
                     .setCustomId("pause_track")
                     .setLabel("Pause")
-                    .setStyle("DANGER") as any;
+                    .setStyle(ButtonStyle.Danger) as any;
 
                 rows[1].components[0] = pauseButton;
 
@@ -201,7 +201,7 @@ export class MusicButtonsListener extends Listener {
                     .button()
                     .setCustomId("cancel_track_select")
                     .setLabel("Cancel Selection")
-                    .setStyle("SECONDARY") as any;
+                    .setStyle(ButtonStyle.Secondary) as any;
 
                 const dropdown = [
                     util
@@ -229,7 +229,7 @@ export class MusicButtonsListener extends Listener {
                     .button()
                     .setCustomId("skip_to_track")
                     .setLabel("Skip to Track")
-                    .setStyle("DANGER") as any;
+                    .setStyle(ButtonStyle.Danger) as any;
 
                 rows[1].components[2] = skipToTrackButton;
 
@@ -248,7 +248,7 @@ export class MusicButtonsListener extends Listener {
                                     .input()
                                     .setCustomId("track_query")
                                     .setLabel("Track/Playlist URL or a name")
-                                    .setStyle("SHORT")
+                                    .setStyle(TextInputStyle.Short)
                                     .setMinLength(1)
                                     .setMaxLength(100)
                                     .setRequired(true)

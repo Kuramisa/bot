@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { ContextMenuCommandInteraction } from "discord.js";
 
 export class MockCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -21,9 +22,7 @@ export class MockCommand extends Command {
     /**
      * Execute Context Menu
      */
-    async contextMenuRun(
-        interaction: Command.ContextMenuInteraction<"cached">
-    ) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const { guild, channel, targetId, member } = interaction;
 
         if (!channel) return;
@@ -35,21 +34,25 @@ export class MockCommand extends Command {
                 ephemeral: true
             });
 
-        if (channel.isThread() || !guild.me?.permissions.has("MANAGE_WEBHOOKS"))
+        if (
+            channel.isThread() ||
+            !guild.members.me?.permissions.has("ManageWebhooks")
+        )
             return interaction.reply({
                 content: this.mockText(message.content)
             });
 
         await interaction.deferReply({ ephemeral: true });
 
-        const webhook = await channel.createWebhook(member.displayName, {
-            avatar: member.displayAvatarURL({ dynamic: true })
+        const webhook = await channel.createWebhook({
+            name: member.displayName,
+            avatar: member.displayAvatarURL({ extension: "gif" })
         });
 
         await webhook.send({
             content: `${message.member} ${this.mockText(message.content)}`,
             username: member.displayName,
-            avatarURL: member.displayAvatarURL({ dynamic: true })
+            avatarURL: member.displayAvatarURL({ extension: "gif" })
         });
 
         await webhook.delete();

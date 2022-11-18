@@ -1,8 +1,11 @@
 import Shinobi, { IShinobi } from "#schemas/Shinobi";
 
-import { ShinobiStats, ShinobiWeapon, ShinobiRanks, Currencies } from "@types";
+import { ShinobiStats, ShinobiWeapon, ShinobiRanks } from "@types";
 
-import { CommandInteraction, ContextMenuInteraction } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction
+} from "discord.js";
 
 import ShinobiGame from "..";
 
@@ -62,8 +65,8 @@ export default class ShinobiPlayer {
 
     async equip(
         interaction:
-            | CommandInteraction<"cached">
-            | ContextMenuInteraction<"cached">,
+            | ChatInputCommandInteraction<"cached">
+            | ContextMenuCommandInteraction<"cached">,
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({

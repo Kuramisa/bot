@@ -50,19 +50,20 @@ export class NSFWFilterListener extends Listener {
 
         if (
             channel.isThread() &&
-            guild.me?.permissionsIn(channel).has("SEND_MESSAGES")
+            guild.members.me?.permissionsIn(channel).has("SendMessages")
         )
             return channel.send("Do not post NSFW content");
 
-        if (channel.isThread() || !guild.me?.permissions.has("MANAGE_WEBHOOKS"))
+        if (
+            channel.isThread() ||
+            !guild.members.me?.permissions.has("ManageWebhooks")
+        )
             return;
 
-        const webhook = await channel.createWebhook(
-            `${client.user?.username} NSFW Filter`,
-            {
-                avatar: client.user?.displayAvatarURL({ dynamic: true })
-            }
-        );
+        const webhook = await channel.createWebhook({
+            name: `${client.user?.username} NSFW Filter`,
+            avatar: client.user?.displayAvatarURL({ extension: "gif" })
+        });
 
         const wMessage = await webhook.send(
             `${message.member}, Do not post NSFW Content`

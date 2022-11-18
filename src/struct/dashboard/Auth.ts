@@ -1,6 +1,6 @@
 import { Container } from "@sapphire/pieces";
 
-import { Permissions, User } from "discord.js";
+import { PermissionsBitField, User } from "discord.js";
 
 import jwt from "jsonwebtoken";
 import { GraphQLError } from "graphql";
@@ -46,7 +46,9 @@ export default class Auth {
             await this.oauth.getUserGuilds(decoded.token.access_token)
         )
             .filter((guild) =>
-                new Permissions(guild.permissions as any).has("MANAGE_GUILD")
+                new PermissionsBitField(guild.permissions as any).has(
+                    "ManageGuild"
+                )
             )
             .map(async (guild) => {
                 const iconURL = guild.icon

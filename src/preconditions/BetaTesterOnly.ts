@@ -1,7 +1,7 @@
 import { Piece, Precondition } from "@sapphire/framework";
 import {
-    CommandInteraction,
-    ContextMenuInteraction,
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction,
     Message,
     User
 } from "discord.js";
@@ -17,11 +17,12 @@ export class BetaTesterOnlyPrecondition extends Precondition {
     override messageRun = async (message: Message) =>
         await this.checkBetaTester(message.author);
 
-    override chatInputRun = async (interaction: CommandInteraction) =>
+    override chatInputRun = async (interaction: ChatInputCommandInteraction) =>
         await this.checkBetaTester(interaction.user);
 
-    override contextMenuRun = async (interaction: ContextMenuInteraction) =>
-        await this.checkBetaTester(interaction.user);
+    override contextMenuRun = async (
+        interaction: ContextMenuCommandInteraction
+    ) => await this.checkBetaTester(interaction.user);
 
     private async checkBetaTester(user: User) {
         const { database, owners } = this.container;

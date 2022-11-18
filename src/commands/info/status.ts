@@ -1,5 +1,10 @@
 import { Command } from "@sapphire/framework";
-import { Message, version } from "discord.js";
+import {
+    ChannelType,
+    ChatInputCommandInteraction,
+    Message,
+    version
+} from "discord.js";
 import os from "os";
 
 export class StatusCommand extends Command {
@@ -30,7 +35,7 @@ export class StatusCommand extends Command {
     /**
      * Execute Slash Command
      */
-    chatInputRun = async (interaction: Command.ChatInputInteraction) =>
+    chatInputRun = async (interaction: ChatInputCommandInteraction) =>
         interaction.reply({
             embeds: [await this.generateEmbed()],
             ephemeral: true
@@ -46,7 +51,7 @@ export class StatusCommand extends Command {
         await client.user?.fetch();
         await client.application?.fetch();
 
-        const channelSize = (type: string[]) =>
+        const channelSize = (type: ChannelType[]) =>
             client.channels.cache.filter((channel) =>
                 type.includes(channel.type)
             ).size;
@@ -63,7 +68,7 @@ export class StatusCommand extends Command {
             .setTitle(`${client.user?.username} status`)
             .setDescription(`${client.application?.description}`)
             .setThumbnail(
-                client.user?.displayAvatarURL({ dynamic: true }) as string
+                client.user?.displayAvatarURL({ extension: "gif" }) as string
             )
             .addFields([
                 {
@@ -80,7 +85,7 @@ export class StatusCommand extends Command {
                 },
                 {
                     name: "Verified",
-                    value: client.user?.flags?.has("VERIFIED_BOT")
+                    value: client.user?.flags?.has("VerifiedBot")
                         ? "Yes"
                         : "No",
                     inline: true
@@ -158,24 +163,26 @@ export class StatusCommand extends Command {
                 },
                 {
                     name: "Text Channels",
-                    value: `${channelSize(["GUILD_TEXT", "GUILD_NEWS"])}`,
+                    value: `${channelSize([
+                        ChannelType.GuildText,
+                        ChannelType.GuildAnnouncement
+                    ])}`,
                     inline: true
                 },
                 {
                     name: "Voice Channels",
                     value: `${channelSize([
-                        "GUILD_VOICE",
-                        "GUILD_STAGE_VOICE"
+                        ChannelType.GuildVoice,
+                        ChannelType.GuildStageVoice
                     ])}`,
                     inline: true
                 },
                 {
                     name: "Threads",
                     value: `${channelSize([
-                        "GUILD_THREAD",
-                        "GUILD_NEWS_THREAD",
-                        "GUILD_PUBLIC_THREAD",
-                        "GUILD_PRIVATE_THREAD"
+                        ChannelType.PublicThread,
+                        ChannelType.PrivateThread,
+                        ChannelType.AnnouncementThread
                     ])}`,
                     inline: true
                 }

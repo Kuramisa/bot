@@ -3,9 +3,10 @@ import { IUser } from "#schemas/User";
 import {
     Presence,
     GuildMember,
-    MessageActionRow,
-    MessageActionRowComponent,
-    MessageEmbed
+    ActionRowBuilder,
+    EmbedBuilder,
+    ActivityType,
+    ButtonStyle
 } from "discord.js";
 import Util from ".";
 
@@ -88,10 +89,9 @@ export default class UtilMember {
     async info(
         executor: GuildMember,
         member: GuildMember
-    ): Promise<{ embeds: MessageEmbed[]; components: MessageActionRow[] }> {
+    ): Promise<{ embeds: EmbedBuilder[]; components: ActionRowBuilder[] }> {
         const avatar = member.user.displayAvatarURL({
-            format: "png",
-            dynamic: true
+            extension: "gif"
         });
         const activities: string[] = [];
         const status = {
@@ -104,8 +104,8 @@ export default class UtilMember {
                 activities.push(
                     `${
                         act.state ? this.util.list(act.state.split("; ")) : ""
-                    } ${act.type === "PLAYING" ? act.name : ""} ${
-                        act.type === "LISTENING" ? "-" : ""
+                    } ${act.type === ActivityType.Playing ? act.name : ""} ${
+                        act.type === ActivityType.Listening ? "-" : ""
                     } ${act.details ? act.details : ""}`
                 );
             });
@@ -167,9 +167,7 @@ export default class UtilMember {
         return { embeds: [embed], components: rows };
     }
 
-    actionRow(
-        executor: GuildMember
-    ): MessageActionRow<MessageActionRowComponent>[] {
+    actionRow(executor: GuildMember): ActionRowBuilder[] {
         const topRow = this.util
             .row()
             .setComponents(
@@ -177,7 +175,7 @@ export default class UtilMember {
                     .button()
                     .setCustomId("show_rank")
                     .setLabel("Show Rank")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         const midRow = this.util
@@ -187,22 +185,22 @@ export default class UtilMember {
                     .button()
                     .setCustomId("kick_member")
                     .setLabel("Kick Member")
-                    .setStyle("DANGER"),
+                    .setStyle(ButtonStyle.Danger),
                 this.util
                     .button()
                     .setCustomId("ban_member")
                     .setLabel("Ban Member")
-                    .setStyle("DANGER"),
+                    .setStyle(ButtonStyle.Danger),
                 this.util
                     .button()
                     .setCustomId("report_member")
                     .setLabel("Report Member")
-                    .setStyle("DANGER"),
+                    .setStyle(ButtonStyle.Danger),
                 this.util
                     .button()
                     .setCustomId("warn_member")
                     .setLabel("Warn Member")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
             );
 
         const bottomRow = this.util
@@ -212,15 +210,15 @@ export default class UtilMember {
                     .button()
                     .setCustomId("show_warns")
                     .setLabel("Show Warns")
-                    .setStyle("PRIMARY"),
+                    .setStyle(ButtonStyle.Primary),
                 this.util
                     .button()
                     .setCustomId("show_reports")
                     .setLabel("Show Reports")
-                    .setStyle("PRIMARY")
+                    .setStyle(ButtonStyle.Primary)
             );
 
-        return executor.permissions.has("VIEW_AUDIT_LOG")
+        return executor.permissions.has("ViewAuditLog")
             ? [topRow, midRow, bottomRow]
             : [
                   topRow.addComponents(
@@ -228,7 +226,7 @@ export default class UtilMember {
                           .button()
                           .setCustomId("report_member")
                           .setLabel("Report Member")
-                          .setStyle("DANGER")
+                          .setStyle(ButtonStyle.Danger)
                   )
               ];
     }

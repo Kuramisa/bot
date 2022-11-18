@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class MarryCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -48,7 +49,7 @@ export class MarryCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { options, user } = interaction;
 
         switch (options.getSubcommand()) {

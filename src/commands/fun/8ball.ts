@@ -1,5 +1,5 @@
 import { Command, Args } from "@sapphire/framework";
-import { Message } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "discord.js";
 
 export class EightBallCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -46,7 +46,10 @@ export class EightBallCommand extends Command {
 
         const embed = util.embed().setDescription(`\`${question}\``);
         if (url) embed.setImage(url);
-        else embed.setDescription(`${embed.description}\n**${response}**`);
+        else
+            embed.setDescription(
+                `${embed.toJSON().description}\n**${response}**`
+            );
 
         return message.reply({ embeds: [embed] });
     }
@@ -55,7 +58,7 @@ export class EightBallCommand extends Command {
      * Execute Slash Command
      */
 
-    async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         let question = interaction.options.getString("question", true);
 
         const { util } = this.container;
@@ -68,7 +71,10 @@ export class EightBallCommand extends Command {
 
         const embed = util.embed().setDescription(`\`${question}\``);
         if (url) embed.setImage(url);
-        else embed.setDescription(`${embed.description}\n**${response}**`);
+        else
+            embed.setDescription(
+                `${embed.toJSON().description}\n**${response}**`
+            );
 
         return interaction.reply({ embeds: [embed] });
     }

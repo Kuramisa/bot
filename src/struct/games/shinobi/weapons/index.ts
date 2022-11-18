@@ -1,5 +1,9 @@
 import { Container } from "@sapphire/pieces";
-import { Collection, CommandInteraction } from "discord.js";
+import {
+    Collection,
+    ChatInputCommandInteraction,
+    ButtonStyle
+} from "discord.js";
 import ShinobiGame from "../";
 import Weapons from "./Weapons";
 import { ShinobiWeapon } from "@types";
@@ -33,7 +37,7 @@ export default class ShinobiWeapons {
             .setFooter({ text: `Cost: ${weapon.cost}` });
 
     async buy(
-        interaction: CommandInteraction<"cached">,
+        interaction: ChatInputCommandInteraction<"cached">,
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({
@@ -73,7 +77,7 @@ export default class ShinobiWeapons {
     }
 
     async sell(
-        interaction: CommandInteraction<"cached">,
+        interaction: ChatInputCommandInteraction<"cached">,
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({
@@ -111,7 +115,7 @@ export default class ShinobiWeapons {
         });
     }
 
-    async pagination(interaction: CommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const weapons = this.getAll();
@@ -123,12 +127,12 @@ export default class ShinobiWeapons {
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const row = util.row().addComponents(buttons);

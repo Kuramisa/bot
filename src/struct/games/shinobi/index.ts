@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { CommandInteraction } from "discord.js";
+import { ButtonStyle, ChatInputCommandInteraction } from "discord.js";
 import { Naruto } from "anime-info";
 import ms from "ms";
 import moment from "moment";
@@ -32,7 +32,7 @@ export default class ShinobiGame {
         this.weapons = new ShinobiWeapons(this);
     }
 
-    async start(interaction: CommandInteraction<"cached">) {
+    async start(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const { user } = interaction;
@@ -59,12 +59,12 @@ export default class ShinobiGame {
                     .button()
                     .setCustomId("accept_game_rules")
                     .setLabel("Accept")
-                    .setStyle("SUCCESS"),
+                    .setStyle(ButtonStyle.Success),
                 util
                     .button()
                     .setCustomId("decline_game_rules")
                     .setLabel("Decline")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
             ]);
 
         const message = await interaction.reply({
@@ -126,7 +126,7 @@ export default class ShinobiGame {
             });
     }
 
-    async delete(interaction: CommandInteraction<"cached">) {
+    async delete(interaction: ChatInputCommandInteraction<"cached">) {
         const { owners } = this.container;
 
         const { options, user } = interaction;
@@ -159,7 +159,7 @@ export default class ShinobiGame {
         });
     }
 
-    async daily(interaction: CommandInteraction<"cached">) {
+    async daily(interaction: ChatInputCommandInteraction<"cached">) {
         const { user } = interaction;
 
         const player = await Shinobi.findOne({ memberId: user.id });
@@ -191,7 +191,7 @@ export default class ShinobiGame {
         });
     }
 
-    async weekly(interaction: CommandInteraction<"cached">) {
+    async weekly(interaction: ChatInputCommandInteraction<"cached">) {
         const { member } = interaction;
 
         const player = await Shinobi.findOne({ memberId: member.id });
@@ -224,7 +224,7 @@ export default class ShinobiGame {
         });
     }
 
-    async fight(interaction: CommandInteraction<"cached">) {
+    async fight(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const { options, member } = interaction;

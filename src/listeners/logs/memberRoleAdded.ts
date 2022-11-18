@@ -20,9 +20,10 @@ export class MemberRoleAddLogListener extends Listener {
         if (!db || !db.logs.channel || !db.logs.types.memberRoleAdded) return;
 
         const channel = guild.channels.cache.get(db.logs.channel);
-        if (!channel || !channel.isText()) return;
+        if (!channel || !channel.isTextBased()) return;
 
-        if (guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+        if (guild.members.me?.permissionsIn(channel).has("SendMessages"))
+            return;
 
         const embed = util
             .embed()

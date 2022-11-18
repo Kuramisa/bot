@@ -37,7 +37,7 @@ export class MusicActionsModalListener extends Listener {
 
         if (queue.connection.channel.id !== voiceChannel.id)
             return interaction.reply({
-                content: `I'm playing music in ${guild.me?.voice.channel}`,
+                content: `I'm playing music in ${guild.members.me?.voice.channel}`,
                 ephemeral: true
             });
 

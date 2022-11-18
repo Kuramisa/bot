@@ -2,17 +2,19 @@ import { Container } from "@sapphire/pieces";
 import axios from "axios";
 import {
     BufferResolvable,
-    MessageEmbed,
-    MessageActionRow,
-    MessageActionRowComponent,
+    EmbedBuilder,
+    ActionRowBuilder,
+    ActionRowComponent,
     ModalActionRowComponent,
-    MessageAttachment,
-    MessageButton,
-    MessageSelectMenu,
-    Modal,
-    TextInputComponent,
+    AttachmentBuilder,
+    ButtonBuilder,
+    SelectMenuBuilder,
+    ModalBuilder,
+    MessageActionRowComponentBuilder,
+    ModalActionRowComponentBuilder,
+    TextInputBuilder,
     PermissionResolvable,
-    Permissions
+    PermissionsBitField
 } from "discord.js";
 import { Stream } from "stream";
 import moment from "moment";
@@ -43,23 +45,25 @@ export default class Util {
     permToBit(permissions?: PermissionResolvable) {
         if (!permissions) return undefined;
 
-        return Permissions.FLAGS[permissions as keyof typeof Permissions.FLAGS];
+        return PermissionsBitField.Flags[
+            permissions as keyof typeof PermissionsBitField.Flags
+        ];
     }
 
     daysToSecs = (days: number) => days * 24 * 60 * 60;
 
-    row = (): MessageActionRow<MessageActionRowComponent> =>
-        new MessageActionRow<MessageActionRowComponent>();
-    modalRow = (): MessageActionRow<ModalActionRowComponent> =>
-        new MessageActionRow<ModalActionRowComponent>();
-    button = () => new MessageButton();
-    dropdown = () => new MessageSelectMenu();
-    modal = () => new Modal();
+    row = (): ActionRowBuilder<MessageActionRowComponentBuilder> =>
+        new ActionRowBuilder<MessageActionRowComponentBuilder>();
+    modalRow = (): ActionRowBuilder<ModalActionRowComponentBuilder> =>
+        new ActionRowBuilder<ModalActionRowComponentBuilder>();
+    button = () => new ButtonBuilder();
+    dropdown = () => new SelectMenuBuilder();
+    modal = () => new ModalBuilder();
     unknownModal = () =>
-        new Modal()
+        new ModalBuilder()
             .setCustomId("unknown_modal")
             .setTitle("Something went wrong, please try again");
-    input = () => new TextInputComponent();
+    input = () => new TextInputBuilder();
 
     durationMs = (dur: string) =>
         dur
@@ -76,13 +80,13 @@ export default class Util {
     calcPercentage = (num: any) => num * 100;
 
     embed = () =>
-        new MessageEmbed()
-            .setColor("ORANGE")
+        new EmbedBuilder()
+            .setColor("Orange")
             .setTimestamp(new Date())
             .setFooter({ text: "Owned by Stealth and Bunzi" });
     convertToPercentage = (num: number) => Math.floor(num * 100);
     attachment = (file: BufferResolvable | Stream, name?: string) =>
-        new MessageAttachment(file, name);
+        new AttachmentBuilder(file, { name });
     embedURL = (title: string, url: string, display?: string) =>
         `[${title}](${url.replace(/\)/g, "%29")}${
             display ? ` "${display}"` : ""

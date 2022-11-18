@@ -23,11 +23,12 @@ export class MessageDeletedLogListener extends Listener {
         if (!db || !db.logs.channel || !db.logs.types.messageDeleted) return;
 
         const channel = guild.channels.cache.get(db.logs.channel);
-        if (!channel || !channel.isText()) return;
+        if (!channel || !channel.isTextBased()) return;
 
         const attachments = message.attachments.map((attachment) => attachment);
 
-        if (guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+        if (guild.members.me?.permissionsIn(channel).has("SendMessages"))
+            return;
 
         const embed = util
             .embed()
@@ -35,7 +36,9 @@ export class MessageDeletedLogListener extends Listener {
                 name: `${guild.name} Message Logs`,
                 iconURL: guild.iconURL() as string
             })
-            .setThumbnail(message.author.avatarURL({ dynamic: true }) as string)
+            .setThumbnail(
+                message.author.avatarURL({ extension: "gif" }) as string
+            )
             .setDescription(
                 `*Message Deleted*${
                     message.content.length > 0

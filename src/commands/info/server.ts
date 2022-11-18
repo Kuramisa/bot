@@ -1,5 +1,5 @@
 import { Command } from "@sapphire/framework";
-import { Guild } from "discord.js";
+import { ChannelType, ChatInputCommandInteraction, Guild } from "discord.js";
 import { Message } from "discord.js";
 
 export class ServerCommand extends Command {
@@ -34,7 +34,7 @@ export class ServerCommand extends Command {
     /**
      * Execute Slash Command
      */
-    chatInputRun = (interaction: Command.ChatInputInteraction<"cached">) =>
+    chatInputRun = (interaction: ChatInputCommandInteraction<"cached">) =>
         interaction.reply({
             embeds: [this.generateEmbed(interaction.guild)],
             ephemeral: true
@@ -57,11 +57,11 @@ export class ServerCommand extends Command {
             stickers
         } = guild;
 
-        const icon = guild.iconURL({ dynamic: true }) as string;
+        const icon = guild.iconURL({ extension: "gif" }) as string;
 
         return util
             .embed()
-            .setAuthor({ name: guild.name, iconURL: icon as string })
+            .setAuthor({ name: guild.name, iconURL: icon })
             .setThumbnail(icon)
             .addFields([
                 {
@@ -109,35 +109,38 @@ export class ServerCommand extends Command {
                     value: `
                             - Text: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == "GUILD_TEXT"
+                                    (ch) => ch.type == ChannelType.GuildText
                                 ).size
                             }
                             - Voice: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == "GUILD_VOICE"
+                                    (ch) => ch.type == ChannelType.GuildVoice
                                 ).size
                             }
                             - Threads: ${
                                 channels.cache.filter(
                                     (ch) =>
-                                        ch.type === "GUILD_NEWS_THREAD" ||
-                                        ch.type === "GUILD_PUBLIC_THREAD" ||
-                                        ch.type === "GUILD_PRIVATE_THREAD"
+                                        ch.type ===
+                                            ChannelType.AnnouncementThread ||
+                                        ch.type === ChannelType.PublicThread ||
+                                        ch.type === ChannelType.PrivateThread
                                 ).size
                             }
                             - Categories: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == "GUILD_CATEGORY"
+                                    (ch) => ch.type == ChannelType.GuildCategory
                                 ).size
                             }
                             - Stages: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == "GUILD_STAGE_VOICE"
+                                    (ch) =>
+                                        ch.type == ChannelType.GuildStageVoice
                                 ).size
                             }
                             - News: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == "GUILD_NEWS"
+                                    (ch) =>
+                                        ch.type == ChannelType.GuildAnnouncement
                                 ).size
                             }
 

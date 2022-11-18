@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction, TextInputStyle } from "discord.js";
 import { inspect } from "util";
 
 export class EvalCommand extends Command {
@@ -20,7 +21,7 @@ export class EvalCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const modal = util
@@ -36,7 +37,7 @@ export class EvalCommand extends Command {
                             .setCustomId("code")
                             .setLabel("Code to evaluate")
                             .setRequired(true)
-                            .setStyle("PARAGRAPH")
+                            .setStyle(TextInputStyle.Paragraph)
                     )
             );
 

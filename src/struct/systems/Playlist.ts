@@ -1,7 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container } from "@sapphire/pieces";
-import { Player, Track } from "@mateie/discord-player";
-import { CommandInteraction } from "discord.js";
+import { Player, Track } from "discord-player";
+import {
+    TextInputModalData,
+    ChatInputCommandInteraction,
+    TextInputStyle
+} from "discord.js";
 
 export default class Playlist {
     private readonly container: Container;
@@ -10,7 +13,7 @@ export default class Playlist {
         this.container = container;
     }
 
-    async play(interaction: CommandInteraction<"cached">) {
+    async play(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             database,
             systems: { music },
@@ -29,11 +32,11 @@ export default class Playlist {
             });
 
         if (
-            guild.me?.voice.channelId &&
-            voiceChannel.id !== guild.me.voice.channelId
+            guild.members.me?.voice.channelId &&
+            voiceChannel.id !== guild.members.me.voice.channelId
         )
             return interaction.reply({
-                content: `I'm already playing music in ${guild.me.voice.channel}`,
+                content: `I'm already playing music in ${guild.members.me.voice.channel}`,
                 ephemeral: true
             });
 
@@ -106,7 +109,7 @@ export default class Playlist {
         return interaction.reply({ embeds: [embed], ephemeral: true });
     }
 
-    async create(interaction: CommandInteraction<"cached">) {
+    async create(interaction: ChatInputCommandInteraction<"cached">) {
         const { database } = this.container;
 
         const { options, member } = interaction;
@@ -140,7 +143,7 @@ export default class Playlist {
         });
     }
 
-    async import(interaction: CommandInteraction<"cached">) {
+    async import(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             database,
             systems: { music },
@@ -199,7 +202,7 @@ export default class Playlist {
         });
     }
 
-    async importMultiple(interaction: CommandInteraction<"cached">) {
+    async importMultiple(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             database,
             systems: { music },
@@ -222,7 +225,7 @@ export default class Playlist {
                         .setCustomId(`playlist_url_${i}`)
                         .setLabel(`Playlist #${i} URL`)
                         .setPlaceholder(`Playlist #${i} URL`)
-                        .setStyle("SHORT")
+                        .setStyle(TextInputStyle.Short)
                         .setRequired(true)
                 );
 
@@ -253,12 +256,10 @@ export default class Playlist {
         const playlists = (
             await Promise.all(
                 components.map(async (field) => {
-                    const result = await music.search(
-                        field.components[0].value,
-                        {
-                            requestedBy: interaction.user
-                        }
-                    );
+                    const f = field.components[0] as TextInputModalData;
+                    const result = await music.search(f.value, {
+                        requestedBy: interaction.user
+                    });
 
                     if (!result.playlist) return null;
 
@@ -294,7 +295,7 @@ export default class Playlist {
         });
     }
 
-    async delete(interaction: CommandInteraction<"cached">) {
+    async delete(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { options, member } = interaction;
@@ -323,7 +324,7 @@ export default class Playlist {
                             .input()
                             .setCustomId("confirm_playlist_name")
                             .setLabel("Confirm Playlist Name")
-                            .setStyle("SHORT")
+                            .setStyle(TextInputStyle.Short)
                             .setPlaceholder(confirmText)
                             .setMaxLength(confirmText.length)
                     )
@@ -356,7 +357,7 @@ export default class Playlist {
         });
     }
 
-    async add(interaction: CommandInteraction<"cached">) {
+    async add(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             database,
             systems: { music }
@@ -411,7 +412,7 @@ export default class Playlist {
         });
     }
 
-    async addMultiple(interaction: CommandInteraction<"cached">) {
+    async addMultiple(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             database,
             systems: { music },

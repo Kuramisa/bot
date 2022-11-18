@@ -1,4 +1,5 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ChatInputCommandInteraction, ComponentType } from "discord.js";
 
 export class LogsCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -6,7 +7,7 @@ export class LogsCommand extends Subcommand {
             ...opts,
             name: "logs",
             description: "Configure logs for your channel",
-            requiredUserPermissions: "MANAGE_GUILD"
+            requiredUserPermissions: "ManageGuild"
         });
     }
 
@@ -49,7 +50,9 @@ export class LogsCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ): Promise<any> {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
@@ -61,13 +64,13 @@ export class LogsCommand extends Subcommand {
             case "channel": {
                 const channel = options.getChannel("text_channel", true);
 
-                const permissions = guild.me?.permissionsIn(channel);
-                if (!permissions?.has("VIEW_CHANNEL"))
+                const permissions = guild.members.me?.permissionsIn(channel);
+                if (!permissions?.has("ViewChannel"))
                     return interaction.reply({
                         content: "Missing permission `View Channel`",
                         ephemeral: true
                     });
-                if (!permissions.has("SEND_MESSAGES"))
+                if (!permissions.has("SendMessages"))
                     return interaction.reply({
                         content: "Missing permission `Send Messages`",
                         ephemeral: true
@@ -145,7 +148,7 @@ export class LogsCommand extends Subcommand {
                 });
 
                 const sInteraction = await message.awaitMessageComponent({
-                    componentType: "SELECT_MENU",
+                    componentType: ComponentType.SelectMenu,
                     filter: (i) =>
                         i.customId === "choose_toggles" &&
                         i.user.id === interaction.user.id

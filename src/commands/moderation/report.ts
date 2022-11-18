@@ -1,4 +1,8 @@
 import { Command } from "@sapphire/framework";
+import {
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction
+} from "discord.js";
 
 export class ReportCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -36,7 +40,7 @@ export class ReportCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             moderation: { reports }
         } = this.container;
@@ -57,9 +61,7 @@ export class ReportCommand extends Command {
         return reports.create(interaction, member, reason);
     }
 
-    async contextMenuRun(
-        interaction: Command.ContextMenuInteraction<"cached">
-    ) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const {
             moderation: { reports }
         } = this.container;

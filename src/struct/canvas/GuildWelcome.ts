@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { GuildMember, Presence, CommandInteraction } from "discord.js";
+import { GuildMember, Presence, ChatInputCommandInteraction } from "discord.js";
 import { Canvas as CanvasM, loadImage } from "skia-canvas";
 import Canvas from ".";
 
@@ -16,7 +16,7 @@ export default class GuildWelcome {
         this.canvas = canvas;
     }
 
-    async banner(interaction: CommandInteraction<"cached">) {
+    async banner(interaction: ChatInputCommandInteraction<"cached">) {
         const { database } = this.container;
 
         const { guild } = interaction;
@@ -40,7 +40,7 @@ export default class GuildWelcome {
         });
     }
 
-    async icon(interaction: CommandInteraction<"cached">) {
+    async icon(interaction: ChatInputCommandInteraction<"cached">) {
         const { database } = this.container;
 
         const { guild } = interaction;
@@ -64,7 +64,7 @@ export default class GuildWelcome {
         });
     }
 
-    async color(interaction: CommandInteraction<"cached">) {
+    async color(interaction: ChatInputCommandInteraction<"cached">) {
         const { database } = this.container;
 
         const { guild, options } = interaction;
@@ -106,7 +106,7 @@ export default class GuildWelcome {
         });
     }
 
-    async image(interaction: CommandInteraction<"cached">) {
+    async image(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { guild, options } = interaction;
@@ -160,7 +160,7 @@ export default class GuildWelcome {
         });
     }
 
-    async imageURL(interaction: CommandInteraction<"cached">) {
+    async imageURL(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { guild, options } = interaction;
@@ -206,7 +206,7 @@ export default class GuildWelcome {
         });
     }
 
-    async channel(interaction: CommandInteraction<"cached">) {
+    async channel(interaction: ChatInputCommandInteraction<"cached">) {
         const { database } = this.container;
 
         const { guild, options } = interaction;
@@ -226,7 +226,7 @@ export default class GuildWelcome {
         });
     }
 
-    async toggle(interaction: CommandInteraction<"cached">) {
+    async toggle(interaction: ChatInputCommandInteraction<"cached">) {
         const { database } = this.container;
 
         const { guild } = interaction;
@@ -267,13 +267,13 @@ export default class GuildWelcome {
         switch (settings.card.type) {
             case "banner": {
                 background = await loadImage(
-                    guild.bannerURL({ format: "png" }) as string
+                    guild.bannerURL({ extension: "png" }) as string
                 );
                 break;
             }
             case "icon": {
                 background = await loadImage(
-                    guild.iconURL({ format: "png" }) as string
+                    guild.iconURL({ extension: "png" }) as string
                 );
                 break;
             }
@@ -296,7 +296,7 @@ export default class GuildWelcome {
             ? member.user.hexAccentColor
             : "#808080";
         const iconColors = await this.canvas.popularColor(
-            guild.iconURL({ format: "png" }) as string
+            guild.iconURL({ extension: "png" }) as string
         );
         const iconColor =
             iconColors[Math.floor(Math.random() * iconColors.length)];
@@ -351,7 +351,7 @@ export default class GuildWelcome {
         ctx.closePath();
         ctx.clip();
         const avatar = await loadImage(
-            member.displayAvatarURL({ format: "png" })
+            member.displayAvatarURL({ extension: "png" })
         );
         ctx.drawImage(avatar, canvas.width - 590, 70, 128, 128);
 

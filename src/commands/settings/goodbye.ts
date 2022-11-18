@@ -1,4 +1,5 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class GoodbyeCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -6,7 +7,7 @@ export class GoodbyeCommand extends Subcommand {
             ...opts,
             name: "goodbye",
             description: "Manage Goodbye message for the server",
-            requiredUserPermissions: "MANAGE_GUILD"
+            requiredUserPermissions: "ManageGuild"
         });
     }
 
@@ -79,7 +80,7 @@ export class GoodbyeCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             canvas: { goodbye }
         } = this.container;

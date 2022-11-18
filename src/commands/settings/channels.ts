@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class ChannelsCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -6,7 +7,7 @@ export class ChannelsCommand extends Command {
             ...opts,
             name: "channels",
             description: "Manage your channel assignment",
-            requiredUserPermissions: "MANAGE_GUILD"
+            requiredUserPermissions: "ManageGuild"
         });
     }
 
@@ -32,7 +33,7 @@ export class ChannelsCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;

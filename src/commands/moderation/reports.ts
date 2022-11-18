@@ -1,4 +1,5 @@
 import { Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class ReportsCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -6,7 +7,7 @@ export class ReportsCommand extends Command {
             ...opts,
             name: "reports",
             description: "Check reports of a member",
-            requiredUserPermissions: "VIEW_AUDIT_LOG"
+            requiredUserPermissions: "ViewAuditLog"
         });
     }
 
@@ -41,7 +42,7 @@ export class ReportsCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             moderation,
             util: { pagination }

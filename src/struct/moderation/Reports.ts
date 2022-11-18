@@ -1,11 +1,12 @@
 import { Container } from "@sapphire/pieces";
 import {
     ButtonInteraction,
-    CommandInteraction,
-    ContextMenuInteraction,
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction,
     GuildMember,
     Message,
-    ModalSubmitInteraction
+    ModalSubmitInteraction,
+    TextInputStyle
 } from "discord.js";
 
 export default class Reports {
@@ -17,7 +18,7 @@ export default class Reports {
 
     async create(
         interaction:
-            | CommandInteraction<"cached">
+            | ChatInputCommandInteraction<"cached">
             | ButtonInteraction<"cached">
             | ModalSubmitInteraction<"cached">,
         member: GuildMember,
@@ -42,14 +43,15 @@ export default class Reports {
 
         if (dbGuild.channels.reports) {
             const channel = guild.channels.cache.get(dbGuild.channels.reports);
-            if (!channel || !channel.isText()) return;
-            if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+            if (!channel || !channel.isTextBased()) return;
+            if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
+                return;
 
             const embed = util
                 .embed()
                 .setAuthor({
                     name: by.user.tag,
-                    iconURL: by.displayAvatarURL({ dynamic: true })
+                    iconURL: by.displayAvatarURL({ extension: "gif" })
                 })
                 .setTitle(`${by.user.tag} reported ${member.user.tag}`)
                 .addFields({ name: "Reason", value: reason });
@@ -59,17 +61,18 @@ export default class Reports {
 
         if (dbGuild.logs.types.memberReported) {
             const channel = guild.channels.cache.get(dbGuild.logs.channel);
-            if (!channel || !channel.isText()) return;
+            if (!channel || !channel.isTextBased()) return;
 
-            if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+            if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
+                return;
 
             const embed = util
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ dynamic: true }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string
                 })
-                .setThumbnail(member.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(`${by} **Reported** ${member}`)
                 .addFields({ name: "Reason", value: reason });
 
@@ -113,17 +116,18 @@ export default class Reports {
 
         if (dbGuild.channels.reports) {
             const channel = guild.channels.cache.get(dbGuild.logs.channel);
-            if (!channel || !channel.isText()) return;
+            if (!channel || !channel.isTextBased()) return;
 
-            if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+            if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
+                return;
 
             const embed = util
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ dynamic: true }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string
                 })
-                .setThumbnail(member.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(
                     `${by} **Reported** ${member}'s Message\n\n[Message Link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`
                 )
@@ -134,17 +138,18 @@ export default class Reports {
 
         if (dbGuild.logs.types.memberReported) {
             const channel = guild.channels.cache.get(dbGuild.logs.channel);
-            if (!channel || !channel.isText()) return;
+            if (!channel || !channel.isTextBased()) return;
 
-            if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+            if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
+                return;
 
             const embed = util
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ dynamic: true }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string
                 })
-                .setThumbnail(member.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(
                     `${by} **Reported** ${member}'s Message\n\n[Message Link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`
                 )
@@ -169,7 +174,7 @@ export default class Reports {
         );
     }
 
-    async clear(interaction: CommandInteraction, member: GuildMember) {
+    async clear(interaction: ChatInputCommandInteraction, member: GuildMember) {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
@@ -202,7 +207,7 @@ export default class Reports {
                             .input()
                             .setCustomId("report_reason")
                             .setLabel("Report Reason")
-                            .setStyle("SHORT")
+                            .setStyle(TextInputStyle.Short)
                             .setMinLength(4)
                             .setMaxLength(100)
                             .setPlaceholder("Type your reason here")
@@ -223,7 +228,7 @@ export default class Reports {
                             .input()
                             .setCustomId("report_reason")
                             .setLabel("Report Reason")
-                            .setStyle("SHORT")
+                            .setStyle(TextInputStyle.Short)
                             .setMinLength(4)
                             .setMaxLength(100)
                             .setPlaceholder("Type your reason here")

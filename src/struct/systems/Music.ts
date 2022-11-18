@@ -1,8 +1,14 @@
 import { Container } from "@sapphire/pieces";
-import { Player, Track, Util } from "@mateie/discord-player";
+import { Player, Track, Util } from "discord-player";
 import songlyrics from "songlyrics";
-import { ContextMenuInteraction, User } from "discord.js";
-import { Message, CommandInteraction } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    ContextMenuCommandInteraction,
+    Message,
+    User
+} from "discord.js";
 
 export default class Music extends Player {
     readonly container: Container;
@@ -30,8 +36,8 @@ export default class Music extends Player {
 
     async selectTrack(
         interaction:
-            | CommandInteraction<"cached">
-            | ContextMenuInteraction<"cached">,
+            | ChatInputCommandInteraction<"cached">
+            | ContextMenuCommandInteraction<"cached">,
         tracks: Track[]
     ) {
         const { util } = this.container;
@@ -62,7 +68,7 @@ export default class Music extends Player {
         });
 
         const awaitTracks = await message.awaitMessageComponent({
-            componentType: "SELECT_MENU",
+            componentType: ComponentType.SelectMenu,
             filter: (i) => i.customId === "queue_track_select"
         });
 
@@ -103,7 +109,7 @@ export default class Music extends Player {
         });
 
         const awaitTracks = await message.awaitMessageComponent({
-            componentType: "SELECT_MENU",
+            componentType: ComponentType.SelectMenu,
             filter: (i) => i.customId === "queue_track_select"
         });
 
@@ -128,17 +134,17 @@ export default class Music extends Player {
                     .button()
                     .setCustomId("add_tracks")
                     .setLabel("Add Track(s)")
-                    .setStyle("PRIMARY"),
+                    .setStyle(ButtonStyle.Primary),
                 util
                     .button()
                     .setCustomId("show_queue")
                     .setLabel("Current Queue")
-                    .setStyle("PRIMARY"),
+                    .setStyle(ButtonStyle.Primary),
                 util
                     .button()
                     .setCustomId("show_track_progress")
                     .setLabel("Track Progress")
-                    .setStyle("PRIMARY")
+                    .setStyle(ButtonStyle.Primary)
             ]);
 
         const midRow = util
@@ -148,17 +154,17 @@ export default class Music extends Player {
                     .button()
                     .setCustomId("pause_track")
                     .setLabel("Pause")
-                    .setStyle("DANGER"),
+                    .setStyle(ButtonStyle.Danger),
                 util
                     .button()
                     .setCustomId("skip_current_track")
                     .setLabel("Skip Current")
-                    .setStyle("DANGER"),
+                    .setStyle(ButtonStyle.Danger),
                 util
                     .button()
                     .setCustomId("skip_to_track")
                     .setLabel("Skip to")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
             ]);
 
         await message.edit({ components: [topRow, midRow] });

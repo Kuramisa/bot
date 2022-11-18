@@ -48,7 +48,7 @@ export default {
                 if (!guild) throw new GraphQLError("Guild not found");
                 const channel = guild.channels.cache.get(channelId);
                 if (!channel) throw new GraphQLError("Channel not found");
-                if (!channel.isText())
+                if (!channel.isTextBased())
                     throw new GraphQLError(
                         "Channel provided is not text based"
                     );
@@ -71,7 +71,7 @@ export default {
                 if (!guild) throw new GraphQLError("Guild not found");
                 const channel = guild.channels.cache.get(channelId);
                 if (!channel) throw new GraphQLError("Channel not found");
-                if (!channel.isText())
+                if (!channel.isTextBased())
                     throw new GraphQLError(
                         "Channel provided is not text based"
                     );

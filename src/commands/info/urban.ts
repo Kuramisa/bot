@@ -1,6 +1,6 @@
 import { Args, Command } from "@sapphire/framework";
 import axios, { AxiosRequestConfig } from "axios";
-import { Message } from "discord.js";
+import { ButtonStyle, ChatInputCommandInteraction, Message } from "discord.js";
 
 const { RAPID_API } = process.env;
 
@@ -27,7 +27,7 @@ export class UrbanCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const word = interaction.options.getString("word", true);
@@ -51,12 +51,12 @@ export class UrbanCommand extends Command {
                     .button()
                     .setCustomId("previous_page")
                     .setEmoji("⬅️")
-                    .setStyle("SECONDARY"),
+                    .setStyle(ButtonStyle.Secondary),
                 util
                     .button()
                     .setCustomId("next_page")
                     .setEmoji("➡️")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         const embeds = list.map((def: any, i: number) => {
@@ -143,12 +143,12 @@ export class UrbanCommand extends Command {
                     .button()
                     .setCustomId("previous_page")
                     .setEmoji("⬅️")
-                    .setStyle("SECONDARY"),
+                    .setStyle(ButtonStyle.Secondary),
                 util
                     .button()
                     .setCustomId("next_page")
                     .setEmoji("➡️")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         const embeds = list.map((def: any, i: number) => {

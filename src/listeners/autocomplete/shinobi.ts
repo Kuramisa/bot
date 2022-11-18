@@ -1,5 +1,8 @@
 import { Listener } from "@sapphire/framework";
-import { AutocompleteInteraction } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    AutocompleteInteraction
+} from "discord.js";
 
 export class ShinobiACListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -71,7 +74,10 @@ export class ShinobiACListener extends Listener {
         const player = games.shinobi.players.get(user.id);
 
         if (
-            options.data.find((option) => option.type === "SUB_COMMAND_GROUP")
+            options.data.find(
+                (option) =>
+                    option.type === ApplicationCommandOptionType.SubcommandGroup
+            )
         ) {
             switch (options.getSubcommandGroup()) {
                 case "weapons": {

@@ -7,6 +7,7 @@ import ShinobiGame from "./shinobi";
 
 import { Api as OsuApi } from "node-osu";
 import SteamAPI from "steamapi";
+import { TextInputStyle } from "discord.js";
 
 const { OSU_API, STEAM_API } = process.env;
 
@@ -57,7 +58,7 @@ export default class Games {
                                 .setMinLength(1)
                                 .setMaxLength(1)
                                 .setPlaceholder("Provide a number")
-                                .setStyle("SHORT")
+                                .setStyle(TextInputStyle.Short)
                         ),
                     util
                         .modalRow()
@@ -71,7 +72,7 @@ export default class Games {
                                 .setMinLength(1)
                                 .setMaxLength(1)
                                 .setPlaceholder("Provide a number")
-                                .setStyle("SHORT")
+                                .setStyle(TextInputStyle.Short)
                         ),
                     util
                         .modalRow()
@@ -85,7 +86,7 @@ export default class Games {
                                 .setMinLength(1)
                                 .setMaxLength(1)
                                 .setPlaceholder("Provide a number")
-                                .setStyle("SHORT")
+                                .setStyle(TextInputStyle.Short)
                         )
                 );
             }
@@ -103,7 +104,7 @@ export default class Games {
                                 .setMinLength(1)
                                 .setMaxLength(1)
                                 .setPlaceholder("Provide a number")
-                                .setStyle("SHORT")
+                                .setStyle(TextInputStyle.Short)
                         ),
                     util
                         .modalRow()
@@ -117,7 +118,7 @@ export default class Games {
                                 .setMinLength(1)
                                 .setMaxLength(1)
                                 .setPlaceholder("Provide a number")
-                                .setStyle("SHORT")
+                                .setStyle(TextInputStyle.Short)
                         ),
                     util
                         .modalRow()
@@ -131,7 +132,7 @@ export default class Games {
                                 .setMinLength(1)
                                 .setMaxLength(1)
                                 .setPlaceholder("Provide a number")
-                                .setStyle("SHORT")
+                                .setStyle(TextInputStyle.Short)
                         )
                 );
             }

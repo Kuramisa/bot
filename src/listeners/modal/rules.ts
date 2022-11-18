@@ -1,5 +1,5 @@
 import { Listener } from "@sapphire/framework";
-import { ModalSubmitInteraction } from "discord.js";
+import { ButtonStyle, ModalSubmitInteraction } from "discord.js";
 
 export class RulesModalListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -32,7 +32,7 @@ export class RulesModalListener extends Listener {
                 ephemeral: true
             });
 
-        if (!channel.isText()) return;
+        if (!channel.isTextBased()) return;
 
         switch (interaction.customId) {
             case "rules_create": {
@@ -46,7 +46,7 @@ export class RulesModalListener extends Listener {
                             .setCustomId("accept_rules")
                             .setLabel("Accept Rules")
                             .setEmoji("📝")
-                            .setStyle("SECONDARY")
+                            .setStyle(ButtonStyle.Success)
                     );
 
                 await channel.send({ content: rulesStr, components: [row] });

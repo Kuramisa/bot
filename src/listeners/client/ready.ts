@@ -1,5 +1,5 @@
 import { Listener } from "@sapphire/framework";
-import { PresenceData } from "discord.js";
+import { ActivityType, PresenceData, REST, Routes } from "discord.js";
 
 export class ReadyListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -52,7 +52,7 @@ export class ReadyListener extends Listener {
                 activities: [
                     {
                         name: `${client.users.cache.size} Users`,
-                        type: "LISTENING"
+                        type: ActivityType.Listening
                     }
                 ]
             },
@@ -61,7 +61,7 @@ export class ReadyListener extends Listener {
                 activities: [
                     {
                         name: `${client.guilds.cache.size} Servers`,
-                        type: "WATCHING"
+                        type: ActivityType.Watching
                     }
                 ]
             }

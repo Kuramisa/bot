@@ -125,7 +125,7 @@ export default class MemberCanvas {
         ctx.closePath();
         ctx.clip();
         const avatar = await loadImage(
-            user.displayAvatarURL({ format: "png" })
+            user.displayAvatarURL({ extension: "png" })
         );
         ctx.drawImage(avatar, canvas.width - 590, 70, 128, 128);
 

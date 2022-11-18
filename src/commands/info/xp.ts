@@ -1,5 +1,5 @@
 import { Command } from "@sapphire/framework";
-import { Message } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "discord.js";
 
 export class XPCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -43,7 +43,7 @@ export class XPCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputCommand(interaction: Command.ChatInputInteraction) {
+    async chatInputCommand(interaction: ChatInputCommandInteraction) {
         const {
             systems: { xp }
         } = this.container;

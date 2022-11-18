@@ -38,7 +38,11 @@ export class GiveXPListener extends Listener {
             if (!currentXP || !requiredXP) return;
             if (currentXP + give >= requiredXP) {
                 await xp.levelUp(author);
-                if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES"))
+                if (
+                    !guild.members.me
+                        ?.permissionsIn(channel)
+                        .has("SendMessages")
+                )
                     return;
 
                 let content = `${author}, You have leveled up to **Level ${await xp.getLevel(

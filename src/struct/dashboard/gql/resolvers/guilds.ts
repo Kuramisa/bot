@@ -2,6 +2,7 @@ import { Container } from "@sapphire/pieces";
 import Dashboard from "#struct/dashboard";
 import { GraphQLError } from "graphql";
 import { Request } from "express";
+import { ChannelType } from "discord.js";
 
 export default {
     Query: {
@@ -37,7 +38,7 @@ export default {
 
                         if (
                             db.promoted &&
-                            guild.me?.permissions.has("MANAGE_GUILD")
+                            guild.members.me?.permissions.has("ManageGuild")
                         ) {
                             let invite = (await guild.invites.fetch())
                                 .sort(
@@ -50,7 +51,9 @@ export default {
                                 invite = await guild.invites.create(
                                     guild.channels.cache
                                         .filter(
-                                            (ch) => ch.type === "GUILD_TEXT"
+                                            (ch) =>
+                                                ch.type ===
+                                                ChannelType.GuildText
                                         )
                                         .first() as any
                                 );
@@ -102,7 +105,9 @@ export default {
 
                                 if (
                                     db.promoted &&
-                                    guild.me?.permissions.has("MANAGE_GUILD")
+                                    guild.members.me?.permissions.has(
+                                        "ManageGuild"
+                                    )
                                 ) {
                                     let invite = (await guild.invites.fetch())
                                         .sort(
@@ -117,7 +122,8 @@ export default {
                                             guild.channels.cache
                                                 .filter(
                                                     (ch) =>
-                                                        ch.type === "GUILD_TEXT"
+                                                        ch.type ===
+                                                        ChannelType.GuildText
                                                 )
                                                 .first() as any
                                         );

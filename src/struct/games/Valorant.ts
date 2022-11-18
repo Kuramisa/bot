@@ -1,9 +1,12 @@
 import { Container } from "@sapphire/pieces";
 import {
-    CommandInteraction,
+    ButtonStyle,
+    ChatInputCommandInteraction,
     Collection,
-    MessageEmbed,
-    Message
+    ComponentType,
+    EmbedBuilder,
+    Message,
+    TextInputStyle
 } from "discord.js";
 
 import { Client as Assets } from "@valapi/valorant-api.com";
@@ -28,7 +31,7 @@ export default class Valorant {
         this.accounts = new Collection();
     }
 
-    async login(interaction: CommandInteraction<"cached">) {
+    async login(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const { user } = interaction;
@@ -47,7 +50,7 @@ export default class Valorant {
                             .input()
                             .setCustomId("valorant-username")
                             .setLabel("Your Valorant Username")
-                            .setStyle("SHORT")
+                            .setStyle(TextInputStyle.Short)
                             .setRequired(true)
                     ),
                 util
@@ -58,7 +61,7 @@ export default class Valorant {
                             .setCustomId("valorant-password")
                             .setLabel("Your Valorant Password")
                             .setPlaceholder("WE DO NOT STORE THEM")
-                            .setStyle("SHORT")
+                            .setStyle(TextInputStyle.Short)
                             .setRequired(true)
                     )
             );
@@ -82,12 +85,12 @@ export default class Valorant {
                         .button()
                         .setCustomId("accept-mfa")
                         .setLabel("Accept MFA")
-                        .setStyle("SUCCESS"),
+                        .setStyle(ButtonStyle.Success),
                     util
                         .button()
                         .setCustomId("decline-mfa")
                         .setLabel("Decline MFA")
-                        .setStyle("DANGER")
+                        .setStyle(ButtonStyle.Danger)
                 );
 
             const askContinue = await loginSubmit.reply({
@@ -99,7 +102,7 @@ export default class Valorant {
             });
 
             const acceptOrDecline = await askContinue.awaitMessageComponent({
-                componentType: "BUTTON",
+                componentType: ComponentType.Button,
                 filter: (i) =>
                     i.customId === "accept-mfa" || i.customId === "decline-mfa"
             });
@@ -121,7 +124,7 @@ export default class Valorant {
                                         .setPlaceholder(
                                             "This code should arrive on your email"
                                         )
-                                        .setStyle("SHORT")
+                                        .setStyle(TextInputStyle.Short)
                                         .setRequired(true)
                                 )
                         );
@@ -181,7 +184,7 @@ export default class Valorant {
             });
     }
 
-    async logout(interaction: CommandInteraction) {
+    async logout(interaction: ChatInputCommandInteraction) {
         const { user } = interaction;
 
         const account = this.accounts.get(user.id);
@@ -199,7 +202,7 @@ export default class Valorant {
         });
     }
 
-    async refresh(interaction: CommandInteraction) {
+    async refresh(interaction: ChatInputCommandInteraction) {
         const { user } = interaction;
 
         const account = this.accounts.get(user.id);
@@ -217,10 +220,11 @@ export default class Valorant {
         });
     }
 
-    async wallet(interaction: CommandInteraction | Message) {
+    async wallet(interaction: ChatInputCommandInteraction | Message) {
         let user = null;
 
-        if (interaction instanceof CommandInteraction) user = interaction.user;
+        if (interaction instanceof ChatInputCommandInteraction)
+            user = interaction.user;
         else user = interaction.author;
 
         const account = this.accounts.get(user.id);
@@ -240,7 +244,7 @@ export default class Valorant {
                 ephemeral: true
             });
 
-        if (interaction instanceof CommandInteraction)
+        if (interaction instanceof ChatInputCommandInteraction)
             await interaction.deferReply({ ephemeral: true });
 
         const currencies = await account.assets.Currencies.get();
@@ -262,7 +266,7 @@ export default class Valorant {
         interaction.editReply({ content: balance.join("\n") });
     }
 
-    async store(interaction: CommandInteraction<"cached">) {
+    async store(interaction: ChatInputCommandInteraction<"cached">) {
         const { util } = this.container;
 
         const { options, member } = interaction;
@@ -297,17 +301,17 @@ export default class Valorant {
                 .button()
                 .setCustomId("previous_page")
                 .setEmoji("⬅️")
-                .setStyle("SECONDARY"),
+                .setStyle(ButtonStyle.Secondary),
             util
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle("SECONDARY")
+                .setStyle(ButtonStyle.Secondary)
         ];
 
         const row = util.row().addComponents(buttons);
 
-        let embeds: MessageEmbed[] = [];
+        let embeds: EmbedBuilder[] = [];
 
         switch (storeType) {
             case "featured": {
@@ -424,7 +428,7 @@ export default class Valorant {
         });
 
         const collector = message.createMessageComponentCollector({
-            componentType: "BUTTON",
+            componentType: ComponentType.Button,
             filter: (i) =>
                 i.user.id === member.id &&
                 (i.customId === "previous_page" || i.customId === "next_page"),
@@ -458,7 +462,7 @@ export default class Valorant {
             });
     }
 
-    async loadout(interaction: CommandInteraction<"cached">) {
+    async loadout(interaction: ChatInputCommandInteraction<"cached">) {
         const { client, util } = this.container;
 
         const { options, member } = interaction;
@@ -496,7 +500,7 @@ export default class Valorant {
 
         let page = 0;
 
-        let embeds: MessageEmbed[];
+        let embeds: EmbedBuilder[];
 
         const pageRow = util
             .row()
@@ -505,12 +509,12 @@ export default class Valorant {
                     .button()
                     .setCustomId("previous_page")
                     .setEmoji("⬅️")
-                    .setStyle("SECONDARY"),
+                    .setStyle(ButtonStyle.Secondary),
                 util
                     .button()
                     .setCustomId("next_page")
                     .setEmoji("➡️")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         const menuRow = util
@@ -520,17 +524,17 @@ export default class Valorant {
                     .button()
                     .setCustomId("profile_page")
                     .setLabel("Profile")
-                    .setStyle("SUCCESS"),
+                    .setStyle(ButtonStyle.Success),
                 util
                     .button()
                     .setCustomId("sprays_page")
                     .setLabel("Sprays")
-                    .setStyle("PRIMARY"),
+                    .setStyle(ButtonStyle.Primary),
                 util
                     .button()
                     .setCustomId("weapons_page")
                     .setLabel("Weapons")
-                    .setStyle("SECONDARY")
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         const weapons = await Promise.all(
@@ -660,7 +664,7 @@ export default class Valorant {
             });
     }
 
-    async mmr(interaction: CommandInteraction<"cached">) {
+    async mmr(interaction: ChatInputCommandInteraction<"cached">) {
         const { client, util } = this.container;
 
         const { options, member } = interaction;
@@ -814,7 +818,7 @@ export default class Valorant {
         const message = await interaction.editReply({ components: [row] });
 
         const collector = await message.createMessageComponentCollector({
-            componentType: "SELECT_MENU",
+            componentType: ComponentType.SelectMenu,
             filter: (i) =>
                 i.customId === "choose_act_rank" && i.user.id === member.id,
             time: 35000

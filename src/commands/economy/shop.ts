@@ -1,5 +1,6 @@
 import Item from "#schemas/Item";
 import { Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class ShopCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -80,7 +81,7 @@ export class ShopCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { database } = this.container;
 
         const { options, user } = interaction;

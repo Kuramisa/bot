@@ -1,5 +1,10 @@
 import { Command } from "@sapphire/framework";
-import { GuildMember } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    GuildMember,
+    TextInputStyle
+} from "discord.js";
 
 const { version } = require("../../../package.json");
 
@@ -22,7 +27,7 @@ export class AnnounceCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: Command.ChatInputInteraction) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { client, util } = this.container;
         const { user } = interaction;
 
@@ -38,7 +43,7 @@ export class AnnounceCommand extends Command {
                             .input()
                             .setCustomId("announcement-text")
                             .setLabel("Announcement")
-                            .setStyle("PARAGRAPH")
+                            .setStyle(TextInputStyle.Paragraph)
                             .setRequired(true)
                     )
             );
@@ -69,7 +74,7 @@ export class AnnounceCommand extends Command {
             .embed()
             .setAuthor({
                 name: user.tag,
-                iconURL: user.displayAvatarURL({ dynamic: true })
+                iconURL: user.displayAvatarURL({ extension: "gif" })
             })
             .setTitle("Annoucement from The Developers")
             .setDescription(
@@ -83,7 +88,7 @@ export class AnnounceCommand extends Command {
                     .button()
                     .setCustomId("dismiss-announcement")
                     .setLabel("Dismiss")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
             );
 
         for (const owner of owners) {

@@ -1,6 +1,6 @@
 import { Container } from "@sapphire/pieces";
 import { Patreon as PatreonAPI } from "@anitrack/patreon-wrapper";
-import { GuildMember } from "discord.js";
+import { ComponentType, GuildMember } from "discord.js";
 
 export default class Premium {
     private readonly container: Container;
@@ -101,7 +101,7 @@ export default class Premium {
             });
 
             const guildChoice = await message.awaitMessageComponent({
-                componentType: "SELECT_MENU",
+                componentType: ComponentType.SelectMenu,
                 filter: (i) => i.customId === "non_premium_servers"
             });
 

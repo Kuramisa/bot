@@ -1,4 +1,5 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ChatInputCommandInteraction } from "discord.js";
 
 export class PlaylistCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -138,7 +139,7 @@ export class PlaylistCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             systems: { playlist }
         } = this.container;

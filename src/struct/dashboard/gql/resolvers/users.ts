@@ -143,7 +143,7 @@ export default {
                 const warnedBy = guild.members.cache.get(user.id);
                 if (!warnedBy) throw new Error("Member not found");
 
-                if (!warnedBy.permissions.has("MODERATE_MEMBERS"))
+                if (!warnedBy.permissions.has("ModerateMembers"))
                     throw new Error("Not enough permissions");
 
                 const member = guild.members.cache.get(userId);
@@ -172,18 +172,24 @@ export default {
                     const channel = guild.channels.cache.get(
                         dbGuild.logs.channel
                     );
-                    if (!channel || !channel.isText()) return;
-                    if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES"))
+                    if (!channel || !channel.isTextBased()) return;
+                    if (
+                        !guild.members.me
+                            ?.permissionsIn(channel)
+                            .has("SendMessages")
+                    )
                         return;
 
                     const embed = util
                         .embed()
                         .setAuthor({
                             name: `${guild.name} Logs`,
-                            iconURL: guild.iconURL({ dynamic: true }) as string
+                            iconURL: guild.iconURL({
+                                extension: "gif"
+                            }) as string
                         })
                         .setThumbnail(
-                            member.displayAvatarURL({ dynamic: true })
+                            member.displayAvatarURL({ extension: "gif" })
                         )
                         .setDescription(`${warnedBy} **Warned** ${member}`)
                         .addFields({ name: "Reason", value: reason });
@@ -245,18 +251,24 @@ export default {
                     const channel = guild.channels.cache.get(
                         dbGuild.logs.channel
                     );
-                    if (!channel || !channel.isText()) return;
-                    if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES"))
+                    if (!channel || !channel.isTextBased()) return;
+                    if (
+                        !guild.members.me
+                            ?.permissionsIn(channel)
+                            .has("SendMessages")
+                    )
                         return;
 
                     const embed = util
                         .embed()
                         .setAuthor({
                             name: `${guild.name} Logs`,
-                            iconURL: guild.iconURL({ dynamic: true }) as string
+                            iconURL: guild.iconURL({
+                                extension: "gif"
+                            }) as string
                         })
                         .setThumbnail(
-                            member.displayAvatarURL({ dynamic: true })
+                            member.displayAvatarURL({ extension: "gif" })
                         )
                         .setDescription(`${warnedBy} **Reported** ${member}`)
                         .addFields({ name: "Reason", value: reason });

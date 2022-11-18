@@ -1,4 +1,5 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
+import { ChatInputCommandInteraction, ComponentType } from "discord.js";
 
 export class VoiceCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -6,7 +7,7 @@ export class VoiceCommand extends Subcommand {
             ...opts,
             name: "voice",
             description: "Voice utilities for members",
-            requiredUserPermissions: "MOVE_MEMBERS"
+            requiredUserPermissions: "MoveMembers"
         });
     }
 
@@ -46,12 +47,14 @@ export class VoiceCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: Subcommand.ChatInputInteraction<"cached">) {
+    async chatInputRun(
+        interaction: ChatInputCommandInteraction<"cached">
+    ): Promise<any> {
         const { util } = this.container;
 
         const { options, guild, member } = interaction;
 
-        if (!guild.me?.permissions.has("MOVE_MEMBERS"))
+        if (!guild.members.me?.permissions.has("MoveMembers"))
             return interaction.reply({
                 content: "Bot missing permissions: `MOVE_MEMBERS`",
                 ephemeral: true
@@ -68,7 +71,7 @@ export class VoiceCommand extends Subcommand {
         switch (options.getSubcommand()) {
             case "move": {
                 const channel = options.getChannel("channel", true);
-                if (!channel.isVoice()) return;
+                if (!channel.isVoiceBased()) return;
 
                 if (channel.equals(currentVC))
                     return interaction.reply({
@@ -101,7 +104,7 @@ export class VoiceCommand extends Subcommand {
                 });
 
                 const awaitMembers = await message.awaitMessageComponent({
-                    componentType: "SELECT_MENU",
+                    componentType: ComponentType.SelectMenu,
                     filter: (i) => i.customId === "voice_member_select"
                 });
 
@@ -134,7 +137,7 @@ export class VoiceCommand extends Subcommand {
             }
             case "moveall": {
                 const channel = options.getChannel("channel", true);
-                if (!channel.isVoice()) return;
+                if (!channel.isVoiceBased()) return;
 
                 if (channel.equals(currentVC))
                     return interaction.reply({

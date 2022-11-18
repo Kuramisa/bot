@@ -1,5 +1,9 @@
 import { Command, Args } from "@sapphire/framework";
-import { Message } from "discord.js";
+import {
+    ChatInputCommandInteraction,
+    ContextMenuCommandInteraction,
+    Message
+} from "discord.js";
 
 export class OwOCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -47,7 +51,7 @@ export class OwOCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const text = interaction.options.getString("text", true);
 
         const { owo } = await this.container.util.nekos.OwOify({
@@ -60,9 +64,7 @@ export class OwOCommand extends Command {
     /**
      * Execute Context Menu
      */
-    async contextMenuRun(
-        interaction: Command.ContextMenuInteraction<"cached">
-    ) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const { channel, targetId } = interaction;
 
         if (!channel) return;

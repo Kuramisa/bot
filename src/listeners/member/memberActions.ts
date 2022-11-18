@@ -1,5 +1,5 @@
 import { Listener } from "@sapphire/framework";
-import { ButtonInteraction } from "discord.js";
+import { ButtonInteraction, TextInputStyle } from "discord.js";
 
 export class MemberActionsListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -50,8 +50,8 @@ export class MemberActionsListener extends Listener {
             }
             case "kick_member": {
                 if (
-                    !member.permissions.has("KICK_MEMBERS") ||
-                    !guild.me?.permissions.has("KICK_MEMBERS")
+                    !member.permissions.has("KickMembers") ||
+                    !guild.members.me?.permissions.has("KickMembers")
                 )
                     return interaction.reply({
                         content: "Not enough permissions",
@@ -77,7 +77,7 @@ export class MemberActionsListener extends Listener {
                                     .setCustomId("kick-reason")
                                     .setLabel("Reason")
                                     .setRequired(true)
-                                    .setStyle("SHORT")
+                                    .setStyle(TextInputStyle.Short)
                             )
                     );
 
@@ -101,8 +101,8 @@ export class MemberActionsListener extends Listener {
             }
             case "ban_member": {
                 if (
-                    !member.permissions.has("BAN_MEMBERS") ||
-                    !guild.me?.permissions.has("BAN_MEMBERS")
+                    !member.permissions.has("BanMembers") ||
+                    !guild.members.me?.permissions.has("BanMembers")
                 )
                     return interaction.reply({
                         content: "Not enough permissions",
@@ -128,7 +128,7 @@ export class MemberActionsListener extends Listener {
                                     .setCustomId("ban-reason")
                                     .setLabel("Reason")
                                     .setRequired(true)
-                                    .setStyle("SHORT")
+                                    .setStyle(TextInputStyle.Short)
                             ),
                         util
                             .modalRow()
@@ -137,7 +137,7 @@ export class MemberActionsListener extends Listener {
                                     .input()
                                     .setCustomId("messages-days")
                                     .setLabel("Days of messages to delete")
-                                    .setStyle("SHORT")
+                                    .setStyle(TextInputStyle.Short)
                                     .setRequired(false)
                                     .setMinLength(1)
                                     .setMaxLength(1)
@@ -193,7 +193,7 @@ export class MemberActionsListener extends Listener {
                 return interaction.showModal(modal);
             }
             case "warn_member": {
-                if (!member.permissions.has("MODERATE_MEMBERS"))
+                if (!member.permissions.has("ModerateMembers"))
                     return interaction.reply({
                         content: "Not enough permissions",
                         ephemeral: true
@@ -203,7 +203,7 @@ export class MemberActionsListener extends Listener {
                 return interaction.showModal(modal);
             }
             case "show_reports": {
-                if (!member.permissions.has("VIEW_AUDIT_LOG"))
+                if (!member.permissions.has("ViewAuditLog"))
                     return interaction.reply({
                         content: "Not enough permissions",
                         ephemeral: true
@@ -229,7 +229,7 @@ export class MemberActionsListener extends Listener {
                 );
             }
             case "show_warns": {
-                if (!member.permissions.has("VIEW_AUDIT_LOG"))
+                if (!member.permissions.has("ViewAuditLog"))
                     return interaction.reply({
                         content: "Not enough permissions",
                         ephemeral: true

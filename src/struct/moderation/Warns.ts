@@ -1,9 +1,10 @@
 import { Container } from "@sapphire/pieces";
 import {
     ButtonInteraction,
-    CommandInteraction,
+    ChatInputCommandInteraction,
     GuildMember,
-    ModalSubmitInteraction
+    ModalSubmitInteraction,
+    TextInputStyle
 } from "discord.js";
 
 export default class Warns {
@@ -15,7 +16,7 @@ export default class Warns {
 
     async create(
         interaction:
-            | CommandInteraction<"cached">
+            | ChatInputCommandInteraction<"cached">
             | ButtonInteraction<"cached">
             | ModalSubmitInteraction<"cached">,
         member: GuildMember,
@@ -40,16 +41,17 @@ export default class Warns {
 
         if (dbGuild.logs.types.memberWarned) {
             const channel = guild.channels.cache.get(dbGuild.logs.channel);
-            if (!channel || !channel.isText()) return;
-            if (!guild.me?.permissionsIn(channel).has("SEND_MESSAGES")) return;
+            if (!channel || !channel.isTextBased()) return;
+            if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
+                return;
 
             const embed = util
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ dynamic: true }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string
                 })
-                .setThumbnail(member.displayAvatarURL({ dynamic: true }))
+                .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(`${by} **Warned** ${member}`)
                 .addFields({ name: "Reason", value: reason });
 
@@ -85,7 +87,7 @@ export default class Warns {
                             .input()
                             .setCustomId("warn_reason")
                             .setLabel("Warn Reason")
-                            .setStyle("SHORT")
+                            .setStyle(TextInputStyle.Short)
                             .setMinLength(4)
                             .setMaxLength(100)
                             .setPlaceholder("Type your reason here")

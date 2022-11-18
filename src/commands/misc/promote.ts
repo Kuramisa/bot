@@ -1,5 +1,5 @@
 import { Command } from "@sapphire/framework";
-import { Message } from "discord.js";
+import { ButtonStyle, ChatInputCommandInteraction, Message } from "discord.js";
 
 export class PromoteCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -49,13 +49,13 @@ export class PromoteCommand extends Command {
                     .button()
                     .setCustomId("approve_promotion")
                     .setLabel("Approve")
-                    .setStyle("SUCCESS")
+                    .setStyle(ButtonStyle.Success)
                     .setEmoji("✅"),
                 util
                     .button()
                     .setCustomId("decline_promotion")
                     .setLabel("Decline")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
                     .setEmoji("⛔")
             );
 
@@ -80,7 +80,7 @@ export class PromoteCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: Command.ChatInputInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const { database, promoteChannel, util } = this.container;
 
         const { guild, user } = interaction;
@@ -101,13 +101,13 @@ export class PromoteCommand extends Command {
                     .button()
                     .setCustomId("approve_promotion")
                     .setLabel("Approve")
-                    .setStyle("SUCCESS")
+                    .setStyle(ButtonStyle.Success)
                     .setEmoji("✅"),
                 util
                     .button()
                     .setCustomId("decline_promotion")
                     .setLabel("Decline")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
                     .setEmoji("⛔")
             );
 
