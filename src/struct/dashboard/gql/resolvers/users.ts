@@ -1,4 +1,5 @@
 import { Container } from "@sapphire/pieces";
+import { DiscordSnowflake } from "@sapphire/snowflake";
 import Dashboard from "#struct/dashboard";
 import { GraphQLError } from "graphql";
 import { Request } from "express";
@@ -159,6 +160,7 @@ export default {
                     reason = "No reason specified";
 
                 const warn = {
+                    id: `warn-${DiscordSnowflake.generate()}`,
                     guildId: guild.id,
                     by: warnedBy.id,
                     reason
@@ -238,6 +240,7 @@ export default {
                     reason = "No reason specified";
 
                 const report = {
+                    id: `report-${DiscordSnowflake.generate()}`,
                     guildId: guild.id,
                     by: warnedBy.id,
                     reason

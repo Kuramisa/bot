@@ -31,14 +31,14 @@ export class MemberActionsModalListener extends Listener {
         switch (interaction.customId) {
             case `report_member_${id}`:
                 return moderation.reports.create(
-                    interaction,
                     target,
+                    interaction.member,
                     fields.getTextInputValue("report_reason")
                 );
             case `warn_member_${id}`: {
                 return moderation.warns.create(
-                    interaction,
                     target,
+                    interaction.member,
                     fields.getTextInputValue("warn_reason")
                 );
             }

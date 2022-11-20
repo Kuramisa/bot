@@ -58,7 +58,12 @@ export class ReportCommand extends Command {
                 ephemeral: true
             });
 
-        return reports.create(interaction, member, reason);
+        await reports.create(member, interaction.member, reason);
+
+        return interaction.reply({
+            content: `You reported ${member} for **${reason}**`,
+            ephemeral: true
+        });
     }
 
     async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
@@ -100,12 +105,22 @@ export class ReportCommand extends Command {
                         i.customId === `report_member_${member.id}_message`
                 });
 
-                return reports.createMessageReport(
-                    mInteraction,
+                await mInteraction.deferReply({ ephemeral: true });
+
+                const reason =
+                    mInteraction.fields.getTextInputValue("report_reason");
+
+                await reports.createMessageReport(
                     member,
+                    interaction.member,
                     message,
-                    mInteraction.fields.getTextInputValue("report_reason")
+                    reason
                 );
+
+                await mInteraction.editReply(
+                    `You reported ${member}'s [Message](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}) for **${reason}**`
+                );
+                break;
             }
         }
     }

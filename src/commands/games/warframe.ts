@@ -1,6 +1,11 @@
 import { Args } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { ButtonStyle, ChatInputCommandInteraction, Message } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    Message
+} from "discord.js";
 import moment from "moment";
 import { Platform } from "warframe-market/lib/typings";
 
@@ -199,6 +204,7 @@ export class WarframCommand extends Subcommand {
         });
 
         const collector = msg.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "orders_sellers" ||
                     i.customId === "orders_buyers" ||

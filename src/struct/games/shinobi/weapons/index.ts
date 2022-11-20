@@ -2,7 +2,8 @@ import { Container } from "@sapphire/pieces";
 import {
     Collection,
     ChatInputCommandInteraction,
-    ButtonStyle
+    ButtonStyle,
+    ComponentType
 } from "discord.js";
 import ShinobiGame from "../";
 import Weapons from "./Weapons";
@@ -147,6 +148,7 @@ export default class ShinobiWeapons {
         });
 
         const collector = message.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
             time: 60000

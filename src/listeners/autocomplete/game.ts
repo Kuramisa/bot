@@ -1,5 +1,4 @@
 import { Listener } from "@sapphire/framework";
-import { checkPrimeSync } from "crypto";
 import { AutocompleteInteraction } from "discord.js";
 
 export class HelpACListener extends Listener {

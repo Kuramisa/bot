@@ -338,6 +338,7 @@ export class ValorantCommand extends Subcommand {
         });
 
         const collector = msg.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "previous_page" ||
                     i.customId === "next_page" ||

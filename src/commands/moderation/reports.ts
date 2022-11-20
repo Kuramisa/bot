@@ -31,7 +31,7 @@ export class ReportsCommand extends Command {
                 .addSubcommand((command) =>
                     command
                         .setName("clear")
-                        .setDescription("remove Member's all reports")
+                        .setDescription("Clear Member's all reports")
                         .addUserOption((option) =>
                             option
                                 .setName("member")
@@ -62,7 +62,7 @@ export class ReportsCommand extends Command {
                         ephemeral: true
                     });
 
-                const guild = interaction.guild;
+                const { guild } = interaction;
                 if (!guild) return;
 
                 const reports = await moderation.reports.get(member);
@@ -106,7 +106,13 @@ export class ReportsCommand extends Command {
                         ephemeral: true
                     });
 
-                return moderation.reports.clear(interaction, member);
+                await moderation.reports.clear(member);
+
+                await interaction.reply({
+                    content: `Cleared reports for ${member}`,
+                    ephemeral: true
+                });
+                break;
             }
         }
     }

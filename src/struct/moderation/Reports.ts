@@ -1,4 +1,5 @@
 import { Container } from "@sapphire/pieces";
+import { DiscordSnowflake } from "@sapphire/snowflake";
 import {
     ButtonInteraction,
     ChatInputCommandInteraction,
@@ -16,17 +17,10 @@ export default class Reports {
         this.container = container;
     }
 
-    async create(
-        interaction:
-            | ChatInputCommandInteraction<"cached">
-            | ButtonInteraction<"cached">
-            | ModalSubmitInteraction<"cached">,
-        member: GuildMember,
-        reason: string
-    ) {
+    async create(member: GuildMember, by: GuildMember, reason: string) {
         const { database, util } = this.container;
 
-        const { guild, member: by } = interaction;
+        const { guild } = member;
 
         const dbUser = await database.users.get(member.user);
         const dbGuild = await database.guilds.get(guild);
@@ -34,6 +28,7 @@ export default class Reports {
         if (!dbUser || !dbGuild) return;
 
         dbUser.reports.push({
+            id: `report-${DiscordSnowflake.generate()}`,
             guildId: guild.id,
             by: by.id,
             reason
@@ -78,34 +73,25 @@ export default class Reports {
 
             channel.send({ embeds: [embed] });
         }
-
-        return interaction.reply({
-            content: `You reported ${member} for **${reason}**`,
-            ephemeral: true
-        });
     }
 
     async createMessageReport(
-        interaction: ModalSubmitInteraction<"cached">,
         member: GuildMember,
+        by: GuildMember,
         message: Message<true>,
         reason: string
     ) {
         const { database, util } = this.container;
 
-        const { guild, member: by } = interaction;
-
-        await interaction.deferReply({ ephemeral: true });
+        const { guild } = member;
 
         const dbUser = await database.users.get(member.user);
         const dbGuild = await database.guilds.get(guild);
 
-        if (!dbUser || !dbGuild)
-            return interaction.editReply({
-                content: "Something went wrong, please try again"
-            });
+        if (!dbUser || !dbGuild) return;
 
         dbUser.reports.push({
+            id: `report-${DiscordSnowflake.generate()}`,
             guildId: guild.id,
             by: by.id,
             message: { id: message.id, content: message.content },
@@ -157,10 +143,6 @@ export default class Reports {
 
             channel.send({ embeds: [embed] });
         }
-
-        return interaction.editReply({
-            content: `You reported ${member}'s [Message](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}) for **${reason}**`
-        });
     }
 
     async get(member: GuildMember) {
@@ -174,7 +156,7 @@ export default class Reports {
         );
     }
 
-    async clear(interaction: ChatInputCommandInteraction, member: GuildMember) {
+    async clear(member: GuildMember) {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
@@ -185,11 +167,6 @@ export default class Reports {
         );
 
         await db.save();
-
-        return interaction.reply({
-            content: `Cleared reports for ${member}`,
-            ephemeral: true
-        });
     }
 
     total = async (member: GuildMember) => (await this.get(member))?.length;

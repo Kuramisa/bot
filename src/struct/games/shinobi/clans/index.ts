@@ -3,7 +3,8 @@ import ShinobiGame from "..";
 import {
     Collection,
     ChatInputCommandInteraction,
-    ButtonStyle
+    ButtonStyle,
+    ComponentType
 } from "discord.js";
 import { ShinobiClan } from "@types";
 
@@ -76,6 +77,7 @@ export default class ShinobiClans {
         });
 
         const collector = message.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
             time: 60000

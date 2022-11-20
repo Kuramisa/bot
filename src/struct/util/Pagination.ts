@@ -4,7 +4,8 @@ import Util from ".";
 import {
     ButtonInteraction,
     ChatInputCommandInteraction,
-    ButtonStyle
+    ButtonStyle,
+    ComponentType
 } from "discord.js";
 
 export default class UtilPagination {
@@ -66,6 +67,7 @@ export default class UtilPagination {
         });
 
         const collector = message.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
             time: timeout

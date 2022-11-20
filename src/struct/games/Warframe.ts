@@ -6,7 +6,8 @@ import { Platform } from "warframe-market/lib/typings";
 import {
     ChatInputCommandInteraction,
     AutocompleteInteraction,
-    ButtonStyle
+    ButtonStyle,
+    ComponentType
 } from "discord.js";
 
 const { MARKET_API } = process.env;
@@ -195,6 +196,7 @@ export default class Warframe {
         });
 
         const collector = message.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "orders_sellers" ||
                     i.customId === "orders_buyers" ||

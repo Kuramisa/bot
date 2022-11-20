@@ -1,4 +1,4 @@
-import { Currencies } from "@types";
+import { Currencies, IReport, IWarn } from "@types";
 import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
 import { IItem } from "./Item";
 
@@ -40,17 +40,8 @@ export interface IUser extends HydratedDocument<any> {
         to: string;
         since: number;
     };
-    warns: {
-        guildId: string;
-        by: string;
-        reason: string;
-    }[];
-    reports: {
-        guildId: string;
-        by: string;
-        message?: { id: string; content: string };
-        reason: string;
-    }[];
+    warns: IWarn[];
+    reports: IReport[];
 }
 
 export const User: Schema = new Schema<IUser>({
@@ -138,6 +129,7 @@ export const User: Schema = new Schema<IUser>({
     },
     warns: [
         {
+            id: String,
             guildId: String,
             by: String,
             message: {
@@ -149,6 +141,7 @@ export const User: Schema = new Schema<IUser>({
     ],
     reports: [
         {
+            id: String,
             guildId: String,
             by: String,
             reason: String

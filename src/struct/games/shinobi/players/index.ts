@@ -2,7 +2,8 @@ import {
     Collection,
     ChatInputCommandInteraction,
     EmbedBuilder,
-    ButtonStyle
+    ButtonStyle,
+    ComponentType
 } from "discord.js";
 
 import { Container } from "@sapphire/pieces";
@@ -120,6 +121,7 @@ export default class ShinobiPlayers {
         });
 
         const collector = message.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
             time: 60000

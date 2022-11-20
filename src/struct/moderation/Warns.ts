@@ -1,7 +1,9 @@
 import { Container } from "@sapphire/pieces";
+import { DiscordSnowflake } from "@sapphire/snowflake";
 import {
     ButtonInteraction,
     ChatInputCommandInteraction,
+    Guild,
     GuildMember,
     ModalSubmitInteraction,
     TextInputStyle
@@ -14,17 +16,9 @@ export default class Warns {
         this.container = container;
     }
 
-    async create(
-        interaction:
-            | ChatInputCommandInteraction<"cached">
-            | ButtonInteraction<"cached">
-            | ModalSubmitInteraction<"cached">,
-        member: GuildMember,
-        reason: string
-    ) {
+    async create(member: GuildMember, by: GuildMember, reason: string) {
         const { database, util } = this.container;
-
-        const { guild, member: by } = interaction;
+        const { guild } = member;
 
         const dbUser = await database.users.get(member.user);
         const dbGuild = await database.guilds.get(guild);
@@ -32,6 +26,7 @@ export default class Warns {
         if (!dbUser || !dbGuild) return;
 
         dbUser.warns.push({
+            id: `warn-${DiscordSnowflake.generate()}`,
             guildId: guild.id,
             by: by.id,
             reason
@@ -57,10 +52,6 @@ export default class Warns {
 
             channel.send({ embeds: [embed] });
         }
-
-        return interaction.reply({
-            content: `${member} was warned by ${by} - ***Reason***: ${reason}`
-        });
     }
 
     async get(member: GuildMember) {
@@ -70,6 +61,28 @@ export default class Warns {
         if (!db) return;
 
         return db.warns.filter((warn) => warn.guildId === member.guild.id);
+    }
+
+    async clear(member: GuildMember) {
+        const { database } = this.container;
+
+        const db = await database.users.get(member.user);
+        if (!db) return;
+
+        db.warns = db.warns.filter((warn) => warn.guildId !== member.guild.id);
+
+        await db.save();
+    }
+
+    async remove(id: string, member: GuildMember) {
+        const { database } = this.container;
+
+        const db = await database.users.get(member.user);
+        if (!db) return;
+
+        db.warns = db.warns.filter((warn) => warn.id !== id);
+
+        await db.save();
     }
 
     total = async (member: GuildMember) => (await this.get(member))?.length;

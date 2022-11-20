@@ -56,7 +56,11 @@ export class WarnCommand extends Command {
                 ephemeral: true
             });
 
-        return warns.create(interaction, member, reason);
+        await warns.create(member, interaction.member, reason);
+
+        return interaction.reply(
+            `${member} was warned by ${interaction.member} - ***Reason***: ${reason}`
+        );
     }
 
     async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {

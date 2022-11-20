@@ -1,5 +1,9 @@
 import { Container } from "@sapphire/pieces";
-import { ButtonStyle, ChatInputCommandInteraction } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType
+} from "discord.js";
 import { Naruto } from "anime-info";
 import ms from "ms";
 import moment from "moment";
@@ -76,6 +80,7 @@ export default class ShinobiGame {
 
         message
             .createMessageComponentCollector({
+                componentType: ComponentType.Button,
                 filter: (i) =>
                     (i.customId === "accept_game_rules" ||
                         i.customId === "decline_game_rules") &&

@@ -1,6 +1,11 @@
 import { Args, Command } from "@sapphire/framework";
 import axios, { AxiosRequestConfig } from "axios";
-import { ButtonStyle, ChatInputCommandInteraction, Message } from "discord.js";
+import {
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    Message
+} from "discord.js";
 
 const { RAPID_API } = process.env;
 
@@ -89,6 +94,7 @@ export class UrbanCommand extends Command {
         });
 
         const collector = message.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "previous_page" ||
                     i.customId === "next_page") &&
@@ -181,6 +187,7 @@ export class UrbanCommand extends Command {
         });
 
         const collector = msg.createMessageComponentCollector({
+            componentType: ComponentType.Button,
             filter: (i) =>
                 (i.customId === "previous_page" ||
                     i.customId === "next_page") &&

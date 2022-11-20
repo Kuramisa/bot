@@ -71,18 +71,10 @@ export class ReadyListener extends Listener {
             activities[Math.floor(Math.random() * activities.length)]
         );
 
-        patreon.premium.checkServers();
-        patreon.premium.checkUsers();
-
         setInterval(() => {
             client.user?.setPresence(
                 activities[Math.floor(Math.random() * activities.length)]
             );
         }, 60000);
-
-        setInterval(() => {
-            patreon.premium.checkServers();
-            patreon.premium.checkUsers();
-        }, 300000);
     }
 }
