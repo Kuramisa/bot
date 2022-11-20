@@ -32,7 +32,7 @@ export class DevCommand extends Subcommand {
                     command
                         .setName("report")
                         .setDescription(
-                            "\"Report bugs/issues with the bot to the Bot Developer\""
+                            "Report bugs/issues with the bot to the Bot Developer"
                         )
                         .addStringOption((option) =>
                             option
@@ -45,7 +45,7 @@ export class DevCommand extends Subcommand {
                     command
                         .setName("suggest")
                         .setDescription(
-                            "\"Suggest features and other things to the Bot Developer\""
+                            "Suggest features and other things to the Bot Developer"
                         )
                         .addStringOption((option) =>
                             option
