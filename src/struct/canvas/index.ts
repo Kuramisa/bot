@@ -38,6 +38,16 @@ export default class Canvas {
         this.goodbye = new GuildGoodbye(this.container, this);
     }
 
+    makeBackground(color: string) {
+        const canvas = new CanvasM(1024, 450);
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        return canvas.toBuffer("png");
+    }
+
     applyText(
         canvas: CanvasM,
         text: string,
