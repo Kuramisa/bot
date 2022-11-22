@@ -1,11 +1,10 @@
 import { Container } from "@sapphire/pieces";
+import _ from "lodash";
 import axios from "axios";
 import {
     BufferResolvable,
     EmbedBuilder,
     ActionRowBuilder,
-    ActionRowComponent,
-    ModalActionRowComponent,
     AttachmentBuilder,
     ButtonBuilder,
     SelectMenuBuilder,
@@ -32,6 +31,7 @@ export default class Util {
     readonly pagination: UtilPagination;
     readonly nekos: Nekos;
     readonly cdn: CDN;
+    readonly _: typeof _;
 
     constructor(container: Container) {
         this.container = container;
@@ -40,6 +40,7 @@ export default class Util {
         this.pagination = new UtilPagination(this.container, this);
         this.nekos = new Nekos();
         this.cdn = new CDN();
+        this._ = _;
     }
 
     permToBit(permissions?: PermissionResolvable) {
