@@ -5,7 +5,6 @@ import {
     ChatInputCommandInteraction,
     ComponentType
 } from "discord.js";
-import { BREAK } from "graphql";
 
 export class GameCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
