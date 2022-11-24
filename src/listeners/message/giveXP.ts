@@ -52,7 +52,7 @@ export class GiveXPListener extends Listener {
                 if (ifWeekend)
                     content = `${content} *It's a weekend so you get double xp :>*`;
                 return channel
-                    .send(content)
+                    .send({ content, allowedMentions: { repliedUser: false } })
                     .then((msg) => setTimeout(() => msg.delete(), 2000));
             }
         }
