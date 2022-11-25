@@ -31,7 +31,7 @@ export class PremiumGIveACListener extends Listener {
                         .filter((guild) =>
                             guild.name
                                 .toLowerCase()
-                                .includes(focused.value.toLowerCase())
+                                .startsWith(focused.value.toLowerCase())
                         )
                         .map((guild) => ({
                             name: guild.name,
@@ -49,7 +49,7 @@ export class PremiumGIveACListener extends Listener {
                         .filter((user) =>
                             user.tag
                                 .toLowerCase()
-                                .includes(focused.value.toLowerCase())
+                                .startsWith(focused.value.toLowerCase())
                         )
                         .map((user) => ({
                             name: user.tag,
