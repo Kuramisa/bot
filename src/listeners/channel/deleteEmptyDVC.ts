@@ -15,27 +15,12 @@ export class DeleteEmptyChannelListener extends Listener {
         const { database } = this.container;
         const { guild, member, channel } = oldState;
         if (!member) return;
-        if (!channel || !channel.parent) return;
 
         const db = await database.guilds.get(guild);
         if (!db) return;
-        if (!db.games || !db.games.settings) return;
 
-        const gameName = channel.parent.name;
-        if (!Object.keys(db.games.settings).includes(gameName.toLowerCase()))
-            return;
-
-        const gameSettings = db.games.settings[gameName.toLowerCase()];
-
-        if (
-            !gameSettings.category ||
-            !gameSettings.jtc.enabled ||
-            !gameSettings.jtc.channel
-        )
-            return;
-
-        if (channel.name.toLowerCase().includes("join to create")) return;
-
-        if (channel.members.size < 1) await channel.delete();
+        const dvc =
+            db.dvc.find((vc) => vc.parent === channel.id) ||
+            db.dvc.find((vc) => vc.channels.includes(channel.id));
     }
 }
