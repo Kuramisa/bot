@@ -1,5 +1,5 @@
 import { Listener } from "@sapphire/framework";
-import { VoiceState } from "discord.js";
+import { ChannelType, VoiceState } from "discord.js";
 
 export class DeleteEmptyChannelListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -22,5 +22,19 @@ export class DeleteEmptyChannelListener extends Listener {
         const dvc =
             db.dvc.find((vc) => vc.parent === channel.id) ||
             db.dvc.find((vc) => vc.channels.includes(channel.id));
+
+        if (!dvc) return;
+
+        for (let i = 0; i < dvc.channels.length; i++) {
+            const id = dvc.channels[i];
+            const ch = guild.channels.cache.get(id);
+            if (!ch || ch.type !== ChannelType.GuildVoice) continue;
+            if (ch.members.size > 0) continue;
+            dvc.channels = dvc.channels.filter((vc) => vc !== id);
+            ch.delete();
+        }
+
+        db.markModified("dvc");
+        await db.save();
     }
 }
