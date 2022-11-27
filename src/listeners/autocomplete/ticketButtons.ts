@@ -27,10 +27,8 @@ export class TicketButtonsACListener extends Listener {
         const db = await database.guilds.get(guild);
         if (!db) return;
 
-        const buttons = db.tickets.buttons;
-
         return interaction.respond(
-            buttons.map((choice) => ({
+            db.tickets.buttons.map((choice) => ({
                 name: choice.includes("-")
                     ? util.capEachFirstLetter(choice.split("_ticket")[0], "-")
                     : util.capFirstLetter(choice.split("_ticket")[0]),
