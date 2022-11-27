@@ -8,10 +8,11 @@ import Moderation from "#struct/moderation";
 import Util from "#struct/util";
 import { Collection } from "discord.js";
 import { Command, Args, CommandOptions } from "@sapphire/framework";
-import { ValorantAccount } from "@types";
 import { Seasons } from "@valapi/valorant-api.com";
 import Dashboard from "#struct/dashboard";
 import Systems from "#struct/systems";
+
+import { TStaff } from "#schemas/Staff";
 
 declare module "@sapphire/pieces" {
     interface Container {
@@ -22,6 +23,8 @@ declare module "@sapphire/pieces" {
         promoteChannel: GuildBasedChannel | null;
 
         owners: string[];
+
+        staff: TStaff[];
 
         dashboard: Dashboard;
 

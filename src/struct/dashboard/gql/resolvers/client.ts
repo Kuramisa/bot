@@ -27,6 +27,25 @@ export default {
                 console.error(err);
                 throw err;
             }
-        }
+        },
+        clientStaff: async (
+            _: any,
+            __: any,
+            { container: { client, staff } }: { container: Container }
+        ) =>
+            await Promise.all(
+                staff.map(async (user) => {
+                    const u = await client.users.fetch(user.id, {
+                        force: true
+                    });
+                    return {
+                        ...user._doc,
+                        ...u,
+                        avatarURL: u.avatar?.includes("a_")
+                            ? u.avatarURL({ extension: "gif" })
+                            : u.avatarURL({ extension: "png" })
+                    };
+                })
+            )
     }
 };

@@ -1,3 +1,4 @@
+import Staff from "#schemas/Staff";
 import { Listener } from "@sapphire/framework";
 import { ActivityType, PresenceData, REST, Routes } from "discord.js";
 
@@ -23,6 +24,8 @@ export class ReadyListener extends Listener {
 
         logger.info(`Ready! Logged in as ${client.user?.tag}`);
 
+        container.staff = await Staff.find();
+
         const mainGuild = await client.guilds.fetch("814017098409443339");
 
         container.mainGuild = mainGuild;
@@ -45,6 +48,8 @@ export class ReadyListener extends Listener {
         database.users.verifyAll();
 
         games.shinobi.players.init();
+
+        container.staff = await Staff.find();
 
         const activities: PresenceData[] = [
             {

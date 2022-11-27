@@ -1,5 +1,6 @@
 export default `#graphql
     scalar Client
+    scalar Staff
 
     scalar Guild
     scalar Role
@@ -21,6 +22,7 @@ export default `#graphql
     type Query {
         client: Client!
         clientUser: User!
+        clientStaff: Staff!
 
         guild(guildId: String!, fetchDb: Boolean): Guild!
         guilds(fetchDb: Boolean): [Guild]!

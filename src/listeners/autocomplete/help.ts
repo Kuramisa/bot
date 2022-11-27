@@ -24,7 +24,9 @@ export class HelpACListener extends Listener {
 
         switch (options.getSubcommand()) {
             case "category": {
-                let categories: string[] = commands.categories;
+                let categories: string[] = commands.categories.filter(
+                    (cat) => cat !== "owner"
+                );
 
                 if (focused.length > 0)
                     categories = categories.filter((cat) =>

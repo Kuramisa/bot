@@ -25,6 +25,8 @@ export type IReport = {
     reason: string;
 };
 
+export type StaffType = "owner" | "helper";
+
 export type CardType = "buffer" | "attachment";
 
 // Shinobi Types
