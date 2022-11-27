@@ -5650,10 +5650,10 @@ w3c-xmlserializer@^2.0.0:
   dependencies:
     xml-name-validator "^3.0.0"
 
-warframe-items@^1.1257.10:
-  version "1.1257.10"
-  resolved "https://registry.yarnpkg.com/warframe-items/-/warframe-items-1.1257.10.tgz#5e9a5e6c72ba54b762b744ee497770ebd0aa955e"
-  integrity sha512-3xN07UGyKtGMYrHNHiFkUbCPXPB/HlHQEPWcKH4yh5LFC1OttYydktfm6LIsc7HeiUh4v3J75NNphko3D8AhEQ==
+warframe-items@^1.1257.11:
+  version "1.1257.11"
+  resolved "https://registry.yarnpkg.com/warframe-items/-/warframe-items-1.1257.11.tgz#d47c4bdbe4504413b068c16ffb3601753f32b8e6"
+  integrity sha512-FislmenYnFcRqe5HKH6vNzynkNUW42dYfqIwcxV8lEy2uK8zgw0XvrMk4L9rzUStcaQbZYQm75d8SibGw+l7zg==
 
 warframe-market@^1.1.1:
   version "1.1.1"
