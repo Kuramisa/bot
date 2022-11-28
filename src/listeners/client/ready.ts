@@ -18,7 +18,6 @@ export class ReadyListener extends Listener {
             client,
             database,
             games,
-            systems: { patreon },
             logger
         } = container;
 

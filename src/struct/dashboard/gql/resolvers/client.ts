@@ -1,3 +1,4 @@
+import Staff from "#schemas/Staff";
 import { Container } from "@sapphire/pieces";
 
 export default {
@@ -31,19 +32,22 @@ export default {
         clientStaff: async (
             _: any,
             __: any,
-            { container: { client, staff } }: { container: Container }
+            { container: { client, staff, util } }: { container: Container }
         ) =>
             await Promise.all(
-                staff.map(async (user) => {
+                (
+                    await Staff.find()
+                ).map(async (user) => {
                     const u = await client.users.fetch(user.id, {
                         force: true
                     });
                     return {
                         ...user._doc,
                         ...u,
+                        formattedType: util.capFirstLetter(user.type),
                         avatarURL: u.avatar?.includes("a_")
-                            ? u.avatarURL({ extension: "gif" })
-                            : u.avatarURL({ extension: "png" })
+                            ? u.avatarURL({ extension: "gif", size: 128 })
+                            : u.avatarURL({ extension: "png", size: 128 })
                     };
                 })
             )
