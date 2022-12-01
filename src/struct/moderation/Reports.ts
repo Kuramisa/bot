@@ -161,6 +161,17 @@ export default class Reports {
         await db.save();
     }
 
+    async remove(id: string, member: GuildMember) {
+        const { database } = this.container;
+
+        const db = await database.users.get(member.user);
+        if (!db) return;
+
+        db.reports = db.reports.filter((report) => report.id !== id);
+
+        await db.save();
+    }
+
     total = async (member: GuildMember) => (await this.get(member))?.length;
 
     modal = (member: GuildMember) =>
