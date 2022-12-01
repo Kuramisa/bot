@@ -72,10 +72,10 @@ export class HelpCommand extends Subcommand {
     /**
      * Execute Message Subcommand (All)
      */
-    async messageAll(message: Message, args: Args) {
+    async messageAll(message: Message) {
         const { client, util, stores } = this.container;
 
-        const categories: string[] = stores.get("commands").categories;
+        const categories = stores.get("commands").categories;
 
         const description = categories
             .sort((a, b) => a.localeCompare(b))
