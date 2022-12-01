@@ -1,13 +1,6 @@
 import { Container } from "@sapphire/pieces";
 import { DiscordSnowflake } from "@sapphire/snowflake";
-import {
-    ButtonInteraction,
-    ChatInputCommandInteraction,
-    Guild,
-    GuildMember,
-    ModalSubmitInteraction,
-    TextInputStyle
-} from "discord.js";
+import { GuildMember, TextInputStyle } from "discord.js";
 
 export default class Warns {
     private readonly container: Container;
@@ -29,7 +22,7 @@ export default class Warns {
             id: `warn-${DiscordSnowflake.generate()}`,
             guildId: guild.id,
             by: by.id,
-            reason
+            reason,
         });
 
         await dbUser.save();
@@ -44,7 +37,7 @@ export default class Warns {
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ extension: "gif" }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string,
                 })
                 .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(`${by} **Warned** ${member}`)

@@ -2,18 +2,18 @@ import { Container } from "@sapphire/pieces";
 import _ from "lodash";
 import axios from "axios";
 import {
-    BufferResolvable,
-    EmbedBuilder,
     ActionRowBuilder,
     AttachmentBuilder,
+    BufferResolvable,
     ButtonBuilder,
-    SelectMenuBuilder,
-    ModalBuilder,
+    EmbedBuilder,
     MessageActionRowComponentBuilder,
     ModalActionRowComponentBuilder,
-    TextInputBuilder,
+    ModalBuilder,
     PermissionResolvable,
-    PermissionsBitField
+    PermissionsBitField,
+    SelectMenuBuilder,
+    TextInputBuilder,
 } from "discord.js";
 import { Stream } from "stream";
 import moment from "moment";
@@ -26,12 +26,12 @@ import UtilPagination from "./Pagination";
 import UtilMember from "./Member";
 
 export default class Util {
-    private readonly container: Container;
     readonly member: UtilMember;
     readonly pagination: UtilPagination;
     readonly nekos: Nekos;
     readonly cdn: CDN;
     readonly _: typeof _;
+    private readonly container: Container;
 
     constructor(container: Container) {
         this.container = container;
@@ -76,7 +76,7 @@ export default class Util {
     formatNumber = (number: any, minFractionDigits = 0) =>
         Number.parseFloat(number).toLocaleString(undefined, {
             minimumFractionDigits: minFractionDigits,
-            maximumFractionDigits: 2
+            maximumFractionDigits: 2,
         });
     calcPercentage = (num: any) => num * 100;
 
@@ -98,7 +98,7 @@ export default class Util {
     imageToBuffer = async (url: string) =>
         (
             await axios.get(url, {
-                responseType: "arraybuffer"
+                responseType: "arraybuffer",
             })
         ).data;
 
@@ -113,8 +113,8 @@ export default class Util {
 
     list(arr: string[], conj = "and") {
         const len = arr.length;
-        if (len == 0) return "";
-        if (len == 1) return arr[0];
+        if (len === 0) return "";
+        if (len === 1) return arr[0];
         return `${arr.slice(0, -1).join(", ")}${
             len > 1 ? `${len > 2 ? "," : ""} ${conj} ` : ""
         }${arr.slice(-1)}`;
@@ -138,7 +138,7 @@ export default class Util {
             const size = Math.pow(10, (i + 1) * 3);
             if (size <= num) {
                 num = Math.round((num * decPlaces) / size) / decPlaces;
-                if (num == 1000 && i < abbrev.length - 1) {
+                if (num === 1000 && i < abbrev.length - 1) {
                     num = 1;
                     i++;
                 }

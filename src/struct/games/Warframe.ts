@@ -4,19 +4,18 @@ import WarframeMarket from "warframe-market";
 import WarframeItems from "warframe-items";
 import { Platform } from "warframe-market/lib/typings";
 import {
-    ChatInputCommandInteraction,
     AutocompleteInteraction,
     ButtonStyle,
-    ComponentType
+    ChatInputCommandInteraction,
+    ComponentType,
 } from "discord.js";
 
 const { MARKET_API } = process.env;
 
 export default class Warframe {
-    private readonly container: Container;
-
     readonly market: WarframeMarket;
     readonly items: WarframeItems;
+    private readonly container: Container;
 
     constructor(container: Container) {
         this.container = container;
@@ -24,7 +23,7 @@ export default class Warframe {
         this.market = new WarframeMarket(MARKET_API as string);
         this.items = new WarframeItems({
             category: ["All"],
-            ignoreEnemies: true
+            ignoreEnemies: true,
         });
     }
 
@@ -43,7 +42,7 @@ export default class Warframe {
         await interaction.respond(
             items.map((choice) => ({
                 name: choice.name as string,
-                value: choice.name as string
+                value: choice.name as string,
             }))
         );
     }
@@ -65,7 +64,7 @@ export default class Warframe {
 
         if (items.error) {
             const msg = await interaction.editReply({
-                content: `No Orders for **${item}** found`
+                content: `No Orders for **${item}** found`,
             });
             setTimeout(() => {
                 msg.delete().catch(() => {
@@ -98,7 +97,7 @@ export default class Warframe {
                 .button()
                 .setCustomId("orders_buyers")
                 .setLabel("Buyers")
-                .setStyle(ButtonStyle.Success)
+                .setStyle(ButtonStyle.Success),
         ];
 
         const navButtons = [
@@ -113,7 +112,7 @@ export default class Warframe {
                 .setCustomId("next_order")
                 .setLabel("Order")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const bottomButtons = [
@@ -121,7 +120,7 @@ export default class Warframe {
                 .button()
                 .setCustomId("create_paste")
                 .setLabel("Create Paste")
-                .setStyle(ButtonStyle.Success)
+                .setStyle(ButtonStyle.Success),
         ];
 
         const typeRow = util.row().setComponents(typeButtons);
@@ -130,8 +129,8 @@ export default class Warframe {
 
         const sellerEmbeds = orders
             .filter((order) => order.order_type === "sell")
-            .map((order, index) => {
-                const embed = util
+            .map((order, index) =>
+                util
                     .embed()
                     .setTitle(`Sell Orders for ${item}`)
                     .setDescription(
@@ -149,19 +148,17 @@ export default class Warframe {
                     \`Reputation\`: ${order.user.reputation}
                     \`Status\`: ${util.capFirstLetter(order.user.status)}
                     \`Last Seen\`*: <t:${moment(order.user.last_seen).unix()}:R>
-                `
+                `,
                     })
                     .setFooter({
-                        text: `Page ${index + 1} of ${orders.length}`
-                    });
-
-                return embed;
-            });
+                        text: `Page ${index + 1} of ${orders.length}`,
+                    })
+            );
 
         const buyerEmbeds = orders
             .filter((order) => order.order_type === "buy")
-            .map((order, index) => {
-                const embed = util
+            .map((order, index) =>
+                util
                     .embed()
                     .setTitle(`Buy Orders for ${item}`)
                     .setDescription(
@@ -179,20 +176,18 @@ export default class Warframe {
                     \`Reputation\`: ${order.user.reputation}
                     \`Status\`: ${util.capFirstLetter(order.user.status)}
                     \`Last Seen\`*: <t:${moment(order.user.last_seen).unix()}:R>
-                `
+                `,
                     })
                     .setFooter({
-                        text: `Page ${index + 1} of ${orders.length}`
-                    });
-
-                return embed;
-            });
+                        text: `Page ${index + 1} of ${orders.length}`,
+                    })
+            );
 
         let embeds = sellerEmbeds;
 
         const message = await interaction.editReply({
             embeds: [sellerEmbeds[page]],
-            components: [typeRow, navRow, bottomRow]
+            components: [typeRow, navRow, bottomRow],
         });
 
         const collector = message.createMessageComponentCollector({
@@ -202,7 +197,7 @@ export default class Warframe {
                     i.customId === "orders_buyers" ||
                     i.customId === "previous_order" ||
                     i.customId === "next_order") &&
-                i.user.id === user.id
+                i.user.id === user.id,
         });
 
         collector.on("collect", async (i) => {
@@ -230,7 +225,7 @@ export default class Warframe {
             await i.deferUpdate();
             await i.editReply({
                 embeds: [embeds[page]],
-                components: [typeRow, navRow, bottomRow]
+                components: [typeRow, navRow, bottomRow],
             });
 
             collector.resetTimer();

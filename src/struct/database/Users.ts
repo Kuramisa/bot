@@ -30,13 +30,13 @@ export default class DatabaseUsers {
             : await this.create(user);
     getAll = async () => await User.find();
     check = async (user: DiscordUser) =>
-        (await User.findOne({ id: user.id })) ? true : false;
+        !!(await User.findOne({ id: user.id }));
 
     verify = async (user: DiscordUser) =>
         !(await this.check(user)) && this.create(user);
 
     verifyAll = () =>
         this.container.client.users.cache.forEach(async (user) => {
-            this.verify(user);
+            await this.verify(user);
         });
 }

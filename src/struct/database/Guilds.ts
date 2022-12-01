@@ -29,13 +29,13 @@ export default class DatabaseGuilds {
     getAll = async () => await Guild.find();
 
     check = async (guild: DiscordGuild) =>
-        (await Guild.findOne({ id: guild.id })) ? true : false;
+        !!(await Guild.findOne({ id: guild.id }));
 
     verify = async (guild: DiscordGuild) =>
         !(await this.check(guild)) && this.create(guild);
 
     verifyAll = () =>
-        this.container.client.guilds.cache.forEach(async (guild) => {
+        this.container.client.guilds.cache.forEach((guild) => {
             this.verify(guild);
         });
 }

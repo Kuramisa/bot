@@ -6,7 +6,7 @@ export class MusicButtonsListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Music Buttons",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -22,14 +22,14 @@ export class MusicButtonsListener extends Listener {
                 "skip_current_track",
                 "skip_to_track",
                 "cancel_track_select",
-                "add_tracks"
+                "add_tracks",
             ].includes(interaction.customId)
         )
             return;
 
         const {
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { guild, message, member } = interaction;
@@ -40,20 +40,20 @@ export class MusicButtonsListener extends Listener {
         if (!queue)
             return await interaction.reply({
                 content: "Music is not playing",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!voiceChannel)
             return interaction.reply({
                 content:
                     "You must be in a voice channel to be able to use the music buttons",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (queue.connection.channel.id !== voiceChannel.id)
             return interaction.reply({
                 content: `I'm already playing music in ${guild.members.me?.voice.channel}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         switch (interaction.customId) {
@@ -74,32 +74,29 @@ export class MusicButtonsListener extends Listener {
                 if (chunked.length < 1)
                     return await interaction.reply({
                         content: "There are no tracks playing",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
-                util.pagination.default(interaction, chunked, "Current Queue");
+                await util.pagination.default(
+                    interaction,
+                    chunked,
+                    "Current Queue"
+                );
                 break;
             }
             case "show_track_progress": {
                 const rows = message.components;
                 const embed = message.embeds[0];
 
-                if (!embed.fields[2])
-                    embed.fields[2] = {
-                        name: "Track Progress",
-                        value: queue.createProgressBar(),
-                        inline: false
-                    };
-                else
-                    embed.fields[2] = {
-                        name: "Track Progress",
-                        value: queue.createProgressBar(),
-                        inline: false
-                    };
+                embed.fields[2] = {
+                    name: "Track Progress",
+                    value: queue.createProgressBar(),
+                    inline: false,
+                };
 
-                message.edit({
+                await message.edit({
                     embeds: [embed],
-                    components: rows
+                    components: rows,
                 });
 
                 setTimeout(() => message.edit({ components: rows }), 3000);
@@ -113,20 +110,18 @@ export class MusicButtonsListener extends Listener {
                 if (requestedBy.id !== member.id)
                     return interaction.reply({
                         content: `You didn't request this track, ask ${requestedBy} to pause the track, because they requested it`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const rows = message.components;
 
-                const playButton = util
+                rows[1].components[0] = util
                     .button()
                     .setCustomId("resume_track")
                     .setLabel("Resume")
                     .setStyle(ButtonStyle.Success) as any;
 
-                rows[1].components[0] = playButton;
-
-                message.edit({ components: rows as any });
+                await message.edit({ components: rows as any });
                 queue.setPaused(true);
 
                 return interaction.deferUpdate();
@@ -138,19 +133,17 @@ export class MusicButtonsListener extends Listener {
                 if (requestedBy.id !== member.id)
                     return interaction.reply({
                         content: `You didn't request this track, ask ${requestedBy} to resume the track, because they requested it`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const rows = message.components;
-                const pauseButton = util
+                rows[1].components[0] = util
                     .button()
                     .setCustomId("pause_track")
                     .setLabel("Pause")
                     .setStyle(ButtonStyle.Danger) as any;
 
-                rows[1].components[0] = pauseButton;
-
-                message.edit({ components: rows });
+                await message.edit({ components: rows });
                 queue.setPaused(false);
 
                 return interaction.deferUpdate();
@@ -162,13 +155,13 @@ export class MusicButtonsListener extends Listener {
                 if (requestedBy.id !== member.id)
                     return interaction.reply({
                         content: `You didn't request this track, ask ${requestedBy} to skip the track, because they requested it`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
-                message.edit({
+                await message.edit({
                     content: `Skipped \`${currentTrack.author}\` - \`${currentTrack.title}\``,
                     embeds: [],
-                    components: []
+                    components: [],
                 });
 
                 queue.skip();
@@ -181,7 +174,7 @@ export class MusicButtonsListener extends Listener {
                 if (queue.tracks.length < 1)
                     return interaction.reply({
                         content: "There are no upcoming tracks",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const tracks = queue.tracks;
@@ -193,7 +186,7 @@ export class MusicButtonsListener extends Listener {
                                 `${track.title} - ${track.author}`,
                                 99
                             )}`,
-                            value: `${queue.getTrackPosition(track)}`
+                            value: `${queue.getTrackPosition(track)}`,
                         };
                     });
 
@@ -210,14 +203,14 @@ export class MusicButtonsListener extends Listener {
                         .setPlaceholder("Select a track")
                         .setMinValues(1)
                         .setMaxValues(1)
-                        .setOptions(mapped)
+                        .setOptions(mapped),
                 ];
 
                 rows[1].components[2] = cancelButton;
 
                 rows.push(util.row().addComponents(dropdown) as any);
 
-                message.edit({ components: rows });
+                await message.edit({ components: rows });
 
                 return interaction.deferUpdate();
             }
@@ -225,13 +218,11 @@ export class MusicButtonsListener extends Listener {
                 const rows = [message.components[0], message.components[1]];
 
                 await interaction.deferUpdate();
-                const skipToTrackButton = util
+                rows[1].components[2] = util
                     .button()
                     .setCustomId("skip_to_track")
                     .setLabel("Skip to Track")
                     .setStyle(ButtonStyle.Danger) as any;
-
-                rows[1].components[2] = skipToTrackButton;
 
                 return message.edit({ components: rows });
             }
@@ -255,7 +246,7 @@ export class MusicButtonsListener extends Listener {
                             )
                     );
 
-                interaction.showModal(modal);
+                await interaction.showModal(modal);
                 break;
             }
         }

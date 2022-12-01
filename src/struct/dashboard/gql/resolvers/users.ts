@@ -43,9 +43,7 @@ export default {
                 if (!user) throw new GraphQLError("User not found");
                 if (user.bot) throw new GraphQLError("User is a bot");
 
-                const image = await canvas.member.card(user, "buffer");
-
-                return image;
+                return await canvas.member.card(user, "buffer");
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -58,7 +56,7 @@ export default {
         ) => {
             const usersCache = client.users.cache;
             try {
-                const users = await Promise.all(
+                return await Promise.all(
                     usersCache
                         .filter((user) => !user.bot)
                         .toJSON()
@@ -78,8 +76,6 @@ export default {
                             return info;
                         })
                 );
-
-                return users;
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -119,7 +115,7 @@ export default {
             if (!member) throw new Error("Member not found");
 
             return await moderation.reports.get(member);
-        }
+        },
     },
     Mutation: {
         warnUser: async (
@@ -127,12 +123,12 @@ export default {
             {
                 guildId,
                 userId,
-                reason
+                reason,
             }: { guildId: string; userId: string; reason?: string },
             {
                 req,
                 server: { auth },
-                container: { client, database, util }
+                container: { client, database, util },
             }: { req: Request; server: Dashboard; container: Container }
         ) => {
             try {
@@ -163,7 +159,7 @@ export default {
                     id: `warn-${DiscordSnowflake.generate()}`,
                     guildId: guild.id,
                     by: warnedBy.id,
-                    reason
+                    reason,
                 };
 
                 dbUser.warns.push(warn);
@@ -187,8 +183,8 @@ export default {
                         .setAuthor({
                             name: `${guild.name} Logs`,
                             iconURL: guild.iconURL({
-                                extension: "gif"
-                            }) as string
+                                extension: "gif",
+                            }) as string,
                         })
                         .setThumbnail(
                             member.displayAvatarURL({ extension: "gif" })
@@ -210,12 +206,12 @@ export default {
             {
                 guildId,
                 userId,
-                reason
+                reason,
             }: { guildId: string; userId: string; reason?: string },
             {
                 req,
                 server: { auth },
-                container: { client, database, util }
+                container: { client, database, util },
             }: { req: Request; server: Dashboard; container: Container }
         ) => {
             try {
@@ -243,7 +239,7 @@ export default {
                     id: `report-${DiscordSnowflake.generate()}`,
                     guildId: guild.id,
                     by: warnedBy.id,
-                    reason
+                    reason,
                 };
 
                 dbUser.reports.push(report);
@@ -267,8 +263,8 @@ export default {
                         .setAuthor({
                             name: `${guild.name} Logs`,
                             iconURL: guild.iconURL({
-                                extension: "gif"
-                            }) as string
+                                extension: "gif",
+                            }) as string,
                         })
                         .setThumbnail(
                             member.displayAvatarURL({ extension: "gif" })
@@ -299,6 +295,6 @@ export default {
             { server: { auth } }: { server: Dashboard }
         ) => {
             return auth.authUser(authData);
-        }
-    }
+        },
+    },
 };

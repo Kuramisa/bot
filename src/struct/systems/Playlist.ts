@@ -1,9 +1,9 @@
 import { Container } from "@sapphire/pieces";
 import { Player, Track } from "discord-player";
 import {
-    TextInputModalData,
     ChatInputCommandInteraction,
-    TextInputStyle
+    TextInputModalData,
+    TextInputStyle,
 } from "discord.js";
 
 export default class Playlist {
@@ -17,7 +17,7 @@ export default class Playlist {
         const {
             database,
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { options, guild, channel, member } = interaction;
@@ -28,7 +28,7 @@ export default class Playlist {
             return interaction.reply({
                 content:
                     "You must be in a voice channel to be able to use the music commands",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (
@@ -37,13 +37,13 @@ export default class Playlist {
         )
             return interaction.reply({
                 content: `I'm already playing music in ${guild.members.me.voice.channel}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (member.voice.deaf)
             return interaction.reply({
                 content: "You cannot play music when deafened",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const name = options.getString("playlist_name", true);
@@ -53,20 +53,20 @@ export default class Playlist {
         if (!playlist)
             return interaction.reply({
                 content: "Playlist not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (playlist.tracks.length < 1)
             return interaction.reply({
                 content: "No tracks found in your playlist",
-                ephemeral: true
+                ephemeral: true,
             });
 
         let queue = music.getQueue(guild);
 
         if (!queue) {
             queue = music.createQueue(guild, {
-                metadata: channel
+                metadata: channel,
             });
 
             try {
@@ -75,11 +75,10 @@ export default class Playlist {
                 queue.destroy();
                 return interaction.reply({
                     content: "Could not join your voice channel",
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }
-        ("");
 
         const tracks = playlist.tracks.map(
             (track) => new Track(queue?.player as Player, track)
@@ -117,7 +116,7 @@ export default class Playlist {
         if ((await database.playlists.getAll(member.id)).length === 5)
             return interaction.reply({
                 content: "You can only have 5 playlist",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const name = options.getString("playlist_name", true);
@@ -129,17 +128,17 @@ export default class Playlist {
         )
             return interaction.reply({
                 content: `You already have a playlist named \`${name}\``,
-                ephemeral: true
+                ephemeral: true,
             });
 
         await database.playlists.create({
             member,
-            name
+            name,
         });
 
         return interaction.reply({
             content: `Created a playlist for you named \`${name}\``,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -147,7 +146,7 @@ export default class Playlist {
         const {
             database,
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { options, member } = interaction;
@@ -155,12 +154,12 @@ export default class Playlist {
         const url = options.getString("playlist_url", true);
 
         const result = await music.search(url, {
-            requestedBy: interaction.user
+            requestedBy: interaction.user,
         });
 
         if (!result.playlist)
             return interaction.reply({
-                content: "URL provided is not a playlist"
+                content: "URL provided is not a playlist",
             });
 
         const { playlist } = result;
@@ -172,18 +171,19 @@ export default class Playlist {
         )
             return interaction.reply({
                 content: "You already have a playlist with the same name",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const newPlaylist = await database.playlists.create({
             member,
-            name: playlist.title
+            name: playlist.title,
         });
 
         const tracks = playlist.tracks.map((track) => {
-            const { playlist, ...trck } = track;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { playlist, ...customTrack } = track;
 
-            return { ...trck, ...track.raw };
+            return { ...customTrack, ...track.raw };
         });
 
         newPlaylist.tracks = [...tracks, ...newPlaylist.tracks];
@@ -198,7 +198,7 @@ export default class Playlist {
             } Tracks - ${util.capFirstLetter(source)} ${util.capFirstLetter(
                 type
             )}\``,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -206,7 +206,7 @@ export default class Playlist {
         const {
             database,
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { options } = interaction;
@@ -241,7 +241,7 @@ export default class Playlist {
         await interaction.showModal(modal);
 
         const mInteraction = await interaction.awaitModalSubmit({
-            time: 0
+            time: 0,
         });
 
         const { components } = mInteraction;
@@ -250,7 +250,7 @@ export default class Playlist {
 
         const newPlaylist = await database.playlists.create({
             member,
-            name
+            name,
         });
 
         const playlists = (
@@ -258,7 +258,7 @@ export default class Playlist {
                 components.map(async (field) => {
                     const f = field.components[0] as TextInputModalData;
                     const result = await music.search(f.value, {
-                        requestedBy: interaction.user
+                        requestedBy: interaction.user,
                     });
 
                     if (!result.playlist) return null;
@@ -272,7 +272,7 @@ export default class Playlist {
             await mInteraction.reply({
                 content:
                     "One or more URLs are not valid playlists (Make sure playlists are public)",
-                ephemeral: true
+                ephemeral: true,
             });
 
             return;
@@ -280,9 +280,10 @@ export default class Playlist {
 
         const tracks = playlists.flat().map((track) => {
             const truck = track as Track;
-            const { playlist, ...trck } = truck;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { playlist, ...customTrack } = truck;
 
-            return { ...trck, ...truck.raw };
+            return { ...customTrack, ...truck.raw };
         });
 
         newPlaylist.tracks = [...tracks, ...newPlaylist.tracks];
@@ -291,7 +292,7 @@ export default class Playlist {
 
         await mInteraction.reply({
             content: `Added ${amount} playlists to your new playlist \`${name}\``,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -307,7 +308,7 @@ export default class Playlist {
         if (!playlist)
             return interaction.reply({
                 content: "Playlist not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const confirmText = `${member.user.username}/${playlist.name}`;
@@ -333,7 +334,7 @@ export default class Playlist {
         await interaction.showModal(modal);
 
         const mInteraction = await interaction.awaitModalSubmit({
-            time: 0
+            time: 0,
         });
 
         const entered = mInteraction.fields.getTextInputValue(
@@ -343,7 +344,7 @@ export default class Playlist {
         if (entered !== confirmText) {
             await mInteraction.reply({
                 content: "Playlist was not deleted, confirmation failed",
-                ephemeral: true
+                ephemeral: true,
             });
 
             return;
@@ -353,14 +354,14 @@ export default class Playlist {
 
         await mInteraction.reply({
             content: "Playlist was deleted successfully",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
     async add(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             database,
-            systems: { music }
+            systems: { music },
         } = this.container;
 
         const { options, member } = interaction;
@@ -376,24 +377,25 @@ export default class Playlist {
         if (!playlist)
             return interaction.reply({
                 content: "Playlist not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const results = await music.search(query, {
-            requestedBy: interaction.user
+            requestedBy: interaction.user,
         });
 
         if (results.tracks.length < 1)
             return interaction.reply({
                 content: `Tracks with \`${query}\` was not found`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (results.playlist) {
             const tracks = results.playlist.tracks.map((track) => {
-                const { playlist, ...trck } = track;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { playlist, ...customTrack } = track;
 
-                return { ...trck, ...track.raw };
+                return { ...customTrack, ...track.raw };
             });
 
             playlist.tracks = [...tracks, ...playlist.tracks];
@@ -408,7 +410,7 @@ export default class Playlist {
             content: `Added \`${
                 results.playlist ? results.playlist.title : query
             }\` to your playlist \`${playlistName}\``,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -416,7 +418,7 @@ export default class Playlist {
         const {
             database,
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { options, member } = interaction;
@@ -429,17 +431,17 @@ export default class Playlist {
         if (!playlist)
             return interaction.reply({
                 content: "Playlist not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const result = await music.search(query, {
-            requestedBy: interaction.user
+            requestedBy: interaction.user,
         });
 
         if (result.tracks.length < 1)
             return interaction.reply({
                 content: `Tracks with \`${query}\` was not found`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const tracksChosen = (

@@ -7,7 +7,7 @@ export class TicketActionsListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Handle tickets buttons",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -31,7 +31,7 @@ export class TicketActionsListener extends Listener {
         if (!member.permissions.has("ModerateMembers"))
             return interaction.reply({
                 content: "You do not have permissions to perform this action",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const db = await database.guilds.get(guild);
@@ -41,7 +41,7 @@ export class TicketActionsListener extends Listener {
         if (!ticket)
             return interaction.reply({
                 content: "Ticket not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const embed = util
@@ -53,24 +53,22 @@ export class TicketActionsListener extends Listener {
             case "lock_ticket": {
                 await database.tickets.lock(channel.id);
 
-                const unlockBtn = util
+                message.components[0].components[0] = util
                     .button()
                     .setCustomId("unlock_ticket")
                     .setLabel("Unlock")
                     .setStyle(ButtonStyle.Success)
                     .setEmoji("🔓") as any;
 
-                message.components[0].components[0] = unlockBtn;
-
                 embed.setDescription(`🔒 Ticket was locked by ${member}`);
 
                 await message.edit({
                     embeds: [embed],
-                    components: message.components
+                    components: message.components,
                 });
 
                 await channel.permissionOverwrites.edit(ticket.memberId, {
-                    SendMessages: false
+                    SendMessages: false,
                 });
 
                 return interaction.deferUpdate();
@@ -78,24 +76,22 @@ export class TicketActionsListener extends Listener {
             case "unlock_ticket": {
                 await database.tickets.unlock(channel.id);
 
-                const lockBtn = util
+                message.components[0].components[0] = util
                     .button()
                     .setCustomId("lock_ticket")
                     .setLabel("Lock")
                     .setStyle(ButtonStyle.Secondary)
                     .setEmoji("🔒") as any;
 
-                message.components[0].components[0] = lockBtn;
-
                 embed.setDescription(`🔒 Ticket was unlocked by ${member}`);
 
                 await message.edit({
                     embeds: [embed],
-                    components: message.components
+                    components: message.components,
                 });
 
                 await channel.permissionOverwrites.edit(ticket.memberId, {
-                    SendMessages: true
+                    SendMessages: true,
                 });
 
                 return interaction.deferUpdate();
@@ -105,7 +101,7 @@ export class TicketActionsListener extends Listener {
                     return interaction.reply({
                         content:
                             "Ticket is already closed, please wait for it to get deleted",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const transcripts = guild.channels.cache.get(
@@ -114,7 +110,7 @@ export class TicketActionsListener extends Listener {
                 if (!transcripts)
                     return interaction.reply({
                         content: "Transcripts channel is not setup",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 if (!transcripts.isTextBased()) return;
@@ -125,7 +121,7 @@ export class TicketActionsListener extends Listener {
                     returnType: ExportReturnType.Buffer,
                     filename,
                     poweredBy: false,
-                    saveImages: true
+                    saveImages: true,
                 });
 
                 await database.tickets.close(channel.id);
@@ -137,7 +133,7 @@ export class TicketActionsListener extends Listener {
                 if (!ticketC)
                     return interaction.reply({
                         content: "Member not found",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const message = await transcripts.send({
@@ -146,14 +142,14 @@ export class TicketActionsListener extends Listener {
                             .setAuthor({
                                 name: ticketC.user.tag,
                                 iconURL: ticketC.displayAvatarURL({
-                                    extension: "gif"
-                                })
+                                    extension: "gif",
+                                }),
                             })
                             .setTitle(
                                 `Transcript Type: ${ticket.type}\nID: ${ticket.ticketId}`
-                            )
+                            ),
                     ],
-                    files: [util.attachment(transcript, filename)]
+                    files: [util.attachment(transcript, filename)],
                 });
 
                 setTimeout(() => channel.delete(), 5000);
@@ -164,8 +160,8 @@ export class TicketActionsListener extends Listener {
                     embeds: [
                         embed.setDescription(
                             `Transcript saved [here](${message.url})`
-                        )
-                    ]
+                        ),
+                    ],
                 });
             }
         }

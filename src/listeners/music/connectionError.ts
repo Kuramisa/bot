@@ -1,4 +1,4 @@
-import { Listener, container } from "@sapphire/framework";
+import { container, Listener } from "@sapphire/framework";
 
 export class MusicConnErrorListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -6,7 +6,7 @@ export class MusicConnErrorListener extends Listener {
             ...opts,
             name: "Connection Error for music",
             event: "connectionError",
-            emitter: container.systems.music
+            emitter: container.systems.music,
         });
     }
 

@@ -40,7 +40,7 @@ export default class BetaTester {
             if (
                 patreon.subscription.currentEntitled.status ===
                     "declined_patron" &&
-                db.betaTester == true
+                db.betaTester === true
             ) {
                 db.betaTester = false;
                 await db.save();

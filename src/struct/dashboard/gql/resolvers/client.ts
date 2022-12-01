@@ -32,7 +32,7 @@ export default {
         clientStaff: async (
             _: any,
             __: any,
-            { container: { client, staff, util } }: { container: Container }
+            { container: { client, util } }: { container: Container }
         ) =>
             await Promise.all(
                 (

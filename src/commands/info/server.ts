@@ -1,6 +1,10 @@
 import { Command } from "@sapphire/framework";
-import { ChannelType, ChatInputCommandInteraction, Guild } from "discord.js";
-import { Message } from "discord.js";
+import {
+    ChannelType,
+    ChatInputCommandInteraction,
+    Guild,
+    Message,
+} from "discord.js";
 
 export class ServerCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -9,7 +13,7 @@ export class ServerCommand extends Command {
             name: "server",
             aliases: ["guild"],
             description: "Server Info",
-            runIn: "GUILD_ANY"
+            runIn: "GUILD_ANY",
         });
     }
 
@@ -37,7 +41,7 @@ export class ServerCommand extends Command {
     chatInputRun = (interaction: ChatInputCommandInteraction<"cached">) =>
         interaction.reply({
             embeds: [this.generateEmbed(interaction.guild)],
-            ephemeral: true
+            ephemeral: true,
         });
 
     /**
@@ -54,7 +58,7 @@ export class ServerCommand extends Command {
             memberCount,
             channels,
             emojis,
-            stickers
+            stickers,
         } = guild;
 
         const icon = guild.iconURL({ extension: "gif" }) as string;
@@ -89,7 +93,7 @@ export class ServerCommand extends Command {
                                         .join(" ")
                                 )
                                 .join(", ")}
-                        `
+                        `,
                 },
                 {
                     name: "👥| Users",
@@ -102,19 +106,19 @@ export class ServerCommand extends Command {
                             }
                         
                             Total: ${memberCount}
-                        `
+                        `,
                 },
                 {
                     name: "📃 | Channels",
                     value: `
                             - Text: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == ChannelType.GuildText
+                                    (ch) => ch.type === ChannelType.GuildText
                                 ).size
                             }
                             - Voice: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == ChannelType.GuildVoice
+                                    (ch) => ch.type === ChannelType.GuildVoice
                                 ).size
                             }
                             - Threads: ${
@@ -128,30 +132,32 @@ export class ServerCommand extends Command {
                             }
                             - Categories: ${
                                 channels.cache.filter(
-                                    (ch) => ch.type == ChannelType.GuildCategory
+                                    (ch) =>
+                                        ch.type === ChannelType.GuildCategory
                                 ).size
                             }
                             - Stages: ${
                                 channels.cache.filter(
                                     (ch) =>
-                                        ch.type == ChannelType.GuildStageVoice
+                                        ch.type === ChannelType.GuildStageVoice
                                 ).size
                             }
                             - News: ${
                                 channels.cache.filter(
                                     (ch) =>
-                                        ch.type == ChannelType.GuildAnnouncement
+                                        ch.type ===
+                                        ChannelType.GuildAnnouncement
                                 ).size
                             }
 
                             Total: ${channels.cache.size}
-                        `
+                        `,
                 },
                 {
                     name: "😯 | Emojis & Stickers",
                     value: `
                             - Animated: ${
-                                emojis.cache.filter((e) => e.animated == true)
+                                emojis.cache.filter((e) => e.animated === true)
                                     .size
                             }
                             - Static: ${
@@ -160,7 +166,7 @@ export class ServerCommand extends Command {
                             - Stickers: ${stickers.cache.size}
 
                             Total: ${emojis.cache.size + stickers.cache.size}
-                        `
+                        `,
                 },
                 {
                     name: "Nitro Statistics",
@@ -172,8 +178,8 @@ export class ServerCommand extends Command {
                                     (m) => m.premiumSince !== null
                                 ).size
                             }
-                        `
-                }
+                        `,
+                },
             ]);
     }
 }

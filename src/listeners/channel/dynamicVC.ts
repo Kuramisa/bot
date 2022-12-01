@@ -13,8 +13,8 @@ export class DynamicVCListener extends Listener {
     async run(_: VoiceState, state: VoiceState) {
         if (!state.channel) return;
 
-        const { database, util } = this.container;
-        const { guild, member, channel } = state;
+        const { database} = this.container;
+        const { guild, channel } = state;
 
         if (channel.type !== ChannelType.GuildVoice) return;
 

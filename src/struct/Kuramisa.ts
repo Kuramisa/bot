@@ -1,7 +1,7 @@
 import "@sapphire/plugin-logger/register";
 
-import { container, LogLevel, SapphireClient } from "@sapphire/framework";
-import { Message, Partials, REST, Routes } from "discord.js";
+import {container, LogLevel, SapphireClient} from "@sapphire/framework";
+import {Message, Partials} from "discord.js";
 
 import logs from "discord-logs";
 
@@ -45,7 +45,7 @@ export class Kuramisa extends SapphireClient {
             }
         });
 
-        logs(this, { debug: process.env.NODE_ENV === "development" });
+        logs(this, {debug: process.env.NODE_ENV === "development"});
 
         container.owners = ["401269337924829186", "190120411864891392"];
 

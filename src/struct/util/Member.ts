@@ -1,12 +1,12 @@
 import { Container } from "@sapphire/pieces";
 import { IUser } from "#schemas/User";
 import {
-    Presence,
-    GuildMember,
     ActionRowBuilder,
-    EmbedBuilder,
     ActivityType,
-    ButtonStyle
+    ButtonStyle,
+    EmbedBuilder,
+    GuildMember,
+    Presence,
 } from "discord.js";
 import Util from ".";
 
@@ -53,22 +53,20 @@ export default class UtilMember {
 
     async getCardData(user: IUser) {
         const {
-            systems: { xp }
+            systems: { xp },
         } = this.container;
 
         const neededXP = xp.calculateReqXP(user.level);
 
         const rank = await this.getRank(user);
 
-        const info = {
+        return {
             rank,
             card: user.card,
             level: user.level,
             currentXP: user.xp,
-            neededXP
+            neededXP,
         };
-
-        return info;
     }
 
     async getRank(user: IUser) {
@@ -78,12 +76,10 @@ export default class UtilMember {
         const mapped = sorted.map((u, i) => ({
             id: u.id,
             xp: u.xp,
-            rank: i + 1
+            rank: i + 1,
         }));
 
-        const rank = mapped.find((u) => u.id === user.id)?.rank;
-
-        return rank;
+        return mapped.find((u) => u.id === user.id)?.rank;
     }
 
     async info(
@@ -91,12 +87,12 @@ export default class UtilMember {
         member: GuildMember
     ): Promise<{ embeds: EmbedBuilder[]; components: ActionRowBuilder[] }> {
         const avatar = member.user.displayAvatarURL({
-            extension: "gif"
+            extension: "gif",
         });
         const activities: string[] = [];
         const status = {
             emoji: ":white_circle:",
-            text: "Offline"
+            text: "Offline",
         };
 
         if (member.presence) {
@@ -112,11 +108,11 @@ export default class UtilMember {
 
             status.emoji = this.statusEmoji(member.presence.status);
             status.text =
-                member.presence.status !== "dnd"
-                    ? `${member.presence.status
+                member.presence.status === "dnd"
+                    ? "Do Not Disturb"
+                    : `${member.presence.status
                           .charAt(0)
-                          .toUpperCase()}${member.presence.status.slice(1)}`
-                    : "Do Not Disturb";
+                          .toUpperCase()}${member.presence.status.slice(1)}`;
         }
 
         const roles = member.roles.cache.filter(
@@ -129,7 +125,7 @@ export default class UtilMember {
             .setAuthor({
                 name: member.user.tag,
                 iconURL: avatar,
-                url: avatar
+                url: avatar,
             })
             .setColor(member.displayHexColor)
             .setURL(avatar)
@@ -147,19 +143,19 @@ export default class UtilMember {
                     value: `<t:${Math.floor(
                         (member.joinedTimestamp as number) / 1000
                     )}:R>`,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: "Joined Discord",
                     value: `<t:${Math.floor(
                         (member.user.createdTimestamp as number) / 1000
                     )}:R>`,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: `Roles(${roles.size})`,
-                    value: mappedRoles
-                }
+                    value: mappedRoles,
+                },
             ])
             .setFooter({ text: `ID: ${member.id}` });
 
@@ -227,7 +223,7 @@ export default class UtilMember {
                           .setCustomId("report_member")
                           .setLabel("Report Member")
                           .setStyle(ButtonStyle.Danger)
-                  )
+                  ),
               ];
     }
 }

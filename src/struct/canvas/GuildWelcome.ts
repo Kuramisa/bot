@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { GuildMember, Presence, ChatInputCommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction, GuildMember, Presence } from "discord.js";
 import { Canvas as CanvasM, loadImage } from "skia-canvas";
 import Canvas from ".";
 
@@ -27,7 +27,7 @@ export default class GuildWelcome {
         if (!guild.banner)
             return interaction.reply({
                 content: "Server does not have a banner",
-                ephemeral: true
+                ephemeral: true,
             });
 
         db.welcomeMessage.card.type = "banner";
@@ -36,7 +36,7 @@ export default class GuildWelcome {
 
         return interaction.reply({
             content: "Set the background to server's banner",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -51,7 +51,7 @@ export default class GuildWelcome {
         if (!guild.icon)
             return interaction.reply({
                 content: "Server does not have an icon",
-                ephemeral: true
+                ephemeral: true,
             });
 
         db.welcomeMessage.card.type = "icon";
@@ -60,7 +60,7 @@ export default class GuildWelcome {
 
         return interaction.reply({
             content: "Set the background to server's icon",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -83,7 +83,7 @@ export default class GuildWelcome {
 
             return interaction.reply({
                 content: `Set the background to ${colorName}`,
-                ephemeral: true
+                ephemeral: true,
             });
         }
 
@@ -93,7 +93,7 @@ export default class GuildWelcome {
         if (!hex)
             return interaction.reply({
                 content: `${color} is not a color`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         db.welcomeMessage.card.color = hex;
@@ -102,7 +102,7 @@ export default class GuildWelcome {
 
         return interaction.reply({
             content: `Set the background to **${color}** `,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -124,7 +124,7 @@ export default class GuildWelcome {
             if (!db.welcomeMessage.card.image)
                 return interaction.editReply({
                     content:
-                        "You don't have any images uploaded as your background before"
+                        "You don't have any images uploaded as your background before",
                 });
 
             const newAttachment = util.attachment(
@@ -136,7 +136,7 @@ export default class GuildWelcome {
 
             return interaction.editReply({
                 content: "Switched the background to an image",
-                files: [newAttachment]
+                files: [newAttachment],
             });
         }
 
@@ -145,18 +145,16 @@ export default class GuildWelcome {
             attachment.contentType === "image/gif"
         )
             return interaction.editReply({
-                content: "File has to be a static image"
+                content: "File has to be a static image",
             });
 
-        const imageBuffer = await util.imageToBuffer(attachment.url);
-
-        db.welcomeMessage.card.image = imageBuffer;
+        db.welcomeMessage.card.image = await util.imageToBuffer(attachment.url);
 
         await db.save();
 
         return interaction.editReply({
             content: "Set custom image as the background",
-            files: [attachment]
+            files: [attachment],
         });
     }
 
@@ -178,7 +176,7 @@ export default class GuildWelcome {
             if (!db.welcomeMessage.card.image)
                 return interaction.editReply({
                     content:
-                        "You do not have any images saved to use as the background"
+                        "You do not have any images saved to use as the background",
                 });
 
             const newAttachment = util.attachment(
@@ -190,7 +188,7 @@ export default class GuildWelcome {
 
             return interaction.editReply({
                 content: "Switched the background to an image",
-                files: [newAttachment]
+                files: [newAttachment],
             });
         }
 
@@ -202,7 +200,7 @@ export default class GuildWelcome {
 
         return interaction.editReply({
             content: "Set custom image URL as the background",
-            files: [attachment]
+            files: [attachment],
         });
     }
 
@@ -222,7 +220,7 @@ export default class GuildWelcome {
 
         return interaction.reply({
             content: `Set ${channel} as welcome message channel`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -242,7 +240,7 @@ export default class GuildWelcome {
 
         return interaction.reply({
             content: `Welcome Message was **${stateText}**`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -287,8 +285,9 @@ export default class GuildWelcome {
             }
         }
 
-        if (!background) ctx.fillRect(0, 0, canvas.width, canvas.height);
-        else ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+        if (background) {
+            ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+        } else ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.filter = "none";
 
@@ -355,11 +354,9 @@ export default class GuildWelcome {
         );
         ctx.drawImage(avatar, canvas.width - 590, 70, 128, 128);
 
-        const attachment = util.attachment(
+        return util.attachment(
             await canvas.toBuffer("png"),
             `welcome-${member.user.username}.png`
         );
-
-        return attachment;
     }
 }

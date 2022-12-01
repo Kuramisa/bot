@@ -1,11 +1,11 @@
 import { Args } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import {
-    Message,
-    EmbedBuilder,
-    ChatInputCommandInteraction,
     ButtonStyle,
-    ComponentType
+    ChatInputCommandInteraction,
+    ComponentType,
+    EmbedBuilder,
+    Message,
 } from "discord.js";
 
 export class ValorantCommand extends Subcommand {
@@ -18,29 +18,29 @@ export class ValorantCommand extends Subcommand {
             subcommands: [
                 {
                     name: "login",
-                    messageRun: "messageLogin"
+                    messageRun: "messageLogin",
                 },
                 {
                     name: "refresh",
-                    messageRun: "messageRefresh"
+                    messageRun: "messageRefresh",
                 },
                 {
                     name: "wallet",
-                    messageRun: "messageWallet"
+                    messageRun: "messageWallet",
                 },
                 {
                     name: "loadout",
-                    messageRun: "messageLoadout"
+                    messageRun: "messageLoadout",
                 },
                 {
                     name: "mmr",
-                    messageRun: "messageMmr"
+                    messageRun: "messageMmr",
                 },
                 {
                     name: "store",
-                    messageRun: "messageStore"
-                }
-            ]
+                    messageRun: "messageStore",
+                },
+            ],
         });
     }
 
@@ -110,7 +110,7 @@ export class ValorantCommand extends Subcommand {
                                     { name: "My Store", value: "personal" },
                                     {
                                         name: "Featured Store",
-                                        value: "featured"
+                                        value: "featured",
                                     }
                                 )
                                 .setRequired(true)
@@ -121,7 +121,7 @@ export class ValorantCommand extends Subcommand {
 
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
-            games: { valorant }
+            games: { valorant },
         } = this.container;
 
         switch (interaction.options.getSubcommand()) {
@@ -159,7 +159,7 @@ export class ValorantCommand extends Subcommand {
      */
     async messageRefresh(message: Message) {
         const {
-            games: { valorant }
+            games: { valorant },
         } = this.container;
 
         const user = message.author;
@@ -177,7 +177,7 @@ export class ValorantCommand extends Subcommand {
      */
     async messageWallet(message: Message) {
         const {
-            games: { valorant }
+            games: { valorant },
         } = this.container;
 
         const user = message.author;
@@ -206,12 +206,13 @@ export class ValorantCommand extends Subcommand {
 
         return message.reply(balance.join("\n"));
     }
+
     /**
      * Execute Message Subcommand (Loadout)
      */
     async messageLoadout(message: Message, args: Args) {
         const {
-            games: { valorant }
+            games: { valorant },
         } = this.container;
         const { author } = message;
 
@@ -273,11 +274,11 @@ export class ValorantCommand extends Subcommand {
 
                 const embed = this.container.util.embed();
 
-                if (!info) embed.setTitle("Could not fetch the weapon");
-                else
+                if (info) {
                     embed
                         .setTitle(info.displayName.toString())
                         .setImage(info.fullRender);
+                } else embed.setTitle("Could not fetch the weapon");
 
                 return embed;
             })
@@ -291,8 +292,7 @@ export class ValorantCommand extends Subcommand {
 
                 const embed = this.container.util.embed();
 
-                if (!info) embed.setTitle("Could not fetch the spray");
-                else
+                if (info) {
                     embed
                         .setTitle(info.displayName.toString())
                         .setImage(
@@ -300,6 +300,7 @@ export class ValorantCommand extends Subcommand {
                                 ? info.animationGif
                                 : info.fullTransparentIcon
                         );
+                } else embed.setTitle("Could not fetch the spray");
 
                 return embed;
             })
@@ -334,7 +335,7 @@ export class ValorantCommand extends Subcommand {
 
         const msg = await message.reply({
             embeds: [embeds[page]],
-            components: [menuRow]
+            components: [menuRow],
         });
 
         const collector = msg.createMessageComponentCollector({
@@ -346,7 +347,7 @@ export class ValorantCommand extends Subcommand {
                     i.customId === "sprays_page" ||
                     i.customId === "weapons_page") &&
                 i.user.id === author.id,
-            time: 35000
+            time: 35000,
         });
 
         collector
@@ -380,7 +381,7 @@ export class ValorantCommand extends Subcommand {
                     components:
                         i.customId === "profile_page"
                             ? [menuRow]
-                            : [pageRow, menuRow]
+                            : [pageRow, menuRow],
                 });
 
                 collector.resetTimer();
@@ -396,7 +397,7 @@ export class ValorantCommand extends Subcommand {
      */
     async messageMmr(message: Message, args: Args) {
         const {
-            games: { valorant }
+            games: { valorant },
         } = this.container;
         const { author } = message;
 
@@ -454,7 +455,7 @@ export class ValorantCommand extends Subcommand {
                         )} - ${this.container.util.capFirstLetter(
                             act?.displayName.toString().toLowerCase() as string
                         )}`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Rank",
@@ -463,22 +464,22 @@ export class ValorantCommand extends Subcommand {
                                 .toString()
                                 .toLowerCase() as string
                         )}`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Rank Rating",
                         value: `${actData.RankedRating} / 100`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Games Played",
                         value: String(actData.NumberOfGames),
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Games Won",
                         value: String(actData.NumberOfWins),
-                        inline: true
+                        inline: true,
                     }
                 )
                 .setThumbnail(currentRank?.largeIcon as string);
@@ -504,7 +505,7 @@ export class ValorantCommand extends Subcommand {
 
                 return {
                     label: `${epName} - ${actName}`,
-                    value: act?.uuid as string
+                    value: act?.uuid as string,
                 };
             })
         );
@@ -525,7 +526,7 @@ export class ValorantCommand extends Subcommand {
             componentType: ComponentType.SelectMenu,
             filter: (i) =>
                 i.customId === "choose_act_rank" && i.user.id === author.id,
-            time: 35000
+            time: 35000,
         });
 
         collector
@@ -548,7 +549,7 @@ export class ValorantCommand extends Subcommand {
      */
     async messageStore(message: Message, args: Args) {
         const {
-            games: { valorant }
+            games: { valorant },
         } = this.container;
         const { author } = message;
 
@@ -572,7 +573,7 @@ export class ValorantCommand extends Subcommand {
         if (!store)
             return message.reply({
                 content:
-                    "Failed to fetch the store try logging in or refreshing your account"
+                    "Failed to fetch the store try logging in or refreshing your account",
             });
 
         const featured = store.FeaturedBundle;
@@ -589,7 +590,7 @@ export class ValorantCommand extends Subcommand {
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const row = this.container.util.row().addComponents(buttons);
@@ -658,7 +659,7 @@ export class ValorantCommand extends Subcommand {
                                 return embed.setFooter({
                                     text: `Item ${index + 1} of ${
                                         featured.Bundle.Items.length
-                                    }`
+                                    }`,
                                 });
                             }
                         )
@@ -688,7 +689,7 @@ export class ValorantCommand extends Subcommand {
                                 .setFooter({
                                     text: `Item ${index + 1} of ${
                                         daily.SingleItemOffers.length
-                                    }`
+                                    }`,
                                 });
                         }
                     )
@@ -699,12 +700,12 @@ export class ValorantCommand extends Subcommand {
 
         if (embeds.length < 1)
             return message.reply({
-                content: "Could not fetch your store"
+                content: "Could not fetch your store",
             });
 
         const msg = await message.reply({
             embeds: [embeds[page]],
-            components: [row]
+            components: [row],
         });
 
         const collector = msg.createMessageComponentCollector({
@@ -712,7 +713,7 @@ export class ValorantCommand extends Subcommand {
             filter: (i) =>
                 i.user.id === author.id &&
                 (i.customId === "previous_page" || i.customId === "next_page"),
-            time: 30000
+            time: 30000,
         });
 
         collector
@@ -731,7 +732,7 @@ export class ValorantCommand extends Subcommand {
                 await i.deferUpdate();
                 await i.editReply({
                     embeds: [embeds[page]],
-                    components: [row]
+                    components: [row],
                 });
 
                 collector.resetTimer();

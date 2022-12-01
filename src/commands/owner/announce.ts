@@ -3,7 +3,7 @@ import {
     ButtonStyle,
     ChatInputCommandInteraction,
     GuildMember,
-    TextInputStyle
+    TextInputStyle,
 } from "discord.js";
 
 const { version } = require("../../../package.json");
@@ -14,7 +14,7 @@ export class AnnounceCommand extends Command {
             ...opts,
             name: "announce",
             description: "Announce bot changes to Server Owners",
-            preconditions: ["OwnerOnly"]
+            preconditions: ["OwnerOnly"],
         });
     }
 
@@ -52,7 +52,7 @@ export class AnnounceCommand extends Command {
 
         const mInteraction = await interaction.awaitModalSubmit({
             time: 0,
-            filter: (i) => i.customId === "announce-modal"
+            filter: (i) => i.customId === "announce-modal",
         });
 
         await mInteraction.deferReply({ ephemeral: true });
@@ -66,7 +66,7 @@ export class AnnounceCommand extends Command {
         for (const guild of client.guilds.cache.toJSON()) {
             const owner = await guild.fetchOwner();
 
-            if (!owners.some((owner2) => owner2.id == owner.id))
+            if (!owners.some((owner2) => owner2.id === owner.id))
                 owners.push(await guild.fetchOwner());
         }
 
@@ -74,7 +74,7 @@ export class AnnounceCommand extends Command {
             .embed()
             .setAuthor({
                 name: user.tag,
-                iconURL: user.displayAvatarURL({ extension: "gif" })
+                iconURL: user.displayAvatarURL({ extension: "gif" }),
             })
             .setTitle("Annoucement from The Developers")
             .setDescription(
@@ -92,7 +92,7 @@ export class AnnounceCommand extends Command {
             );
 
         for (const owner of owners) {
-            owner.send({ embeds: [embed], components: [row] });
+            await owner.send({ embeds: [embed], components: [row] });
         }
 
         await mInteraction.editReply({ content: "Announcement sent" });

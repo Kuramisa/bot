@@ -6,7 +6,7 @@ export class PremiumGIveACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Premium Giving Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -20,14 +20,14 @@ export class PremiumGIveACListener extends Listener {
         const focused = options.getFocused(true);
 
         switch (focused.name) {
-            case "server":
+            case "server": {
                 let guilds = client.guilds.cache.toJSON();
 
                 if (focused.value.length < 1)
                     guilds = guilds.filter((_, i) => i < 25);
 
                 return interaction.respond(
-                    client.guilds.cache
+                    guilds
                         .filter((guild) =>
                             guild.name
                                 .toLowerCase()
@@ -35,10 +35,11 @@ export class PremiumGIveACListener extends Listener {
                         )
                         .map((guild) => ({
                             name: guild.name,
-                            value: guild.id
+                            value: guild.id,
                         }))
                 );
-            case "user":
+            }
+            case "user": {
                 let users = client.users.cache.toJSON();
 
                 if (focused.value.length < 1)
@@ -53,9 +54,10 @@ export class PremiumGIveACListener extends Listener {
                         )
                         .map((user) => ({
                             name: user.tag,
-                            value: user.id
+                            value: user.id,
                         }))
                 );
+            }
         }
     }
 }

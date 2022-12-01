@@ -63,7 +63,7 @@ export default class XP {
         let xp = 0;
         let currentLevel = 0;
 
-        while (currentLevel != level) {
+        while (currentLevel !== level) {
             xp++;
             currentLevel = this.calculateLevel(xp);
         }

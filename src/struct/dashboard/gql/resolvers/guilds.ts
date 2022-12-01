@@ -12,7 +12,7 @@ export default {
             {
                 req,
                 server: { auth },
-                container: { client, database, util }
+                container: { client, database, util },
             }: { req: Request; server: Dashboard; container: Container }
         ) => {
             try {
@@ -24,7 +24,7 @@ export default {
                           extension: guild.icon.startsWith("a_")
                               ? "gif"
                               : "png",
-                          size: 1024
+                          size: 1024,
                       })
                     : "https://i.imgur.com/SCv8M69.png";
 
@@ -92,7 +92,7 @@ export default {
                                   extension: guild.icon.startsWith("a_")
                                       ? "gif"
                                       : "png",
-                                  size: 1024
+                                  size: 1024,
                               })
                             : "https://i.imgur.com/SCv8M69.png";
 
@@ -151,7 +151,7 @@ export default {
             {
                 guildId,
                 memberId,
-                fetchDb
+                fetchDb,
             }: { guildId: string; memberId: string; fetchDb?: boolean },
             { container: { client, database, util } }: { container: Container }
         ) => {
@@ -169,7 +169,7 @@ export default {
 
                 let info = {
                     ...member,
-                    avatarURL
+                    avatarURL,
                 };
 
                 if (fetchDb) {
@@ -192,7 +192,7 @@ export default {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
-                const members = await Promise.all(
+                return await Promise.all(
                     (
                         await guild.members.fetch()
                     )
@@ -216,8 +216,6 @@ export default {
                             return info;
                         })
                 );
-
-                return members;
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -288,6 +286,6 @@ export default {
                 console.error(err);
                 throw err;
             }
-        }
-    }
+        },
+    },
 };

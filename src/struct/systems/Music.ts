@@ -7,7 +7,7 @@ import {
     ComponentType,
     ContextMenuCommandInteraction,
     Message,
-    User
+    User,
 } from "discord.js";
 
 export default class Music extends Player {
@@ -17,8 +17,8 @@ export default class Music extends Player {
     constructor(container: Container) {
         super(container.client, {
             ytdlOptions: {
-                filter: "audioonly"
-            }
+                filter: "audioonly",
+            },
         });
 
         this.container = container;
@@ -27,8 +27,7 @@ export default class Music extends Player {
 
     async searchLyrics(title: string) {
         try {
-            const search = await songlyrics(title);
-            return search;
+            return await songlyrics(title);
         } catch (err) {
             console.error(err);
         }
@@ -46,7 +45,7 @@ export default class Music extends Player {
             .filter((_, i) => i <= 25)
             .map((track, i) => ({
                 label: util.shorten(`${track.title} - ${track.author}`, 99),
-                value: `${i}`
+                value: `${i}`,
             }));
 
         const row = util
@@ -64,12 +63,12 @@ export default class Music extends Player {
             await interaction.deferReply({ ephemeral: true });
 
         const message = await interaction.editReply({
-            components: [row]
+            components: [row],
         });
 
         const awaitTracks = await message.awaitMessageComponent({
             componentType: ComponentType.SelectMenu,
-            filter: (i) => i.customId === "queue_track_select"
+            filter: (i) => i.customId === "queue_track_select",
         });
 
         const chosenTracks = [];
@@ -90,7 +89,7 @@ export default class Music extends Player {
             .filter((_, i) => i <= 25)
             .map((track, i) => ({
                 label: util.shorten(`${track.title} - ${track.author}`, 99),
-                value: `${i}`
+                value: `${i}`,
             }));
 
         const row = util
@@ -105,12 +104,12 @@ export default class Music extends Player {
             );
 
         const message = await user.send({
-            components: [row]
+            components: [row],
         });
 
         const awaitTracks = await message.awaitMessageComponent({
             componentType: ComponentType.SelectMenu,
-            filter: (i) => i.customId === "queue_track_select"
+            filter: (i) => i.customId === "queue_track_select",
         });
 
         const chosenTracks = [];
@@ -144,7 +143,7 @@ export default class Music extends Player {
                     .button()
                     .setCustomId("show_track_progress")
                     .setLabel("Track Progress")
-                    .setStyle(ButtonStyle.Primary)
+                    .setStyle(ButtonStyle.Primary),
             ]);
 
         const midRow = util
@@ -164,7 +163,7 @@ export default class Music extends Player {
                     .button()
                     .setCustomId("skip_to_track")
                     .setLabel("Skip to")
-                    .setStyle(ButtonStyle.Danger)
+                    .setStyle(ButtonStyle.Danger),
             ]);
 
         await message.edit({ components: [topRow, midRow] });

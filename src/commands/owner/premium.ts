@@ -1,9 +1,9 @@
-import { Command, PreconditionContainerSingle } from "@sapphire/framework";
+import { Command } from "@sapphire/framework";
 import {
     ButtonStyle,
     ChatInputCommandInteraction,
     ComponentType,
-    Message
+    Message,
 } from "discord.js";
 
 export class PremiumInfoCommand extends Command {
@@ -12,7 +12,7 @@ export class PremiumInfoCommand extends Command {
             ...opts,
             name: "premium",
             aliases: ["exclusive"],
-            description: "Information about Premium and it's features"
+            description: "Information about Premium and it's features",
         });
     }
 
@@ -153,7 +153,7 @@ export class PremiumInfoCommand extends Command {
 
         const msg = await message.reply({
             embeds: currentEmbed,
-            components: [row]
+            components: [row],
         });
 
         const collector = msg.createMessageComponentCollector({
@@ -163,7 +163,7 @@ export class PremiumInfoCommand extends Command {
                     i.customId === "prices_page" ||
                     i.customId === "commands_page") &&
                 i.user.id === message.author.id,
-            time: 30000
+            time: 30000,
         });
 
         collector
@@ -197,7 +197,7 @@ export class PremiumInfoCommand extends Command {
             database,
             systems: { patreon },
             owners,
-            util
+            util,
         } = this.container;
 
         switch (options.getSubcommand()) {
@@ -205,7 +205,7 @@ export class PremiumInfoCommand extends Command {
                 const info = util
                     .embed()
                     .setAuthor({
-                        name: `${client.user?.username} - Premium Information`
+                        name: `${client.user?.username} - Premium Information`,
                     })
                     .setDescription(
                         "Premium comes with more commands, more perks, beta testing for the bot and many other features that you can have a previe of"
@@ -214,14 +214,14 @@ export class PremiumInfoCommand extends Command {
                 const commands = util
                     .embed()
                     .setAuthor({
-                        name: `${client.user?.username} - Premium Commands`
+                        name: `${client.user?.username} - Premium Commands`,
                     })
                     .setDescription(this.getPremiumCommands());
 
                 const prices = util
                     .embed()
                     .setAuthor({
-                        name: `${client.user?.username} - Premium Prices`
+                        name: `${client.user?.username} - Premium Prices`,
                     })
                     .setDescription(
                         "**Per Server**: *$9.99* ***Recommended***\n**Per User**: *$4.99*\n\n***These prices may change in the future, there will be a notice to all premium users if that happens***"
@@ -252,7 +252,7 @@ export class PremiumInfoCommand extends Command {
                 const msg = await interaction.reply({
                     embeds: currentEmbed,
                     components: [row],
-                    fetchReply: true
+                    fetchReply: true,
                 });
 
                 const collector = msg.createMessageComponentCollector({
@@ -262,7 +262,7 @@ export class PremiumInfoCommand extends Command {
                             i.customId === "prices_page" ||
                             i.customId === "commands_page") &&
                         i.user.id === interaction.user.id,
-                    time: 30000
+                    time: 30000,
                 });
 
                 collector
@@ -293,15 +293,15 @@ export class PremiumInfoCommand extends Command {
                 if (!owners.includes(user.id))
                     return interaction.reply({
                         content: "This command is owner only",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
-                patreon.premium.checkServers();
-                patreon.premium.checkUsers();
+                await patreon.premium.checkServers();
+                await patreon.premium.checkUsers();
 
                 return interaction.reply({
                     content: "Patreon Subscriptions refreshed",
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "guild": {
@@ -311,35 +311,35 @@ export class PremiumInfoCommand extends Command {
                 if (!guild)
                     return interaction.reply({
                         content: "Server not found",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 const db = await database.guilds.get(guild);
                 if (!db) return;
                 switch (options.getSubcommandGroup()) {
                     case "give": {
-                        if (db.premium == true)
+                        if (db.premium === true)
                             return interaction.reply({
                                 content: `${guild} already has premium`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         db.premium = true;
                         await db.save();
                         return interaction.reply({
                             content: `Gave ${guild} a Premium Subscription`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "take": {
                         if (!db.premium)
                             return interaction.reply({
                                 content: `${guild} does not have premium`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         db.premium = false;
                         await db.save();
                         return interaction.reply({
                             content: `Took Premium Subscription from ${guild}`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }
@@ -352,35 +352,35 @@ export class PremiumInfoCommand extends Command {
                 if (!user)
                     return interaction.reply({
                         content: "User not found",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 const db = await database.users.get(user);
                 if (!db) return;
                 switch (options.getSubcommandGroup()) {
                     case "give": {
-                        if (db.premium == true)
+                        if (db.premium === true)
                             return interaction.reply({
                                 content: `${user} already has premium`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         db.premium = true;
                         await db.save();
                         return interaction.reply({
                             content: `Gave ${user} a Premium Subscription`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "take": {
                         if (!db.premium)
                             return interaction.reply({
                                 content: `${user} does not have premium`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         db.premium = false;
                         await db.save();
                         return interaction.reply({
                             content: `Took Premium Subscription from ${user}`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }

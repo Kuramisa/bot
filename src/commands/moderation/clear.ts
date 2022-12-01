@@ -1,5 +1,5 @@
 import { Command } from "@sapphire/framework";
-import { ChatInputCommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction, PermissionsBitField } from "discord.js";
 
 export class ClearCommand extends Command {
     constructor(ctx: Command.Context, opts: Command.Options) {
@@ -7,7 +7,7 @@ export class ClearCommand extends Command {
             ...opts,
             name: "clear",
             description: "Clear channel messages",
-            requiredUserPermissions: "ManageMessages"
+            requiredUserPermissions: "ManageMessages",
         });
     }
 
@@ -17,7 +17,9 @@ export class ClearCommand extends Command {
                 .setName(this.name)
                 .setDescription(this.description)
                 .setDMPermission(false)
-                .setDefaultMemberPermissions(1 << 13)
+                .setDefaultMemberPermissions(
+                    PermissionsBitField.Flags.ManageMessages
+                )
                 .addNumberOption((option) =>
                     option
                         .setName("amount")
@@ -40,7 +42,7 @@ export class ClearCommand extends Command {
         if (!guild.members.me?.permissions.has("ManageMessages"))
             return interaction.reply({
                 content: "Bot missing permissiosns `ManageMessages`",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!channel || !channel.isTextBased()) return;

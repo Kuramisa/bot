@@ -1,4 +1,4 @@
-import { Command } from "@sapphire/framework";
+import {Command} from "@sapphire/framework";
 import {
     ButtonStyle,
     ChatInputCommandInteraction,
@@ -21,8 +21,6 @@ export class GuessTheColorCommand extends Command {
     }
 
     async chatInputRun(interaction: ChatInputCommandInteraction) {
-        const { util } = this.container;
-
         let getColors = await this.getColors();
 
         const message = await interaction.reply({
@@ -56,18 +54,17 @@ export class GuessTheColorCommand extends Command {
                     }
                     case "wrong-answer-1":
                     case "wrong-answer-2":
-                        await i.update({ content: "Incorrect" });
+                        await i.update({content: "Incorrect"});
                         break;
                 }
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete")
-                    message.delete().catch(() => {});
+                if (reason !== "messageDelete") message.delete().catch(console.error);
             });
     }
 
     private async getColors() {
-        const { canvas, util } = this.container;
+        const {canvas, util} = this.container;
 
         const correctColor = this.randomColor();
         const colorImage = await canvas.makeBackground(correctColor);
@@ -93,7 +90,7 @@ export class GuessTheColorCommand extends Command {
         const row = util.row().setComponents(util._.shuffle(buttons));
         const attachment = util.attachment(colorImage);
 
-        return { row, attachment };
+        return {row, attachment};
     }
 
     private randomColor() {

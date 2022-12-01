@@ -4,7 +4,7 @@ import {
     ButtonStyle,
     ChatInputCommandInteraction,
     ComponentType,
-    Message
+    Message,
 } from "discord.js";
 import moment from "moment";
 import { Platform } from "warframe-market/lib/typings";
@@ -19,9 +19,9 @@ export class WarframCommand extends Subcommand {
                 {
                     name: "market",
                     messageRun: "messageMarket",
-                    chatInputRun: "chatInputMarket"
-                }
-            ]
+                    chatInputRun: "chatInputMarket",
+                },
+            ],
         });
     }
 
@@ -62,7 +62,7 @@ export class WarframCommand extends Subcommand {
     async messageMarket(message: Message, args: Args) {
         const {
             games: { warframe },
-            util
+            util,
         } = this.container;
         const { author } = message;
 
@@ -106,7 +106,7 @@ export class WarframCommand extends Subcommand {
                 .button()
                 .setCustomId("orders_buyers")
                 .setLabel("Buyers")
-                .setStyle(ButtonStyle.Success)
+                .setStyle(ButtonStyle.Success),
         ];
 
         const navButtons = [
@@ -121,7 +121,7 @@ export class WarframCommand extends Subcommand {
                 .setCustomId("next_order")
                 .setLabel("Order")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const bottomButtons = [
@@ -129,7 +129,7 @@ export class WarframCommand extends Subcommand {
                 .button()
                 .setCustomId("create_paste")
                 .setLabel("Create Paste")
-                .setStyle(ButtonStyle.Success)
+                .setStyle(ButtonStyle.Success),
         ];
 
         const typeRow = util.row().setComponents(typeButtons);
@@ -138,69 +138,61 @@ export class WarframCommand extends Subcommand {
 
         const sellerEmbeds = orders
             .filter((order) => order.order_type === "sell")
-            .map((order, index) => {
-                const embed = util
+            .map((order, index) =>
+                util
                     .embed()
                     .setTitle(`Sell Orders for ${itemName}`)
                     .setDescription(
-                        `
-                    \`Cost\`: ${order.platinum} (each)
+                        `\`Cost\`: ${order.platinum} (each)
                     \`Quantity\`: ${order.quantity}
                     \`Last Updated\`: <t:${moment(order.last_update).unix()}:R>
-                    \`Created\`: <t:${moment(order.creation_date).unix()}:R>
-                `
+                    \`Created\`: <t:${moment(order.creation_date).unix()}:R>`
                     )
                     .addFields({
                         name: "Seller",
-                        value: `
-                    \`In Game Name\`: ${order.user.ingame_name}
+                        value: `\`In Game Name\`: ${order.user.ingame_name}
                     \`Reputation\`: ${order.user.reputation}
                     \`Status\`: ${util.capFirstLetter(order.user.status)}
-                    \`Last Seen\`*: <t:${moment(order.user.last_seen).unix()}:R>
-                `
+                    \`Last Seen\`*: <t:${moment(
+                        order.user.last_seen
+                    ).unix()}:R>`,
                     })
                     .setFooter({
-                        text: `Page ${index + 1} of ${orders.length}`
-                    });
-
-                return embed;
-            });
+                        text: `Page ${index + 1} of ${orders.length}`,
+                    })
+            );
 
         const buyerEmbeds = orders
             .filter((order) => order.order_type === "buy")
-            .map((order, index) => {
-                const embed = util
+            .map((order, index) =>
+                util
                     .embed()
                     .setTitle(`Buy Orders for ${itemName}`)
                     .setDescription(
-                        `
-                    \`Cost\`: ${order.platinum} (each)
+                        `\`Cost\`: ${order.platinum} (each)
                     \`Quantity\`: ${order.quantity}
                     \`Last Updated\`: <t:${moment(order.last_update).unix()}:R>
-                    \`Created\`: <t:${moment(order.creation_date).unix()}:R>
-                `
+                    \`Created\`: <t:${moment(order.creation_date).unix()}:R>`
                     )
                     .addFields({
                         name: "Buyer",
-                        value: `
-                    \`In Game Name\`: ${order.user.ingame_name}
+                        value: `\`In Game Name\`: ${order.user.ingame_name}
                     \`Reputation\`: ${order.user.reputation}
                     \`Status\`: ${util.capFirstLetter(order.user.status)}
-                    \`Last Seen\`*: <t:${moment(order.user.last_seen).unix()}:R>
-                `
+                    \`Last Seen\`*: <t:${moment(
+                        order.user.last_seen
+                    ).unix()}:R>`,
                     })
                     .setFooter({
-                        text: `Page ${index + 1} of ${orders.length}`
-                    });
-
-                return embed;
-            });
+                        text: `Page ${index + 1} of ${orders.length}`,
+                    })
+            );
 
         let embeds = sellerEmbeds;
 
         const msg = await message.reply({
             embeds: [sellerEmbeds[page]],
-            components: [typeRow, navRow, bottomRow]
+            components: [typeRow, navRow, bottomRow],
         });
 
         const collector = msg.createMessageComponentCollector({
@@ -210,7 +202,7 @@ export class WarframCommand extends Subcommand {
                     i.customId === "orders_buyers" ||
                     i.customId === "previous_order" ||
                     i.customId === "next_order") &&
-                i.user.id === author.id
+                i.user.id === author.id,
         });
 
         collector.on("collect", async (i) => {
@@ -238,7 +230,7 @@ export class WarframCommand extends Subcommand {
             await i.deferUpdate();
             await i.editReply({
                 embeds: [embeds[page]],
-                components: [typeRow, navRow, bottomRow]
+                components: [typeRow, navRow, bottomRow],
             });
 
             collector.resetTimer();

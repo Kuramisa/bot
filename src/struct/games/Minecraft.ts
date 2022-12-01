@@ -1,10 +1,8 @@
-import { Container } from "@sapphire/pieces";
-import { Collection, Guild } from "discord.js";
+import {Container} from "@sapphire/pieces";
+import {Collection, Guild} from "discord.js";
 
 import mc from "minecraft_head";
 import crafatar from "crafatar";
-
-import { TUser } from "#schemas/User";
 
 export default class Minecraft {
     private readonly container: Container;

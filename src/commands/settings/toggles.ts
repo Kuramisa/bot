@@ -7,7 +7,7 @@ export class TogglesCommand extends Command {
             ...opts,
             name: "toggles",
             description: "Manage your toggles",
-            requiredUserPermissions: "ManageGuild"
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -61,7 +61,7 @@ export class TogglesCommand extends Command {
 
             return interaction.reply({
                 content: toggles,
-                ephemeral: true
+                ephemeral: true,
             });
         }
 
@@ -69,7 +69,7 @@ export class TogglesCommand extends Command {
             if (!Object.keys(db.toggles).includes(toggle))
                 return interaction.reply({
                     content: `\`${toggle}\` toggle was not found in the database`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
             const value = db.toggles[toggle as keyof typeof db.toggles];
@@ -78,7 +78,7 @@ export class TogglesCommand extends Command {
                 content: `\`${util.capFirstLetter(toggle)}\`: ${
                     value ? "On" : "Off"
                 }`,
-                ephemeral: true
+                ephemeral: true,
             });
         }
 
@@ -98,15 +98,14 @@ export class TogglesCommand extends Command {
             if (toggles.length < 1)
                 return interaction.reply({
                     content: `Couldn't find any toggles that are **${state}**`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
             return interaction.reply({ content: toggles, ephemeral: true });
         }
 
         if (toggle && state) {
-            db.toggles[toggle as keyof typeof db.toggles] =
-                state === "On" ? true : false;
+            db.toggles[toggle as keyof typeof db.toggles] = state === "On";
 
             await db.save();
 
@@ -114,7 +113,7 @@ export class TogglesCommand extends Command {
                 content: `Turned **${state}** \`${util.capFirstLetter(
                     toggle
                 )}\``,
-                ephemeral: true
+                ephemeral: true,
             });
         }
     }

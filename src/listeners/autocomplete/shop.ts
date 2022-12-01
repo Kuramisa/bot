@@ -7,7 +7,7 @@ export class HelpACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Shop Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -44,7 +44,7 @@ export class HelpACListener extends Listener {
                 return interaction.respond(
                     dbItems.map((item) => ({
                         name: `${item.name} - ${item.price} Ryo`,
-                        value: item.id
+                        value: item.id,
                     }))
                 );
             }
@@ -53,8 +53,10 @@ export class HelpACListener extends Listener {
 
                 return interaction.respond(
                     userItems.map((item) => ({
-                        name: `${item.name} - ${item.price! / 2} Ryo`,
-                        value: item.id
+                        name: `${item.name} - ${
+                            (item.price as number) / 2
+                        } Ryo`,
+                        value: item.id,
                     }))
                 );
             }
@@ -62,7 +64,7 @@ export class HelpACListener extends Listener {
                 return interaction.respond(
                     userItems.map((item) => ({
                         name: item.name,
-                        value: item.id
+                        value: item.id,
                     }))
                 );
             }

@@ -48,7 +48,7 @@ export class EitherCommand extends Command {
             .on("collect", async (i) => {
                 switch (i.customId) {
                     case "question_1_btn":
-                    case "question_2_btn":
+                    case "question_2_btn": {
                         const buttons = wyr.row.components.map(
                             (button: any, i) => {
                                 const question = wyr.questions[i];
@@ -70,8 +70,9 @@ export class EitherCommand extends Command {
                             `You chose ${i.component.label}`
                         );
 
-                        await i.update({ embeds: [embed], components: [row] });
+                        await i.update({embeds: [embed], components: [row]});
                         break;
+                    }
                     case "next_question": {
                         wyr = await this.getQuestion();
 
@@ -86,8 +87,7 @@ export class EitherCommand extends Command {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete")
-                    message.delete().catch(() => {});
+                if (reason !== "messageDelete") message.delete().catch(console.error);
             });
     }
 
@@ -115,7 +115,7 @@ export class EitherCommand extends Command {
             .on("collect", async (i) => {
                 switch (i.customId) {
                     case "question_1_btn":
-                    case "question_2_btn":
+                    case "question_2_btn": {
                         const buttons = wyr.row.components.map(
                             (button: any, i) => {
                                 const question: any = wyr.questions[i];
@@ -137,8 +137,9 @@ export class EitherCommand extends Command {
                             `You chose ${i.component.label}`
                         );
 
-                        await i.update({ embeds: [embed], components: [row] });
+                        await i.update({embeds: [embed], components: [row]});
                         break;
+                    }
                     case "next_question": {
                         wyr = await this.getQuestion();
 
@@ -153,7 +154,7 @@ export class EitherCommand extends Command {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete") msg.delete().catch(() => {});
+                if (reason !== "messageDelete") msg.delete().catch(console.error);
             });
     }
 

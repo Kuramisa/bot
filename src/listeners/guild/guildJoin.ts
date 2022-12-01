@@ -11,6 +11,6 @@ export class GuildJoinListener extends Listener {
     }
 
     async run(guild: Guild) {
-        this.container.database.guilds.verify(guild);
+        await this.container.database.guilds.verify(guild);
     }
 }

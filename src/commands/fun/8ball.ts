@@ -1,4 +1,4 @@
-import { Command, Args } from "@sapphire/framework";
+import { Args, Command } from "@sapphire/framework";
 import { ChatInputCommandInteraction, Message } from "discord.js";
 
 export class EightBallCommand extends Command {
@@ -7,7 +7,7 @@ export class EightBallCommand extends Command {
             ...opts,
             name: "8ball",
             aliases: ["ask", "8b"],
-            description: "8ball answers your burning questions"
+            description: "8ball answers your burning questions",
         });
     }
 
@@ -41,7 +41,7 @@ export class EightBallCommand extends Command {
         if (!question.includes("?")) question += "?";
 
         const { url, response } = await util.nekos.eightBall({
-            text: question
+            text: question,
         });
 
         const embed = util.embed().setDescription(`\`${question}\``);
@@ -51,13 +51,12 @@ export class EightBallCommand extends Command {
                 `${embed.toJSON().description}\n**${response}**`
             );
 
-        return message.reply({ embeds: [embed] });
+        await message.reply({ embeds: [embed] });
     }
 
     /**
      * Execute Slash Command
      */
-
     async chatInputRun(interaction: ChatInputCommandInteraction) {
         let question = interaction.options.getString("question", true);
 
@@ -66,7 +65,7 @@ export class EightBallCommand extends Command {
         if (!question.includes("?")) question += "?";
 
         const { url, response } = await util.nekos.eightBall({
-            text: question
+            text: question,
         });
 
         const embed = util.embed().setDescription(`\`${question}\``);
@@ -76,6 +75,6 @@ export class EightBallCommand extends Command {
                 `${embed.toJSON().description}\n**${response}**`
             );
 
-        return interaction.reply({ embeds: [embed] });
+        await interaction.reply({ embeds: [embed] });
     }
 }

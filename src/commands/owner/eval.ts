@@ -71,7 +71,7 @@ export class EvalCommand extends Command {
     private async clean(text: any) {
         const { client } = this.container;
 
-        if (text && text.constructor.name == "Promise") text = await text;
+        if (text && text.constructor.name === "Promise") text = await text;
 
         if (typeof text !== "string") text = inspect(text, { depth: 1 });
 

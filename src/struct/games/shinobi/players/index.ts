@@ -1,9 +1,9 @@
 import {
-    Collection,
-    ChatInputCommandInteraction,
-    EmbedBuilder,
     ButtonStyle,
-    ComponentType
+    ChatInputCommandInteraction,
+    Collection,
+    ComponentType,
+    EmbedBuilder,
 } from "discord.js";
 
 import { Container } from "@sapphire/pieces";
@@ -12,9 +12,8 @@ import ShinobiPlayer from "./Player";
 import Shinobi from "#schemas/Shinobi";
 
 export default class ShinobiPlayers {
-    private readonly container: Container;
     readonly game: ShinobiGame;
-
+    private readonly container: Container;
     private readonly list: Collection<string, ShinobiPlayer>;
 
     constructor(game: ShinobiGame) {
@@ -42,14 +41,14 @@ export default class ShinobiPlayers {
         if (!player)
             return interaction.reply({
                 content: "You are not a shinobi",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const embed = this.embed(player);
         if (!embed)
             return interaction.reply({
                 content: "Could not fetch your Shinobi Information",
-                ephemeral: true
+                ephemeral: true,
             });
 
         return interaction.reply({ embeds: [embed], ephemeral: true });
@@ -104,7 +103,7 @@ export default class ShinobiPlayers {
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const row = util.row().addComponents(buttons);
@@ -113,18 +112,18 @@ export default class ShinobiPlayers {
             this.embed(player)
         ) as EmbedBuilder[];
 
-        if (interaction.deferred === false) await interaction.deferReply();
+        if (!interaction.deferred) await interaction.deferReply();
 
         const message = await interaction.editReply({
             embeds: [embeds[page]],
-            components: [row]
+            components: [row],
         });
 
         const collector = message.createMessageComponentCollector({
             componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
-            time: 60000
+            time: 60000,
         });
 
         collector
@@ -143,7 +142,7 @@ export default class ShinobiPlayers {
                 await i.deferUpdate();
                 await i.editReply({
                     embeds: [embeds[page]],
-                    components: [row]
+                    components: [row],
                 });
 
                 collector.resetTimer();

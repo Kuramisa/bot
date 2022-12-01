@@ -178,7 +178,7 @@ export class OsuCommand extends Command {
                     }
                 }
             } catch (err) {
-                i.reply({
+                await i.reply({
                     content: `\`\`\`xl\n${err}\`\`\``,
                     ephemeral: true
                 });

@@ -1,27 +1,25 @@
 import Shinobi, { IShinobi } from "#schemas/Shinobi";
 
-import { ShinobiStats, ShinobiWeapon, ShinobiRanks } from "@types";
+import { ShinobiRanks, ShinobiStats, ShinobiWeapon } from "@types";
 
 import {
     ChatInputCommandInteraction,
-    ContextMenuCommandInteraction
+    ContextMenuCommandInteraction,
 } from "discord.js";
 
 import ShinobiGame from "..";
 
 export default class ShinobiPlayer {
-    private readonly game: ShinobiGame;
-
     readonly id: string;
     readonly _name: string;
-    private _clan: string;
-    private _village: string;
-    private _rank: ShinobiRanks;
     xp: number;
     level: number;
     stats: ShinobiStats;
     weapons: ShinobiWeapon[];
     equipped: IShinobi["equipped"];
+    private readonly game: ShinobiGame;
+    private readonly _clan: string;
+    private readonly _village: string;
 
     constructor(game: ShinobiGame, player: IShinobi) {
         this.game = game;
@@ -35,6 +33,18 @@ export default class ShinobiPlayer {
         this.stats = player.stats;
         this.weapons = player.weapons;
         this.equipped = player.equipped;
+    }
+
+    private _rank: ShinobiRanks;
+
+    get rank() {
+        return this.game.container.util.capFirstLetter(
+            this._rank
+        ) as ShinobiRanks;
+    }
+
+    set rank(rank: ShinobiRanks) {
+        this._rank = rank;
     }
 
     get player() {
@@ -53,16 +63,6 @@ export default class ShinobiPlayer {
         return this.game.clans.get(this._clan);
     }
 
-    get rank() {
-        return this.game.container.util.capFirstLetter(
-            this._rank
-        ) as ShinobiRanks;
-    }
-
-    set rank(rank: ShinobiRanks) {
-        this._rank = rank;
-    }
-
     async equip(
         interaction:
             | ChatInputCommandInteraction<"cached">
@@ -70,19 +70,19 @@ export default class ShinobiPlayer {
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({
-            memberId: interaction.member.id
+            memberId: interaction.member.id,
         });
 
         if (!shinobi)
             return interaction.reply({
                 content: "You cannot equip any weapons, you are not a shinobi",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!shinobi.weapons.find((wp) => weapon.id === wp.id))
             return interaction.reply({
                 content: `You do not own ${weapon.name}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         this.equipped.weapon = weapon;
@@ -95,7 +95,7 @@ export default class ShinobiPlayer {
         return interaction.reply({
             content: `Equipped **${weapon.name}**`,
             embeds: [embed],
-            ephemeral: true
+            ephemeral: true,
         });
     }
 }

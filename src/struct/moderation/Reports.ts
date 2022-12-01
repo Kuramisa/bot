@@ -1,14 +1,6 @@
 import { Container } from "@sapphire/pieces";
 import { DiscordSnowflake } from "@sapphire/snowflake";
-import {
-    ButtonInteraction,
-    ChatInputCommandInteraction,
-    ContextMenuCommandInteraction,
-    GuildMember,
-    Message,
-    ModalSubmitInteraction,
-    TextInputStyle
-} from "discord.js";
+import { GuildMember, Message, TextInputStyle } from "discord.js";
 
 export default class Reports {
     private readonly container: Container;
@@ -31,7 +23,7 @@ export default class Reports {
             id: `report-${DiscordSnowflake.generate()}`,
             guildId: guild.id,
             by: by.id,
-            reason
+            reason,
         });
 
         await dbUser.save();
@@ -46,7 +38,7 @@ export default class Reports {
                 .embed()
                 .setAuthor({
                     name: by.user.tag,
-                    iconURL: by.displayAvatarURL({ extension: "gif" })
+                    iconURL: by.displayAvatarURL({ extension: "gif" }),
                 })
                 .setTitle(`${by.user.tag} reported ${member.user.tag}`)
                 .addFields({ name: "Reason", value: reason });
@@ -65,7 +57,7 @@ export default class Reports {
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ extension: "gif" }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string,
                 })
                 .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(`${by} **Reported** ${member}`)
@@ -95,7 +87,7 @@ export default class Reports {
             guildId: guild.id,
             by: by.id,
             message: { id: message.id, content: message.content },
-            reason
+            reason,
         });
 
         await dbUser.save();
@@ -111,7 +103,7 @@ export default class Reports {
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ extension: "gif" }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string,
                 })
                 .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(
@@ -133,7 +125,7 @@ export default class Reports {
                 .embed()
                 .setAuthor({
                     name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ extension: "gif" }) as string
+                    iconURL: guild.iconURL({ extension: "gif" }) as string,
                 })
                 .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
                 .setDescription(

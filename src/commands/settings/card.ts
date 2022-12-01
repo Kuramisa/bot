@@ -10,7 +10,7 @@ export class CardCommand extends Subcommand {
         super(ctx, {
             ...opts,
             name: "card",
-            description: "Customize your profile card"
+            description: "Customize your profile card",
         });
     }
 
@@ -126,14 +126,14 @@ export class CardCommand extends Subcommand {
                             return interaction.reply({
                                 content:
                                     "Your background is already using your banner",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         const banner = user.banner;
                         if (!banner)
                             return interaction.reply({
                                 content: "You don't have a banner",
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         db.card.background.type = "banner";
 
@@ -142,7 +142,7 @@ export class CardCommand extends Subcommand {
                         return interaction.reply({
                             content:
                                 "Your background will be your banner from now on",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "color": {
@@ -156,7 +156,7 @@ export class CardCommand extends Subcommand {
 
                             return interaction.reply({
                                 content: `Switched the background to a color, **Current Color**: ${colorName}`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         }
                         let hex = color;
@@ -165,7 +165,7 @@ export class CardCommand extends Subcommand {
                         if (!hex)
                             return interaction.reply({
                                 content: `${color} is not a color`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.card.background.color = hex;
@@ -174,7 +174,7 @@ export class CardCommand extends Subcommand {
 
                         return interaction.reply({
                             content: `Your background was changed to **${color}** `,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "image": {
@@ -189,7 +189,7 @@ export class CardCommand extends Subcommand {
                             if (!db.card.background.image) {
                                 await interaction.editReply({
                                     content:
-                                        "You don't have any images uploaded as your background before"
+                                        "You don't have any images uploaded as your background before",
                                 });
 
                                 return;
@@ -205,7 +205,7 @@ export class CardCommand extends Subcommand {
                             await interaction.editReply({
                                 files: [newAttachment],
                                 content:
-                                    "Switched the background to an image, **Current image below**"
+                                    "Switched the background to an image, **Current image below**",
                             });
 
                             return;
@@ -215,24 +215,22 @@ export class CardCommand extends Subcommand {
                             attachment.contentType === "image/gif"
                         ) {
                             await interaction.editReply({
-                                content: "File has to be an image"
+                                content: "File has to be an image",
                             });
 
                             return;
                         }
 
-                        const imageBuffer = await util.imageToBuffer(
+                        db.card.background.image = await util.imageToBuffer(
                             attachment.url
                         );
-
-                        db.card.background.image = imageBuffer;
 
                         await db.save();
 
                         await interaction.editReply({
                             files: [attachment],
                             content:
-                                "Your background was changed to ***Image below***"
+                                "Your background was changed to ***Image below***",
                         });
 
                         return;
@@ -247,7 +245,7 @@ export class CardCommand extends Subcommand {
                         if (!banner)
                             return interaction.reply({
                                 content: "You don't have a banner",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.card.outlines.type = "banner";
@@ -257,7 +255,7 @@ export class CardCommand extends Subcommand {
                         return interaction.reply({
                             content:
                                 "Your outlines are now using your banner's colors",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "avatar": {
@@ -265,7 +263,7 @@ export class CardCommand extends Subcommand {
                         if (!avatar)
                             return interaction.reply({
                                 content: "You don't have an avatar",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.card.outlines.type = "avatar";
@@ -275,7 +273,7 @@ export class CardCommand extends Subcommand {
                         return interaction.reply({
                             content:
                                 "Your outlines are now using your avatar's colors",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "color": {
@@ -289,7 +287,7 @@ export class CardCommand extends Subcommand {
                                 .basic[0].name;
                             return interaction.reply({
                                 content: `Switched the outlines to a color, **Current Color**: ${colorName}`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         }
 
@@ -298,7 +296,7 @@ export class CardCommand extends Subcommand {
                         if (!hex)
                             return interaction.reply({
                                 content: `${color} is not a color`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.card.outlines.color = hex;
@@ -307,7 +305,7 @@ export class CardCommand extends Subcommand {
 
                         return interaction.reply({
                             content: `Your outlines was changed to **${color}**`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }
@@ -320,7 +318,7 @@ export class CardCommand extends Subcommand {
                         if (!banner)
                             return interaction.reply({
                                 content: "You don't have a banner",
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         db.card.text.type = "banner";
 
@@ -329,16 +327,15 @@ export class CardCommand extends Subcommand {
                         return interaction.reply({
                             content:
                                 "Your text is now using your banner's colors",
-                            ephemeral: true
+                            ephemeral: true,
                         });
-                        break;
                     }
                     case "avatar": {
                         const avatar = user.avatar;
                         if (!avatar)
                             return interaction.reply({
                                 content: "You don't have an avatar",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.card.text.type = "avatar";
@@ -348,7 +345,7 @@ export class CardCommand extends Subcommand {
                         return interaction.reply({
                             content:
                                 "Your text is now using your avatar's colors",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "color": {
@@ -361,7 +358,7 @@ export class CardCommand extends Subcommand {
                                 .basic[0].name;
                             return interaction.reply({
                                 content: `Switched the text to a color, **Current Color**: ${colorName}`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         }
 
@@ -370,7 +367,7 @@ export class CardCommand extends Subcommand {
                         if (!hex)
                             return interaction.reply({
                                 content: `${color} is not a color`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.card.text.color = hex;
@@ -379,7 +376,7 @@ export class CardCommand extends Subcommand {
 
                         return interaction.reply({
                             content: `Your text was changed to **${color}**`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }

@@ -1,7 +1,7 @@
 import { Command } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
-    ContextMenuCommandInteraction
+    ContextMenuCommandInteraction, PermissionsBitField
 } from "discord.js";
 
 export class WarnCommand extends Command {
@@ -19,7 +19,7 @@ export class WarnCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
-                .setDefaultMemberPermissions(1 << 40)
+                .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers)
                 .addUserOption((option) =>
                     option
                         .setName("member")

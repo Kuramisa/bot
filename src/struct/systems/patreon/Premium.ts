@@ -33,7 +33,7 @@ export default class Premium {
                     (pat) => pat.mediaConnection.discord.id === guild.ownerId
                 )
             ) {
-                if (!owners.some((owner) => owner.id == guild.ownerId))
+                if (!owners.some((owner) => owner.id === guild.ownerId))
                     owners.push(await guild.fetchOwner());
             }
         }
@@ -57,7 +57,7 @@ export default class Premium {
                 if (
                     patreon.subscription.currentEntitled.status ===
                         "declined_patron" &&
-                    db.premium == true
+                    db.premium === true
                 ) {
                     db.premium = false;
                     await db.save();
@@ -88,7 +88,7 @@ export default class Premium {
             const embed = util
                 .embed()
                 .setAuthor({
-                    name: `${client.user?.username} Server Premium Subscription`
+                    name: `${client.user?.username} Server Premium Subscription`,
                 })
                 .setTitle(`Hello ${owner.user.tag}`)
                 .setDescription(
@@ -97,12 +97,12 @@ export default class Premium {
 
             const message = await owner.send({
                 embeds: [embed],
-                components: [row]
+                components: [row],
             });
 
             const guildChoice = await message.awaitMessageComponent({
                 componentType: ComponentType.SelectMenu,
-                filter: (i) => i.customId === "non_premium_servers"
+                filter: (i) => i.customId === "non_premium_servers",
             });
 
             const guild = client.guilds.cache.get(guildChoice.values[0]);
@@ -116,9 +116,9 @@ export default class Premium {
                 embeds: [
                     embed.setDescription(
                         `${guild.name} is now a premium server`
-                    )
+                    ),
                 ],
-                components: []
+                components: [],
             });
         }
     }
@@ -147,7 +147,7 @@ export default class Premium {
             if (
                 patreon.subscription.currentEntitled.status ===
                     "declined_patron" &&
-                db.premium == true
+                db.premium === true
             ) {
                 db.premium = false;
                 await db.save();

@@ -1,13 +1,10 @@
-import { Container as SapphireContainer } from "@sapphire/pieces";
-
-import akinator from "discord";
 import Canvas from "#struct/canvas";
 import Database from "#struct/database";
 import Games from "#struct/games";
 import Moderation from "#struct/moderation";
 import Util from "#struct/util";
 import { Collection } from "discord.js";
-import { Command, Args, CommandOptions } from "@sapphire/framework";
+import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { Seasons } from "@valapi/valorant-api.com";
 import Dashboard from "#struct/dashboard";
 import Systems from "#struct/systems";

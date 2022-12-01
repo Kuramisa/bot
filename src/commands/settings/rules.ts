@@ -1,4 +1,3 @@
-import database from "#struct/database";
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import { ChatInputCommandInteraction, TextInputStyle } from "discord.js";
 
@@ -8,7 +7,7 @@ export class RulesCommand extends Subcommand {
             ...opts,
             name: "rules",
             description: "Set/Check/Edit Rules",
-            requiredUserPermissions: "ManageGuild"
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -50,13 +49,13 @@ export class RulesCommand extends Subcommand {
             return interaction.reply({
                 content:
                     "Set your Rules channel through community settings or with `/settings`",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!channel.isTextBased())
             return interaction.reply({
                 content: "Make sure your rules channel is text based",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const messages = await channel.messages.fetch();
@@ -65,7 +64,7 @@ export class RulesCommand extends Subcommand {
             return interaction.reply({
                 content:
                     "Make sure there are no user messages and the channel is solely used for rules",
-                ephemeral: true
+                ephemeral: true,
             });
 
         switch (options.getSubcommand()) {
@@ -74,7 +73,7 @@ export class RulesCommand extends Subcommand {
                     return interaction.reply({
                         content:
                             "Rules already exist, use `/rules update` or `/rules delete` and make a new one",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const modal = util
@@ -100,14 +99,14 @@ export class RulesCommand extends Subcommand {
                     return interaction.reply({
                         content:
                             "To edit the rules there should be only one message that contains rules by the bot",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const message = messages.first();
                 if (!message)
                     return interaction.reply({
                         content: "Could not find the rules message",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const modal = util
@@ -134,7 +133,7 @@ export class RulesCommand extends Subcommand {
                     return interaction.reply({
                         content:
                             "To check the rules there should be only one message that contains rules by the bot",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const message = messages.first();
@@ -142,12 +141,12 @@ export class RulesCommand extends Subcommand {
                 if (!message)
                     return interaction.reply({
                         content: "No message found",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 return interaction.reply({
                     content: message.content,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }

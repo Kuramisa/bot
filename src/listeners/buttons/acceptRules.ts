@@ -6,7 +6,7 @@ export class AcceptRulesBtnListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Accept Rules Button",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -23,28 +23,28 @@ export class AcceptRulesBtnListener extends Listener {
         if (!db.roles.member || db.roles.member.length < 1)
             return interaction.reply({
                 content: "Member is not setup, Contact the server owner",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const role = guild.roles.cache.get(db.roles.member);
         if (!role)
             return interaction.reply({
                 content: "Member role not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (member.roles.cache.get(role.id))
             return interaction.reply({
                 content: "You already a member",
-                ephemeral: true
+                ephemeral: true,
             });
 
-        member.roles.add(role);
+        await member.roles.add(role);
 
         return interaction.reply({
             content:
                 "You accepted the rules and became a member, have a good stay",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 }

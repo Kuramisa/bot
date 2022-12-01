@@ -2,7 +2,7 @@ import { Container } from "@sapphire/pieces";
 import {
     ChannelType,
     ChatInputCommandInteraction,
-    OverwriteResolvable
+    OverwriteResolvable,
 } from "discord.js";
 
 export default class Tickets {
@@ -24,7 +24,7 @@ export default class Tickets {
 
         if (!db.tickets.channels.openTicket)
             return interaction.editReply({
-                content: "Set up your `Open Ticket` channel first"
+                content: "Set up your `Open Ticket` channel first",
             });
 
         const text = options.getString("text", true);
@@ -47,7 +47,7 @@ export default class Tickets {
 
         if (message.components.length === 5)
             return interaction.editReply({
-                content: "Delete some buttons before adding a new one"
+                content: "Delete some buttons before adding a new one",
             });
 
         const button = util
@@ -72,7 +72,7 @@ export default class Tickets {
 
                 return interaction.editReply({
                     content: "First button added",
-                    components: [util.row().setComponents(button)]
+                    components: [util.row().setComponents(button)],
                 });
             }
 
@@ -93,16 +93,16 @@ export default class Tickets {
 
             return interaction.editReply({
                 content: "New button added",
-                components: [util.row().setComponents(button)]
+                components: [util.row().setComponents(button)],
             });
         } catch (err: any) {
             if (err.message.includes("duplicated"))
                 return interaction.editReply({
-                    content: "Button with the similar name already exists"
+                    content: "Button with the similar name already exists",
                 });
 
             return interaction.editReply({
-                content: "An error occured"
+                content: "An error occured",
             });
         }
     }
@@ -123,7 +123,7 @@ export default class Tickets {
         if (!channel)
             return interaction.reply({
                 content: "Channel not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!channel.isTextBased()) return;
@@ -133,7 +133,7 @@ export default class Tickets {
         if (!message)
             return interaction.reply({
                 content: "Message not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const row = message.components.find((r) =>
@@ -144,7 +144,7 @@ export default class Tickets {
             await message.edit({
                 components: message.components.filter((r) =>
                     r.components.find((btn) => btn.customId !== id)
-                )
+                ),
             });
         } else {
             row.components = row.components.filter(
@@ -162,12 +162,12 @@ export default class Tickets {
 
         return interaction.reply({
             content: "Removed a button",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
     async resetButtons(interaction: ChatInputCommandInteraction<"cached">) {
-        const { database, util } = this.container;
+        const { database } = this.container;
 
         const { guild } = interaction;
 
@@ -181,7 +181,7 @@ export default class Tickets {
         if (!channel)
             return interaction.reply({
                 content: "Channel not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!channel.isTextBased()) return;
@@ -196,7 +196,7 @@ export default class Tickets {
 
         return interaction.reply({
             content: "Reset the buttons",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -211,7 +211,7 @@ export default class Tickets {
         if (!db.tickets.category)
             return interaction.reply({
                 content: "Ticket system is not setup",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const description = options.getString("desc", true);
@@ -222,7 +222,7 @@ export default class Tickets {
         if (!channel)
             return interaction.reply({
                 content: "Open Ticket channel is incorrectly setup",
-                ephemeral: true
+                ephemeral: true,
             });
         if (!channel.isTextBased()) return;
 
@@ -232,7 +232,7 @@ export default class Tickets {
         if (!message)
             return interaction.reply({
                 content: `Could not find Ticket Message in channel ${channel}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const embed = util.embed().setDescription(description);
@@ -241,7 +241,7 @@ export default class Tickets {
 
         return interaction.reply({
             content: `Description edited to \`${description}\``,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -253,7 +253,7 @@ export default class Tickets {
         if (!guild.members.me?.permissions.has("ManageChannels"))
             return interaction.reply({
                 content: "Bot missing permissions `ManageChannels`",
-                ephemeral: true
+                ephemeral: true,
             });
 
         await interaction.deferReply({ ephemeral: true });
@@ -266,13 +266,13 @@ export default class Tickets {
         const category = await guild.channels.create({
             name: "Ticket System",
             type: ChannelType.GuildCategory,
-            position: 0
+            position: 0,
         });
 
         setupEmbed.setDescription("✅ Category created");
 
         await interaction.editReply({
-            embeds: [setupEmbed]
+            embeds: [setupEmbed],
         });
 
         const openTicket = await guild.channels.create({
@@ -283,9 +283,9 @@ export default class Tickets {
                 {
                     id: guild.roles.everyone.id,
                     deny: ["SendMessages"],
-                    allow: ["UseApplicationCommands"]
-                }
-            ]
+                    allow: ["UseApplicationCommands"],
+                },
+            ],
         });
 
         await interaction.editReply({
@@ -293,29 +293,15 @@ export default class Tickets {
                 setupEmbed.setDescription(
                     setupEmbed.toJSON().description +
                         `\n✅ Open Ticket channel created: ${openTicket}`
-                )
-            ]
+                ),
+            ],
         });
 
         const transcriptPerms: OverwriteResolvable[] = guild.roles.cache.map(
-            (role) =>
-                role.permissions.has("ModerateMembers")
-                    ? {
-                          id: role.id,
-                          allow: [
-                              "ViewChannel",
-                              "SendMessages",
-                              "ReadMessageHistory"
-                          ]
-                      }
-                    : {
-                          id: role.id,
-                          allow: [
-                              "ViewChannel",
-                              "SendMessages",
-                              "ReadMessageHistory"
-                          ]
-                      }
+            (role) => ({
+                id: role.id,
+                allow: ["ViewChannel", "SendMessages", "ReadMessageHistory"],
+            })
         );
 
         const transcripts = await guild.channels.create({
@@ -325,10 +311,10 @@ export default class Tickets {
             permissionOverwrites: [
                 {
                     id: guild.roles.everyone.id,
-                    deny: ["ViewChannel", "SendMessages", "ReadMessageHistory"]
+                    deny: ["ViewChannel", "SendMessages", "ReadMessageHistory"],
                 },
-                ...transcriptPerms
-            ]
+                ...transcriptPerms,
+            ],
         });
 
         await interaction.editReply({
@@ -336,13 +322,13 @@ export default class Tickets {
                 setupEmbed.setDescription(
                     setupEmbed.toJSON().description +
                         `\n✅ Transcripts channel created: ${transcripts}`
-                )
-            ]
+                ),
+            ],
         });
 
-        (db.tickets.category = category.id),
-            (db.tickets.channels.openTicket = openTicket.id),
-            (db.tickets.channels.transcripts = transcripts.id);
+        db.tickets.category = category.id;
+        db.tickets.channels.openTicket = openTicket.id;
+        db.tickets.channels.transcripts = transcripts.id;
 
         const embed = util
             .embed()
@@ -361,8 +347,8 @@ export default class Tickets {
                 setupEmbed.setDescription(
                     setupEmbed.toJSON().description +
                         "\n\nTicket System Setup finished"
-                )
-            ]
+                ),
+            ],
         });
     }
 }

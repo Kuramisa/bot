@@ -1,9 +1,9 @@
 import { Container } from "@sapphire/pieces";
 import {
-    Collection,
-    ChatInputCommandInteraction,
     ButtonStyle,
-    ComponentType
+    ChatInputCommandInteraction,
+    Collection,
+    ComponentType,
 } from "discord.js";
 import ShinobiGame from "../";
 import Weapons from "./Weapons";
@@ -42,25 +42,25 @@ export default class ShinobiWeapons {
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({
-            memberId: interaction.member.id
+            memberId: interaction.member.id,
         });
 
         if (!shinobi)
             return interaction.reply({
                 content: "You cannot buy any weapons, you are not a shinobi",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (shinobi.weapons.find((wp) => weapon.id === wp.id))
             return interaction.reply({
                 content: `You already own ${weapon.name}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (shinobi.currencies.ryo < weapon.cost)
             return interaction.reply({
                 content: `You do not have enough ryo to buy this weapon, \`Current Balance\`: ${shinobi.currencies.ryo} Ryo`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         shinobi.currencies.ryo -= weapon.cost;
@@ -73,7 +73,7 @@ export default class ShinobiWeapons {
         return interaction.reply({
             content: `Bought **${weapon.name}** for ${weapon.cost} Ryo`,
             embeds: [embed],
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -82,19 +82,19 @@ export default class ShinobiWeapons {
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({
-            memberId: interaction.member.id
+            memberId: interaction.member.id,
         });
 
         if (!shinobi)
             return interaction.reply({
                 content: "You cannot buy any weapons, you are not a shinobi",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!shinobi.weapons.find((wp) => weapon.id === wp.id))
             return interaction.reply({
                 content: `You do not own ${weapon.name}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const sellPrice = weapon.cost / 2;
@@ -112,7 +112,7 @@ export default class ShinobiWeapons {
         return interaction.reply({
             content: `Sold **${weapon.name}** for ${sellPrice} Ryo`,
             embeds: [embed],
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -133,25 +133,25 @@ export default class ShinobiWeapons {
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const row = util.row().addComponents(buttons);
 
         const embeds = weapons.map((weapon) => this.embed(weapon));
 
-        if (interaction.deferred === false) await interaction.deferReply();
+        if (!interaction.deferred) await interaction.deferReply();
 
         const message = await interaction.editReply({
             embeds: [embeds[page]],
-            components: [row]
+            components: [row],
         });
 
         const collector = message.createMessageComponentCollector({
             componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
-            time: 60000
+            time: 60000,
         });
 
         collector
@@ -170,7 +170,7 @@ export default class ShinobiWeapons {
                 await i.deferUpdate();
                 await i.editReply({
                     embeds: [embeds[page]],
-                    components: [row]
+                    components: [row],
                 });
 
                 collector.resetTimer();

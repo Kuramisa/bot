@@ -1,10 +1,10 @@
 import { Container } from "@sapphire/pieces";
 import ShinobiGame from "..";
 import {
-    Collection,
-    ChatInputCommandInteraction,
     ButtonStyle,
-    ComponentType
+    ChatInputCommandInteraction,
+    Collection,
+    ComponentType,
 } from "discord.js";
 import { ShinobiClan } from "@types";
 
@@ -62,25 +62,25 @@ export default class ShinobiClans {
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const row = util.row().addComponents(buttons);
 
         const embeds = clans.map((clan) => this.embed(clan));
 
-        if (interaction.deferred === false) await interaction.deferReply();
+        if (!interaction.deferred) await interaction.deferReply();
 
         const message = await interaction.editReply({
             embeds: [embeds[page]],
-            components: [row]
+            components: [row],
         });
 
         const collector = message.createMessageComponentCollector({
             componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
-            time: 60000
+            time: 60000,
         });
 
         collector
@@ -99,7 +99,7 @@ export default class ShinobiClans {
                 await i.deferUpdate();
                 await i.editReply({
                     embeds: [embeds[page]],
-                    components: [row]
+                    components: [row],
                 });
 
                 collector.resetTimer();

@@ -6,7 +6,7 @@ export class GiveXPListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Give xp to members",
-            event: "messageCreate"
+            event: "messageCreate",
         });
     }
 
@@ -14,13 +14,13 @@ export class GiveXPListener extends Listener {
         if (message.author.bot) return;
 
         const {
-            systems: { xp }
+            systems: { xp },
         } = this.container;
 
         const { author, channel, guild } = message;
 
         const today = new Date();
-        const ifWeekend = today.getDay() == 6 || today.getDay() == 0;
+        const ifWeekend = today.getDay() === 6 || today.getDay() === 0;
 
         const give = ifWeekend
             ? Math.floor(Math.random() * 75) * 2
@@ -29,7 +29,7 @@ export class GiveXPListener extends Listener {
             ? Math.round(Math.random() * 3)
             : Math.round(Math.random() * 4);
 
-        if (rand == 0) {
+        if (rand === 0) {
             const currentLevel = await xp.getLevel(author);
             const currentXP = await xp.getXP(author);
             const requiredXP = xp.calculateReqXP(currentLevel as number);

@@ -19,8 +19,7 @@ export class CreatePasteWarframeListener extends Listener {
         const embed = message.embeds[0];
 
         const type = embed.title?.split("Orders for")[0].trim().toLowerCase();
-        const user = embed
-            .fields![0].value.split("`Reputation`")[0]
+        const user = embed.fields[0].value.split("`Reputation`")[0]
             .split(":")[1]
             .trim();
         const item = embed.title?.split("Orders for")[1].trim();

@@ -138,16 +138,4 @@ export default class MemberCanvas {
                 return buffer;
         }
     }
-
-    private calculateProgress(data: any) {
-        const cx = data.currentXP;
-        const rx = data.neededXP;
-
-        if (rx <= 0) return 1;
-        if (cx > rx) return 596.5;
-
-        const width = (cx * 615) / rx;
-        if (width > 596.5) return 596.6;
-        return width as number;
-    }
 }

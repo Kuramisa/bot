@@ -19,7 +19,7 @@ export class MemberJoinListener extends Listener {
 
         const db = await database.guilds.get(guild);
 
-        database.users.verify(member.user);
+        await database.users.verify(member.user);
 
         if (!db || !db.welcomeMessage.enabled || !db.welcomeMessage.channel)
             return;

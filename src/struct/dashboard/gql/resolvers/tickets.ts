@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Container } from "@sapphire/pieces";
-import { GraphQLError } from "graphql";
+import {Container} from "@sapphire/pieces";
+import {GraphQLError} from "graphql";
 
 export default {
     Query: {
@@ -13,15 +13,13 @@ export default {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
-                const tickets = (await database.tickets.getAll())
+                return (await database.tickets.getAll())
                     .filter((ticket) => ticket.guildId === guild.id)
                     .map((tckt) => {
                         const { transcript, ...ticket } = tckt._doc;
 
                         return ticket;
                     });
-
-                return tickets;
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -61,7 +59,7 @@ export default {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
-                const tickets = (await database.tickets.getAll())
+                return (await database.tickets.getAll())
                     .filter(
                         (ticket) =>
                             ticket.guildId === guild.id &&
@@ -72,8 +70,6 @@ export default {
 
                         return ticket;
                     });
-
-                return tickets;
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -101,6 +97,6 @@ export default {
                 console.error(err);
                 throw err;
             }
-        }
-    }
+        },
+    },
 };

@@ -4,9 +4,9 @@ import { AutocompleteInteraction } from "discord.js";
 export class MusicSearchACListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
         super(ctx, {
-            ...ctx,
+            ...opts,
             name: "Music Search Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -16,7 +16,7 @@ export class MusicSearchACListener extends Listener {
 
         const {
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { options, user } = interaction;
@@ -26,7 +26,7 @@ export class MusicSearchACListener extends Listener {
         switch (options.getSubcommand()) {
             case "play": {
                 const result = await music.search(focused, {
-                    requestedBy: user
+                    requestedBy: user,
                 });
 
                 if (result.playlist) {
@@ -40,14 +40,14 @@ export class MusicSearchACListener extends Listener {
                             } Tracks - ${util.capFirstLetter(
                                 source
                             )} ${util.capFirstLetter(type)}`,
-                            value: url
-                        }
+                            value: url,
+                        },
                     ]);
                 }
 
                 const tracks = result.tracks.filter((_, i) => i <= 25);
 
-                return interaction.respond(
+                await interaction.respond(
                     tracks.map((track) => ({
                         name: `${util.shorten(
                             `${track.title} - ${track.author}`,
@@ -56,9 +56,10 @@ export class MusicSearchACListener extends Listener {
                         value: `${util.shorten(
                             `${track.title} - ${track.author}`,
                             99
-                        )}`
+                        )}`,
                     }))
                 );
+                break;
             }
         }
     }

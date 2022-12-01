@@ -244,7 +244,7 @@ export class MusicCommand extends Subcommand {
                     });
                 }
 
-                if (!queue.playing) queue.play();
+                if (!queue.playing) await queue.play();
                 break;
             }
             case "add": {
@@ -336,7 +336,7 @@ export class MusicCommand extends Subcommand {
                     });
                 }
 
-                if (!queue.playing) queue.play();
+                if (!queue.playing) await queue.play();
                 break;
             }
             case "actions": {
@@ -350,7 +350,7 @@ export class MusicCommand extends Subcommand {
                 switch (action) {
                     case "pause/resume": {
                         if (queue.connection.paused) {
-                            queue.play();
+                            await queue.play();
 
                             return interaction.reply({
                                 content: "▶ Track Resumed",
@@ -394,7 +394,7 @@ export class MusicCommand extends Subcommand {
                                 ephemeral: true
                             });
 
-                        util.pagination.default(
+                        await util.pagination.default(
                             interaction,
                             chunked,
                             "Upcoming Tracks"
@@ -475,7 +475,7 @@ export class MusicCommand extends Subcommand {
                         ephemeral: true
                     });
 
-                queue.seek(durationMs);
+                await queue.seek(durationMs);
                 return interaction.reply({
                     content: `Seeked to ${duration}`,
                     ephemeral: true
@@ -602,7 +602,7 @@ export class MusicCommand extends Subcommand {
             await interaction.editReply({ embeds: [embed], components: [] });
         }
 
-        if (!queue.playing) queue.play();
+        if (!queue.playing) await queue.play();
 
         return;
     }

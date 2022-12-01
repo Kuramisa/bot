@@ -2,7 +2,7 @@ import { Container } from "@sapphire/pieces";
 import {
     ButtonStyle,
     ChatInputCommandInteraction,
-    ComponentType
+    ComponentType,
 } from "discord.js";
 import { Naruto } from "anime-info";
 import ms from "ms";
@@ -46,7 +46,7 @@ export default class ShinobiGame {
         if (player)
             return interaction.reply({
                 content: "You are already are a shinobi",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const embed = util
@@ -68,14 +68,14 @@ export default class ShinobiGame {
                     .button()
                     .setCustomId("decline_game_rules")
                     .setLabel("Decline")
-                    .setStyle(ButtonStyle.Danger)
+                    .setStyle(ButtonStyle.Danger),
             ]);
 
         const message = await interaction.reply({
             embeds: [embed],
             components: [row],
             ephemeral: true,
-            fetchReply: true
+            fetchReply: true,
         });
 
         message
@@ -84,8 +84,8 @@ export default class ShinobiGame {
                 filter: (i) =>
                     (i.customId === "accept_game_rules" ||
                         i.customId === "decline_game_rules") &&
-                    i.user.id == user.id,
-                time: 5000
+                    i.user.id === user.id,
+                time: 5000,
             })
             .on("collect", async (i) => {
                 switch (i.customId) {
@@ -99,7 +99,7 @@ export default class ShinobiGame {
                             memberId: user.id,
                             clan: clan.id,
                             village: village.id,
-                            stats: clan.stats
+                            stats: clan.stats,
                         });
 
                         i.deferUpdate();
@@ -107,7 +107,7 @@ export default class ShinobiGame {
                         await interaction.editReply({
                             content: `You became a genin. You were born in **${clan.name}** - **${village.name.en}**`,
                             embeds: [],
-                            components: []
+                            components: [],
                         });
 
                         const player = new ShinobiPlayer(this, shinobi);
@@ -123,7 +123,7 @@ export default class ShinobiGame {
                             content:
                                 "You declined the rules, you did not become a shinobi",
                             embeds: [],
-                            components: []
+                            components: [],
                         });
                         break;
                     }
@@ -139,7 +139,7 @@ export default class ShinobiGame {
         if (!owners.includes(user.id))
             return interaction.reply({
                 content: "You cannot use this command",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const sh = options.getString("player", true);
@@ -149,7 +149,7 @@ export default class ShinobiGame {
         if (!player)
             return interaction.reply({
                 content: `${sh} is not a Shinobi`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const target = interaction.guild?.members.cache.get(player.id);
@@ -160,7 +160,7 @@ export default class ShinobiGame {
 
         return interaction.reply({
             content: `Resigned ${target} from being a shinobi`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -172,7 +172,7 @@ export default class ShinobiGame {
         if (!player)
             return interaction.reply({
                 content: "You are not a Shinobi",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (Date.now() < player.cooldowns.daily)
@@ -180,7 +180,7 @@ export default class ShinobiGame {
                 content: `You can claim your daily reward **${moment(
                     player.cooldowns.daily
                 ).fromNow()}**`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const ryo = Math.floor(Math.random() * 100);
@@ -192,7 +192,7 @@ export default class ShinobiGame {
 
         return interaction.reply({
             content: `You received **${ryo} Ryo** from your daily`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -204,7 +204,7 @@ export default class ShinobiGame {
         if (!player)
             return interaction.reply({
                 content: "You are not a Shinobi",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (Date.now() < player.cooldowns.weekly)
@@ -212,7 +212,7 @@ export default class ShinobiGame {
                 content: `You can claim your weekly reward **${moment(
                     player.cooldowns.weekly
                 ).fromNow()}**`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const ryo =
@@ -225,7 +225,7 @@ export default class ShinobiGame {
 
         return interaction.reply({
             content: `You received **${ryo} Ryo** from your daily`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 

@@ -1,6 +1,6 @@
 import Staff from "#schemas/Staff";
 import { Listener } from "@sapphire/framework";
-import { ActivityType, PresenceData, REST, Routes } from "discord.js";
+import { ActivityType, PresenceData } from "discord.js";
 
 export class ReadyListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
@@ -8,18 +8,13 @@ export class ReadyListener extends Listener {
             ...opts,
             once: true,
             name: "clientReady",
-            event: "ready"
+            event: "ready",
         });
     }
 
     async run() {
         const { container } = this;
-        const {
-            client,
-            database,
-            games,
-            logger
-        } = container;
+        const { client, database, games, logger } = container;
 
         logger.info(`Ready! Logged in as ${client.user?.tag}`);
 
@@ -46,7 +41,7 @@ export class ReadyListener extends Listener {
         database.guilds.verifyAll();
         database.users.verifyAll();
 
-        games.shinobi.players.init();
+        await games.shinobi.players.init();
 
         container.staff = await Staff.find();
 
@@ -56,19 +51,19 @@ export class ReadyListener extends Listener {
                 activities: [
                     {
                         name: `${client.users.cache.size} Users`,
-                        type: ActivityType.Listening
-                    }
-                ]
+                        type: ActivityType.Listening,
+                    },
+                ],
             },
             {
                 status: "online",
                 activities: [
                     {
                         name: `${client.guilds.cache.size} Servers`,
-                        type: ActivityType.Watching
-                    }
-                ]
-            }
+                        type: ActivityType.Watching,
+                    },
+                ],
+            },
         ];
 
         client.user?.setPresence(

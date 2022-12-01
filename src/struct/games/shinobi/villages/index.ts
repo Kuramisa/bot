@@ -1,9 +1,9 @@
 import ShinobiGame from "..";
 import {
-    Collection,
-    ChatInputCommandInteraction,
     ButtonStyle,
-    ComponentType
+    ChatInputCommandInteraction,
+    Collection,
+    ComponentType,
 } from "discord.js";
 import { ShinobiVillage } from "@types";
 import Villages from "./Villages";
@@ -51,25 +51,25 @@ export default class ShinobiVillages {
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const row = util.row().addComponents(buttons);
 
         const embeds = villages.map((village) => this.embed(village));
 
-        if (interaction.deferred === false) await interaction.deferReply();
+        if (!interaction.deferred) await interaction.deferReply();
 
         const message = await interaction.editReply({
             embeds: [embeds[page]],
-            components: [row]
+            components: [row],
         });
 
         const collector = message.createMessageComponentCollector({
             componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
-            time: 60000
+            time: 60000,
         });
 
         collector
@@ -88,7 +88,7 @@ export default class ShinobiVillages {
                 await i.deferUpdate();
                 await i.editReply({
                     embeds: [embeds[page]],
-                    components: [row]
+                    components: [row],
                 });
 
                 collector.resetTimer();

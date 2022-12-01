@@ -6,7 +6,7 @@ import {
     ComponentType,
     EmbedBuilder,
     Message,
-    TextInputStyle
+    TextInputStyle,
 } from "discord.js";
 
 import { Client as Assets } from "@valapi/valorant-api.com";
@@ -15,12 +15,10 @@ import { Client as Web } from "@valapi/web-client";
 import { ValorantAccount } from "@types";
 
 export default class Valorant {
-    private readonly container: Container;
-
     readonly assets: Assets;
-    private readonly _web: typeof Web;
-
     readonly accounts: Collection<string, ValorantAccount>;
+    private readonly container: Container;
+    private readonly _web: typeof Web;
 
     constructor(container: Container) {
         this.container = container;
@@ -98,13 +96,13 @@ export default class Valorant {
                     "**It seems your account has Multi-Factor Authentication enabled. Do you want to continue?**",
                 components: [row],
                 fetchReply: true,
-                ephemeral: true
+                ephemeral: true,
             });
 
             const acceptOrDecline = await askContinue.awaitMessageComponent({
                 componentType: ComponentType.Button,
                 filter: (i) =>
-                    i.customId === "accept-mfa" || i.customId === "decline-mfa"
+                    i.customId === "accept-mfa" || i.customId === "decline-mfa",
             });
 
             switch (acceptOrDecline.customId) {
@@ -131,7 +129,7 @@ export default class Valorant {
 
                     await acceptOrDecline.showModal(mfaModal);
                     const mfaSubmit = await acceptOrDecline.awaitModalSubmit({
-                        time: 0
+                        time: 0,
                     });
 
                     const mfaCode =
@@ -142,7 +140,7 @@ export default class Valorant {
                     await mfaSubmit.deferUpdate();
                     await acceptOrDecline.editReply({
                         content: "You have logged in to your account",
-                        components: []
+                        components: [],
                     });
                     break;
                 }
@@ -150,7 +148,7 @@ export default class Valorant {
                     await acceptOrDecline.update({
                         content:
                             "You declined to enter your MFA code, we couldn't log in to your account",
-                        components: []
+                        components: [],
                     });
                     break;
                 }
@@ -160,7 +158,7 @@ export default class Valorant {
         if (web.toJSON().access_token.length < 1 && !loginSubmit.replied)
             return loginSubmit.reply({
                 content: "Incorrect password or username was entered",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const playerInfo = (await web.getUserInfo()).data;
@@ -174,13 +172,13 @@ export default class Valorant {
             auth: web,
             puuid,
             player: playerInfo,
-            rank: rankInfo
+            rank: rankInfo,
         });
 
         if (!loginSubmit.replied)
             return loginSubmit.reply({
                 content: "You have logged in to your account",
-                ephemeral: true
+                ephemeral: true,
             });
     }
 
@@ -191,14 +189,14 @@ export default class Valorant {
         if (!account)
             return interaction.reply({
                 content: "You are not logged in",
-                ephemeral: true
+                ephemeral: true,
             });
 
         this.accounts.delete(user.id);
 
         await interaction.reply({
             content: `You have been logged out from your account, ${account.player.acct.game_name}#${account.player.acct.tag_line}`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
@@ -209,19 +207,19 @@ export default class Valorant {
         if (!account)
             return interaction.reply({
                 content: "You are not logged in",
-                ephemeral: true
+                ephemeral: true,
             });
 
         await account.auth.refresh();
 
         return interaction.reply({
             content: "Refreshed your account",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
     async wallet(interaction: ChatInputCommandInteraction | Message) {
-        let user = null;
+        let user;
 
         if (interaction instanceof ChatInputCommandInteraction)
             user = interaction.user;
@@ -231,7 +229,7 @@ export default class Valorant {
         if (!account)
             return interaction.reply({
                 content: "You are not logged in",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const { data: wallet } = await account.auth.Store.getWallet(
@@ -241,7 +239,7 @@ export default class Valorant {
         if (!wallet)
             return interaction.reply({
                 content: "Could not fetch your wallet",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (interaction instanceof ChatInputCommandInteraction)
@@ -263,7 +261,7 @@ export default class Valorant {
         if (interaction instanceof Message)
             return interaction.edit(balance.join("\n"));
 
-        interaction.editReply({ content: balance.join("\n") });
+        await interaction.editReply({ content: balance.join("\n") });
     }
 
     async store(interaction: ChatInputCommandInteraction<"cached">) {
@@ -276,7 +274,7 @@ export default class Valorant {
         if (!account)
             return interaction.reply({
                 content: "You are not logged in",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const storeType = options.getString("store_type", true);
@@ -289,7 +287,7 @@ export default class Valorant {
             return interaction.reply({
                 content:
                     "Failed to fetch the store try logging in or refreshing your account",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const featured = store.FeaturedBundle;
@@ -306,7 +304,7 @@ export default class Valorant {
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const row = util.row().addComponents(buttons);
@@ -375,7 +373,7 @@ export default class Valorant {
                                 return embed.setFooter({
                                     text: `Item ${index + 1} of ${
                                         featured.Bundle.Items.length
-                                    }`
+                                    }`,
                                 });
                             }
                         )
@@ -405,7 +403,7 @@ export default class Valorant {
                                 .setFooter({
                                     text: `Item ${index + 1} of ${
                                         daily.SingleItemOffers.length
-                                    }`
+                                    }`,
                                 });
                         }
                     )
@@ -417,14 +415,14 @@ export default class Valorant {
         if (embeds.length < 1)
             return interaction.reply({
                 content: "Could not fetch your store",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!interaction.deferred) await interaction.deferReply();
 
         const message = await interaction.editReply({
             embeds: [embeds[page]],
-            components: [row]
+            components: [row],
         });
 
         const collector = message.createMessageComponentCollector({
@@ -432,7 +430,7 @@ export default class Valorant {
             filter: (i) =>
                 i.user.id === member.id &&
                 (i.customId === "previous_page" || i.customId === "next_page"),
-            time: 30000
+            time: 30000,
         });
 
         collector
@@ -451,7 +449,7 @@ export default class Valorant {
                 await i.deferUpdate();
                 await i.editReply({
                     embeds: [embeds[page]],
-                    components: [row]
+                    components: [row],
                 });
 
                 collector.resetTimer();
@@ -476,7 +474,7 @@ export default class Valorant {
         if (!user)
             return interaction.reply({
                 content: "Invalid user",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const account = this.accounts.get(user.id);
@@ -484,7 +482,7 @@ export default class Valorant {
         if (!account)
             return interaction.reply({
                 content: "User not logged in",
-                ephemeral: true
+                ephemeral: true,
             });
 
         await interaction.deferReply();
@@ -495,7 +493,7 @@ export default class Valorant {
         if (!loadout)
             return interaction.reply({
                 content: "Could not fetch your loadout",
-                ephemeral: true
+                ephemeral: true,
             });
 
         let page = 0;
@@ -547,11 +545,11 @@ export default class Valorant {
 
                 const embed = util.embed();
 
-                if (!info) embed.setTitle("Could not fetch the weapon");
-                else
+                if (info) {
                     embed
                         .setTitle(info.displayName.toString())
                         .setImage(info.fullRender);
+                } else embed.setTitle("Could not fetch the weapon");
 
                 return embed;
             })
@@ -565,8 +563,7 @@ export default class Valorant {
 
                 const embed = util.embed();
 
-                if (!info) embed.setTitle("Could not fetch the spray");
-                else
+                if (info) {
                     embed
                         .setTitle(info.displayName.toString())
                         .setImage(
@@ -574,6 +571,7 @@ export default class Valorant {
                                 ? info.animationGif
                                 : info.fullTransparentIcon
                         );
+                } else embed.setTitle("Could not fetch the spray");
 
                 return embed;
             })
@@ -608,7 +606,7 @@ export default class Valorant {
 
         const message = await interaction.editReply({
             embeds: [embeds[page]],
-            components: [menuRow]
+            components: [menuRow],
         });
 
         const collector = message.createMessageComponentCollector({
@@ -620,7 +618,7 @@ export default class Valorant {
                     i.customId === "sprays_page" ||
                     i.customId === "weapons_page") &&
                 i.user.id === member.id,
-            time: 35000
+            time: 35000,
         });
 
         collector
@@ -654,7 +652,7 @@ export default class Valorant {
                     components:
                         i.customId === "profile_page"
                             ? [menuRow]
-                            : [pageRow, menuRow]
+                            : [pageRow, menuRow],
                 });
 
                 collector.resetTimer();
@@ -680,7 +678,7 @@ export default class Valorant {
         if (!user)
             return interaction.reply({
                 content: "Invalid user",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const account = this.accounts.get(user.id);
@@ -688,13 +686,13 @@ export default class Valorant {
         if (!account)
             return interaction.reply({
                 content: "User not logged in",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (account.rank.httpStatus === 404)
             return interaction.reply({
                 content: "Could not fetch rank",
-                ephemeral: true
+                ephemeral: true,
             });
 
         await interaction.deferReply();
@@ -743,7 +741,7 @@ export default class Valorant {
                         )} - ${util.capFirstLetter(
                             act?.displayName.toString().toLowerCase() as string
                         )}`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Rank",
@@ -752,22 +750,22 @@ export default class Valorant {
                                 .toString()
                                 .toLowerCase() as string
                         )}`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Rank Rating",
                         value: `${actData.RankedRating} / 100`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Games Played",
                         value: String(actData.NumberOfGames),
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Games Won",
                         value: String(actData.NumberOfWins),
-                        inline: true
+                        inline: true,
                     }
                 )
                 .setThumbnail(currentRank?.largeIcon as string);
@@ -777,7 +775,7 @@ export default class Valorant {
             const embed = await constructData(actGiven);
 
             return interaction.editReply({
-                embeds: [embed]
+                embeds: [embed],
             });
         }
 
@@ -801,7 +799,7 @@ export default class Valorant {
 
                 return {
                     label: `${epName} - ${actName}`,
-                    value: act?.uuid as string
+                    value: act?.uuid as string,
                 };
             })
         );
@@ -822,7 +820,7 @@ export default class Valorant {
             componentType: ComponentType.SelectMenu,
             filter: (i) =>
                 i.customId === "choose_act_rank" && i.user.id === member.id,
-            time: 35000
+            time: 35000,
         });
 
         collector

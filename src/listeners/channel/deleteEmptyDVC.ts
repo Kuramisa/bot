@@ -31,7 +31,7 @@ export class DeleteEmptyChannelListener extends Listener {
             if (!ch || ch.type !== ChannelType.GuildVoice) continue;
             if (ch.members.size > 0) continue;
             dvc.channels = dvc.channels.filter((vc) => vc !== id);
-            ch.delete();
+            await ch.delete();
         }
 
         db.markModified("dvc");

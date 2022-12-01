@@ -358,7 +358,7 @@ export class SteamCommand extends Command {
                 collector.resetTimer();
             });
         } catch {
-            interaction.reply({
+            await interaction.reply({
                 content: "Steam user not found",
                 ephemeral: true
             });
