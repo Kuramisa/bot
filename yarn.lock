@@ -1520,10 +1520,10 @@
     "@types/chroma-js" "*"
     "@types/node" "*"
 
-"@types/i18n@^0.13.5":
-  version "0.13.5"
-  resolved "https://registry.yarnpkg.com/@types/i18n/-/i18n-0.13.5.tgz#ad75889324185be7a93801c81bac2bcad337bb45"
-  integrity sha512-pEtMt7iBkPBFMcB4TG6NuJIz/3Osp530o3R/3Qci94d59J4ienHyWnC7/AKUoTWqqnK0nG6gd6I2g8aOGdlwIg==
+"@types/i18n@^0.13.6":
+  version "0.13.6"
+  resolved "https://registry.yarnpkg.com/@types/i18n/-/i18n-0.13.6.tgz#54199ca55c7b25cb45040ac566e90c94a57fdfa8"
+  integrity sha512-LLbimAA0oQilgP4PJBFH7sRdBUjWLo6R1rf46SUgVzsUZeXH3PT1piXj4LNX5ECDi0bLg9RmQMmY1K2qawqJqA==
 
 "@types/json-schema@^7.0.9":
   version "7.0.11"
@@ -1537,10 +1537,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.190":
-  version "4.14.190"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.190.tgz#d8e99647af141c63902d0ca53cf2b34d2df33545"
-  integrity sha512-5iJ3FBJBvQHQ8sFhEhJfjUP+G+LalhavTkYyrAYqz5MEJG+erSv0k9KJLb6q7++17Lafk1scaTIFXcMJlwK8Mw==
+"@types/lodash@^4.14.191":
+  version "4.14.191"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.191.tgz#09511e7f7cba275acd8b419ddac8da9a6a79e2fa"
+  integrity sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==
 
 "@types/long@^4.0.0":
   version "4.0.2"
@@ -1565,7 +1565,7 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^18.11.9", "@types/node@^18.7.11":
+"@types/node@*", "@types/node@^18.7.11":
   version "18.11.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
   integrity sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==
@@ -1574,6 +1574,11 @@
   version "10.17.60"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
+
+"@types/node@^18.11.10":
+  version "18.11.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.10.tgz#4c64759f3c2343b7e6c4b9caf761c7a3a05cee34"
+  integrity sha512-juG3RWMBOqcOuXC643OAdSA525V44cVgGV6dUDuiFtss+8Fk5x1hI93Rsld43VeJVIeqlP9I7Fn9/qaVqoEAuQ==
 
 "@types/prop-types@*":
   version "15.7.5"
@@ -2700,6 +2705,24 @@ discord.js-akinator@^4.0.4:
     aki-api "^6.0.8"
     discord.js "^14.5.0"
 
+discord.js@14.7.0:
+  version "14.7.0"
+  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-14.7.0.tgz#1411ad6703d8e5ca58f8295e5acd2994b890cc51"
+  integrity sha512-CR2JAoqR+82D7mfMZ7toPAqdIk2sMF8wgTc8yDGPPMHzJknIKtkEPtzWFhBYGMZUkK+M4POw08ngBWqK2A4RMg==
+  dependencies:
+    "@discordjs/builders" "^1.4.0"
+    "@discordjs/collection" "^1.3.0"
+    "@discordjs/rest" "^1.4.0"
+    "@discordjs/util" "^0.1.0"
+    "@sapphire/snowflake" "^3.2.2"
+    "@types/ws" "^8.5.3"
+    discord-api-types "^0.37.20"
+    fast-deep-equal "^3.1.3"
+    lodash.snakecase "^4.1.1"
+    tslib "^2.4.1"
+    undici "^5.13.0"
+    ws "^8.11.0"
+
 discord.js@^14.5.0:
   version "14.6.0"
   resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-14.6.0.tgz#896f7540d4c6f190dffe91d2f3e9a9f7cbc8bd26"
@@ -2717,24 +2740,6 @@ discord.js@^14.5.0:
     tslib "^2.4.0"
     undici "^5.11.0"
     ws "^8.9.0"
-
-discord.js@^14.7.0:
-  version "14.7.0"
-  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-14.7.0.tgz#1411ad6703d8e5ca58f8295e5acd2994b890cc51"
-  integrity sha512-CR2JAoqR+82D7mfMZ7toPAqdIk2sMF8wgTc8yDGPPMHzJknIKtkEPtzWFhBYGMZUkK+M4POw08ngBWqK2A4RMg==
-  dependencies:
-    "@discordjs/builders" "^1.4.0"
-    "@discordjs/collection" "^1.3.0"
-    "@discordjs/rest" "^1.4.0"
-    "@discordjs/util" "^0.1.0"
-    "@sapphire/snowflake" "^3.2.2"
-    "@types/ws" "^8.5.3"
-    discord-api-types "^0.37.20"
-    fast-deep-equal "^3.1.3"
-    lodash.snakecase "^4.1.1"
-    tslib "^2.4.1"
-    undici "^5.13.0"
-    ws "^8.11.0"
 
 doctrine@^3.0.0:
   version "3.0.0"
@@ -3642,10 +3647,10 @@ he@1.2.0, he@^1.2.0:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
-helmet@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/helmet/-/helmet-6.0.0.tgz#8e183820ddccd7729a206ad73c577b264f495595"
-  integrity sha512-FO9RpR1wNJepH/GbLPQVtkE2eESglXL641p7SdyoT4LngHFJcZheHMoyUcjCZF4qpuMMO1u5q6RK0l9Ux8JBcg==
+helmet@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-6.0.1.tgz#52ec353638b2e87f14fe079d142b368ac11e79a4"
+  integrity sha512-8wo+VdQhTMVBMCITYZaGTbE4lvlthelPYSvoyNvk4RECTmrVjMerp9RfUOQXZWLvCcAn1pKj7ZRxK4lI9Alrcw==
 
 hex-to-rgba@^2.0.1:
   version "2.0.1"
@@ -4424,10 +4429,10 @@ mongodb@4.11.0:
     "@aws-sdk/credential-providers" "^3.186.0"
     saslprep "^1.0.3"
 
-mongoose@^6.7.4:
-  version "6.7.4"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-6.7.4.tgz#08d8e073945126cb702028c3ff4b02d80f9f0193"
-  integrity sha512-0LWMrOa5U43cR3I/iRPnmyedoa6T8+QPxmFYdPgx4WAS0CdbSbOzAFSKeU6bndUY6cs4VkxKZGcuDM0twystCg==
+mongoose@^6.7.5:
+  version "6.7.5"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-6.7.5.tgz#3e97faabf71952020e6a528513ab63ead936cc18"
+  integrity sha512-3ppxBxDUIoQKYISVpAg7hjmV1lkGBN3tN9AkQr1Vqc68L5k+Bo+uyfOhpbCFpCf5JZLcEO4cmuB5YX+d9h3plw==
   dependencies:
     bson "^4.7.0"
     kareem "2.4.1"
@@ -5719,10 +5724,10 @@ w3c-xmlserializer@^2.0.0:
   dependencies:
     xml-name-validator "^3.0.0"
 
-warframe-items@^1.1257.12:
-  version "1.1257.12"
-  resolved "https://registry.yarnpkg.com/warframe-items/-/warframe-items-1.1257.12.tgz#ae5695b4b61e2e296356b11bcbcabe4691e5eb73"
-  integrity sha512-w8s44O4rmWlfpGoZAoUfIY//XFJ79Vre8LZYPzb00uICXYPeDIZUEUymY6MK3wEk1p8EsRkfphzgL+QI4Evy4g==
+warframe-items@^1.1258.1:
+  version "1.1258.1"
+  resolved "https://registry.yarnpkg.com/warframe-items/-/warframe-items-1.1258.1.tgz#8ec349877c658732b40f44b0ab59ab39ed0d996a"
+  integrity sha512-sX3063qQW7CIJadaQ1wNsxqd6OfodQrCS4r2JKcpp6AzaJufnm89PXbldovfdQu3xHNMbOzJF7zerilayt2Syg==
 
 warframe-market@^1.1.1:
   version "1.1.1"
