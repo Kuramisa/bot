@@ -90,7 +90,7 @@ export class VoiceCommand extends Subcommand {
                     .row()
                     .setComponents(
                         util
-                            .dropdown()
+                            .stringMenu()
                             .setCustomId("voice_member_select")
                             .setPlaceholder("Who do you want to move?")
                             .setOptions(opts)

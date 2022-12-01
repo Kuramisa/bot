@@ -806,7 +806,7 @@ export default class Valorant {
 
         const row = util.row().setComponents(
             util
-                .dropdown()
+                .stringMenu()
                 .setCustomId("choose_act_rank")
                 .setPlaceholder("Choose an Act")
                 .setMinValues(1)

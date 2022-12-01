@@ -7,7 +7,7 @@ export class WarnsCommand extends Command {
             ...opts,
             name: "warns",
             description: "Check warns of a member",
-            requiredUserPermissions: "ViewAuditLog"
+            requiredUserPermissions: "ViewAuditLog",
         });
     }
 
@@ -67,7 +67,7 @@ export class WarnsCommand extends Command {
                 if (member.user.bot)
                     return interaction.reply({
                         content: `${member} is a bot`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const warns = await moderation.warns.get(member);
@@ -75,7 +75,7 @@ export class WarnsCommand extends Command {
                 if (!warns || warns.length < 1)
                     return interaction.reply({
                         content: `${member} has no warns`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const warnMap = warns.map(
@@ -100,7 +100,7 @@ export class WarnsCommand extends Command {
                 if (member.user.bot)
                     return interaction.reply({
                         content: `${member} is a bot`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const warns = await moderation.warns.get(member);
@@ -108,14 +108,14 @@ export class WarnsCommand extends Command {
                 if (!warns || warns.length < 1)
                     return interaction.reply({
                         content: `${member} has no warns`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const opts = warns.map((warn) => ({
                     label: `Reason: ${warn.reason} - Warned by: ${
                         guild.members.cache.get(warn.by)?.user.username
                     }`,
-                    value: `${warn.id}`
+                    value: `${warn.id}`,
                 }));
 
                 const embed = util
@@ -126,7 +126,7 @@ export class WarnsCommand extends Command {
                     .row()
                     .setComponents(
                         util
-                            .dropdown()
+                            .stringMenu()
                             .setCustomId("select_member_warn")
                             .setMinValues(1)
                             .setMaxValues(opts.length)
@@ -136,14 +136,14 @@ export class WarnsCommand extends Command {
                 const message = await interaction.reply({
                     embeds: [embed],
                     components: [row],
-                    fetchReply: true
+                    fetchReply: true,
                 });
 
                 const sInteraction = await message.awaitMessageComponent({
                     componentType: ComponentType.StringSelect,
                     filter: (i) =>
                         i.customId === "select_member_warn" &&
-                        i.user.id === interaction.user.id
+                        i.user.id === interaction.user.id,
                 });
 
                 const { values } = sInteraction;
@@ -180,9 +180,9 @@ export class WarnsCommand extends Command {
                                             }`
                                     )
                                     .join("\n")
-                            )
+                            ),
                     ],
-                    components: []
+                    components: [],
                 });
                 break;
             }
@@ -194,7 +194,7 @@ export class WarnsCommand extends Command {
                 if (member.user.bot)
                     return interaction.reply({
                         content: `${member} is a bot`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const warns = await moderation.warns.get(member);
@@ -202,13 +202,13 @@ export class WarnsCommand extends Command {
                 if (!warns || warns.length < 1)
                     return interaction.reply({
                         content: `${member} has no warns`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 await moderation.warns.clear(member);
                 await interaction.reply({
                     content: `Cleared warns of ${member}`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
                 break;
             }

@@ -6,14 +6,18 @@ import {
     AttachmentBuilder,
     BufferResolvable,
     ButtonBuilder,
+    ChannelSelectMenuBuilder,
     EmbedBuilder,
+    MentionableSelectMenuBuilder,
     MessageActionRowComponentBuilder,
     ModalActionRowComponentBuilder,
     ModalBuilder,
     PermissionResolvable,
     PermissionsBitField,
-    SelectMenuBuilder,
+    RoleSelectMenuBuilder,
+    StringSelectMenuBuilder,
     TextInputBuilder,
+    UserSelectMenuBuilder,
 } from "discord.js";
 import { Stream } from "stream";
 import moment from "moment";
@@ -58,7 +62,13 @@ export default class Util {
     modalRow = (): ActionRowBuilder<ModalActionRowComponentBuilder> =>
         new ActionRowBuilder<ModalActionRowComponentBuilder>();
     button = () => new ButtonBuilder();
-    dropdown = () => new SelectMenuBuilder();
+
+    stringMenu = () => new StringSelectMenuBuilder();
+    roleMenu = () => new RoleSelectMenuBuilder();
+    mentionableMenu = () => new MentionableSelectMenuBuilder();
+    channelMenu = () => new ChannelSelectMenuBuilder();
+    userMenu = () => new UserSelectMenuBuilder();
+
     modal = () => new ModalBuilder();
     unknownModal = () =>
         new ModalBuilder()

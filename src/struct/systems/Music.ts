@@ -52,7 +52,7 @@ export default class Music extends Player {
             .row()
             .setComponents(
                 util
-                    .dropdown()
+                    .stringMenu()
                     .setCustomId("queue_track_select")
                     .setPlaceholder("Which track to queue?")
                     .setOptions(options)
@@ -96,7 +96,7 @@ export default class Music extends Player {
             .row()
             .setComponents(
                 util
-                    .dropdown()
+                    .stringMenu()
                     .setCustomId("queue_track_select")
                     .setPlaceholder("Which track to queue?")
                     .setOptions(options)

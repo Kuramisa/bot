@@ -78,7 +78,7 @@ export default class Premium {
                 .row()
                 .setComponents(
                     util
-                        .dropdown()
+                        .stringMenu()
                         .setCustomId("non_premium_servers")
                         .setMinValues(1)
                         .setMaxValues(1)

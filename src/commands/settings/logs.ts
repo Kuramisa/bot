@@ -7,7 +7,7 @@ export class LogsCommand extends Subcommand {
             ...opts,
             name: "logs",
             description: "Configure logs for your channel",
-            requiredUserPermissions: "ManageGuild"
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -68,12 +68,12 @@ export class LogsCommand extends Subcommand {
                 if (!permissions?.has("ViewChannel"))
                     return interaction.reply({
                         content: "Missing permission `View Channel`",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 if (!permissions.has("SendMessages"))
                     return interaction.reply({
                         content: "Missing permission `Send Messages`",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 db.logs.channel = channel.id;
@@ -82,7 +82,7 @@ export class LogsCommand extends Subcommand {
 
                 return interaction.reply({
                     content: `Logs channel set to ${channel}`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "toggles": {
@@ -106,7 +106,7 @@ export class LogsCommand extends Subcommand {
 
                     return interaction.reply({
                         content: `\`${toggleName}\` - **${newValue}**`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 }
 
@@ -125,7 +125,7 @@ export class LogsCommand extends Subcommand {
                             label: `${util.capFirstLetter(
                                 toggle
                             )} - ${currentStatus}`,
-                            value: toggle.split(" ").join("")
+                            value: toggle.split(" ").join(""),
                         };
                     });
 
@@ -133,7 +133,7 @@ export class LogsCommand extends Subcommand {
                     .row()
                     .setComponents(
                         util
-                            .dropdown()
+                            .stringMenu()
                             .setCustomId("choose_toggles")
                             .setOptions(toggles)
                             .setPlaceholder("Event - Current Status")
@@ -144,14 +144,14 @@ export class LogsCommand extends Subcommand {
                 const message = await interaction.reply({
                     content: "⬇ Choose Toggles From Below ⬇",
                     components: [row],
-                    fetchReply: true
+                    fetchReply: true,
                 });
 
                 const sInteraction = await message.awaitMessageComponent({
                     componentType: ComponentType.SelectMenu,
                     filter: (i) =>
                         i.customId === "choose_toggles" &&
-                        i.user.id === interaction.user.id
+                        i.user.id === interaction.user.id,
                 });
 
                 const chosenToggles = sInteraction.values;

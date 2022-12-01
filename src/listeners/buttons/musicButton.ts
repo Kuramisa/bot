@@ -198,7 +198,7 @@ export class MusicButtonsListener extends Listener {
 
                 const dropdown = [
                     util
-                        .dropdown()
+                        .stringMenu()
                         .setCustomId("select_track")
                         .setPlaceholder("Select a track")
                         .setMinValues(1)

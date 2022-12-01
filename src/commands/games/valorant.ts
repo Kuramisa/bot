@@ -512,7 +512,7 @@ export class ValorantCommand extends Subcommand {
 
         const row = this.container.util.row().setComponents(
             this.container.util
-                .dropdown()
+                .stringMenu()
                 .setCustomId("choose_act_rank")
                 .setPlaceholder("Choose an Act")
                 .setMinValues(1)

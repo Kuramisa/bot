@@ -25,13 +25,6 @@ export type IReport = {
     reason: string;
 };
 
-export type DropdownType =
-    | "string"
-    | "role"
-    | "mentionable"
-    | "channel"
-    | "user";
-
 export type StaffType = "owner" | "helper";
 
 export type CardType = "buffer" | "attachment";

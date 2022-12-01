@@ -94,16 +94,14 @@ export class DVCCommand extends Command {
                     }
 
                     rows.push(
-                        util
-                            .row()
-                            .setComponents(
-                                util
-                                    .dropdown()
-                                    .setCustomId(`convert-channels-${i}`)
-                                    .setOptions(options)
-                                    .setMinValues(1)
-                                    .setMaxValues(options.length)
-                            )
+                        util.row().setComponents(
+                            util
+                                .stringMenu()
+                                .setCustomId(`convert-channels-${i}`)
+                                .setOptions(...options)
+                                .setMinValues(1)
+                                .setMaxValues(options.length)
+                        )
                     );
                 }
 
