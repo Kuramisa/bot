@@ -5,10 +5,9 @@ import {
     CommandOptions,
     PieceContext
 } from "@sapphire/framework";
-import { Collection } from "discord.js";
 
 export class CategoryArgument extends Argument<
-    Collection<string, Command<Args, CommandOptions>>
+    Map<string, Command<Args, CommandOptions>>
 > {
     constructor(ctx: PieceContext) {
         super(ctx, {
