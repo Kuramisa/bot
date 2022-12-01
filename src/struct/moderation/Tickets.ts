@@ -102,7 +102,7 @@ export default class Tickets {
                 });
 
             return interaction.editReply({
-                content: "An error occured",
+                content: "An error occurred",
             });
         }
     }

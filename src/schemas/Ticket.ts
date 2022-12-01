@@ -19,10 +19,10 @@ export const Ticket: Schema = new Schema<ITicket>({
     closed: Boolean,
     locked: Boolean,
     transcript: Buffer,
-    type: String
+    type: String,
 });
 
-export type TTIcket = Document<unknown, any, ITicket> &
+export type TTicket = Document<unknown, any, ITicket> &
     ITicket & {
         _id: Types.ObjectId;
     };

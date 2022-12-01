@@ -8,7 +8,7 @@ export class BotStaffCommand extends Command {
             ...opts,
             name: "botstaff",
             description: "Add Staff in the bot",
-            preconditions: ["OwnerOnly"]
+            preconditions: ["OwnerOnly"],
         });
     }
 
@@ -47,8 +47,8 @@ export class BotStaffCommand extends Command {
 
         if (await Staff.findOne({ id: user.id }))
             return interaction.reply({
-                content: `${user} is alrady a staff`,
-                ephemeral: true
+                content: `${user} is already a staff`,
+                ephemeral: true,
             });
 
         const modal = util
@@ -78,7 +78,7 @@ export class BotStaffCommand extends Command {
         await Staff.create({
             id: user.id,
             description,
-            type: staffType
+            type: staffType,
         });
 
         const embed = util

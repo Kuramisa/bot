@@ -45,7 +45,7 @@ export class ValorantCommand extends Subcommand {
     }
 
     /**
-     * Register Slash Cocmmand
+     * Register Slash Command
      */
     override registerApplicationCommands(registry: Subcommand.Registry) {
         registry.registerChatInputCommand((builder) =>
@@ -151,7 +151,7 @@ export class ValorantCommand extends Subcommand {
      */
     messageLogin = (message: Message) =>
         message.reply(
-            "You can only login using </valorant login:1027546596398858310> (for security purposes)"
+            "You can only log in using </valorant login:1027546596398858310> (for security purposes)"
         );
 
     /**

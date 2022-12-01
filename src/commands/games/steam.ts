@@ -3,7 +3,7 @@ import {
     ButtonStyle,
     ChatInputCommandInteraction,
     ComponentType,
-    Message
+    Message,
 } from "discord.js";
 import moment from "moment";
 
@@ -12,7 +12,7 @@ export class SteamCommand extends Command {
         super(ctx, {
             ...opts,
             name: "steam",
-            description: "Steam Helper"
+            description: "Steam Helper",
         });
     }
 
@@ -43,7 +43,7 @@ export class SteamCommand extends Command {
 
         const {
             games: { steam },
-            util
+            util,
         } = this.container;
 
         if (
@@ -92,7 +92,7 @@ export class SteamCommand extends Command {
 
             const msg = await message.reply({
                 embeds: [],
-                components: [row]
+                components: [row],
             });
 
             const collector = msg.createMessageComponentCollector({
@@ -102,7 +102,7 @@ export class SteamCommand extends Command {
                     i.customId === "steam-games" ||
                     i.customId === "prev_page" ||
                     i.customId === "next_page",
-                time: 15000
+                time: 15000,
             });
 
             let embeds = [this.profileEmbed(userProfile)];
@@ -111,7 +111,7 @@ export class SteamCommand extends Command {
                 if (message.author.id !== i.user.id) {
                     i.reply({
                         content: "This command was not executed by you",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                     return;
                 }
@@ -122,7 +122,7 @@ export class SteamCommand extends Command {
 
                             embeds = [this.profileEmbed(userProfile)];
                             await message.edit({
-                                components: [row]
+                                components: [row],
                             });
                             break;
                         }
@@ -138,7 +138,7 @@ export class SteamCommand extends Command {
                                         .embed()
                                         .setAuthor({
                                             name: `${game.name} - App ID: ${game.appID}`,
-                                            iconURL: game.iconURL
+                                            iconURL: game.iconURL,
                                         })
                                         .setDescription(
                                             `**Play time**\n\`Last 2 Weeks\`: ${
@@ -151,7 +151,7 @@ export class SteamCommand extends Command {
                                                               )
                                                               .asHours()
                                                       )} Hours`
-                                                    : `${game.playTime2} Mintues`
+                                                    : `${game.playTime2} Minutes`
                                             }\n\`Total\`: ${
                                                 game.playTime > 60 &&
                                                 game.playTime !== 0
@@ -163,13 +163,13 @@ export class SteamCommand extends Command {
                                                               )
                                                               .asHours()
                                                       )} Hours`
-                                                    : `${game.playTime} Mintues`
+                                                    : `${game.playTime} Minutes`
                                             }`
                                         )
                                         .setThumbnail(game.iconURL)
                                 );
                             await message.edit({
-                                components: [row, navRow]
+                                components: [row, navRow],
                             });
                             break;
                         }
@@ -187,7 +187,7 @@ export class SteamCommand extends Command {
                     console.trace(err);
                     await i.reply({
                         content: `\`\`\`xl\n${err}\`\`\``,
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 }
                 collector.resetTimer();
@@ -203,7 +203,7 @@ export class SteamCommand extends Command {
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
             games: { steam },
-            util
+            util,
         } = this.container;
 
         const { options } = interaction;
@@ -257,7 +257,7 @@ export class SteamCommand extends Command {
             const message = await interaction.reply({
                 embeds: [],
                 components: [row],
-                fetchReply: true
+                fetchReply: true,
             });
 
             const collector = message.createMessageComponentCollector({
@@ -267,7 +267,7 @@ export class SteamCommand extends Command {
                     i.customId === "steam-games" ||
                     i.customId === "prev_page" ||
                     i.customId === "next_page",
-                time: 15000
+                time: 15000,
             });
 
             let embeds = [this.profileEmbed(userProfile)];
@@ -276,7 +276,7 @@ export class SteamCommand extends Command {
                 if (interaction.user.id !== i.user.id) {
                     i.reply({
                         content: "This command was not executed by you",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                     return;
                 }
@@ -287,7 +287,7 @@ export class SteamCommand extends Command {
 
                             embeds = [this.profileEmbed(userProfile)];
                             await interaction.editReply({
-                                components: [row]
+                                components: [row],
                             });
                             break;
                         }
@@ -303,7 +303,7 @@ export class SteamCommand extends Command {
                                         .embed()
                                         .setAuthor({
                                             name: `${game.name} - App ID: ${game.appID}`,
-                                            iconURL: game.iconURL
+                                            iconURL: game.iconURL,
                                         })
                                         .setDescription(
                                             `**Play time**\n\`Last 2 Weeks\`: ${
@@ -316,7 +316,7 @@ export class SteamCommand extends Command {
                                                               )
                                                               .asHours()
                                                       )} Hours`
-                                                    : `${game.playTime2} Mintues`
+                                                    : `${game.playTime2} Minutes`
                                             }\n\`Total\`: ${
                                                 game.playTime > 60 &&
                                                 game.playTime !== 0
@@ -328,13 +328,13 @@ export class SteamCommand extends Command {
                                                               )
                                                               .asHours()
                                                       )} Hours`
-                                                    : `${game.playTime} Mintues`
+                                                    : `${game.playTime} Minutes`
                                             }`
                                         )
                                         .setThumbnail(game.iconURL)
                                 );
                             await interaction.editReply({
-                                components: [row, navRow]
+                                components: [row, navRow],
                             });
                             break;
                         }
@@ -352,7 +352,7 @@ export class SteamCommand extends Command {
                     console.trace(err);
                     await i.reply({
                         content: `\`\`\`xl\n${err}\`\`\``,
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 }
                 collector.resetTimer();
@@ -360,7 +360,7 @@ export class SteamCommand extends Command {
         } catch {
             await interaction.reply({
                 content: "Steam user not found",
-                ephemeral: true
+                ephemeral: true,
             });
         }
     }
@@ -386,13 +386,13 @@ export class SteamCommand extends Command {
 
     private fetchUser = async (id: string) => {
         const {
-            games: { steam }
+            games: { steam },
         } = this.container;
 
         return {
             ...(await steam.getUserSummary(id)),
             ...(await steam.getUserBans(id)),
-            ...(await steam.getUserBadges(id))
+            ...(await steam.getUserBadges(id)),
         };
     };
 
@@ -404,7 +404,7 @@ export class SteamCommand extends Command {
             .setAuthor({
                 name: `${userProfile.nickname} Steam Profile`,
                 iconURL: userProfile.avatar.medium,
-                url: userProfile.url
+                url: userProfile.url,
             })
             .setThumbnail(userProfile.avatar.large);
 
@@ -418,17 +418,17 @@ export class SteamCommand extends Command {
                 .addFields(
                     {
                         name: "Created",
-                        value: `<t:${userProfile.created}:R>`
+                        value: `<t:${userProfile.created}:R>`,
                     },
                     {
                         name: "XP",
                         value: `\`Current\`: ${userProfile.playerXP}\n\`Needed\`: ${userProfile.playerNextLevelXP}`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Level",
                         value: `${userProfile.playerLevel}`,
-                        inline: true
+                        inline: true,
                     },
                     {
                         name: "Bans",
@@ -438,7 +438,7 @@ export class SteamCommand extends Command {
                             userProfile.vacBanned
                                 ? `(${userProfile.daysSinceLastBan} days ago)`
                                 : ""
-                        }\n\`Economy\`: ${userProfile.economyBan}`
+                        }\n\`Economy\`: ${userProfile.economyBan}`,
                     }
                 );
         }

@@ -120,9 +120,9 @@ export default class Util {
         }${arr.slice(-1)}`;
     }
 
-    capEachFirstLetter(str: string, seperator = " ") {
+    capEachFirstLetter(str: string, separator = " ") {
         const temp: string[] = [];
-        str.split(seperator).forEach((str) => {
+        str.split(separator).forEach((str) => {
             temp.push(this.capFirstLetter(str));
         });
 

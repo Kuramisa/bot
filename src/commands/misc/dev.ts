@@ -10,13 +10,13 @@ export class DevCommand extends Subcommand {
             subcommands: [
                 {
                     name: "report",
-                    chatInputRun: "chatInputReport"
+                    chatInputRun: "chatInputReport",
                 },
                 {
                     name: "suggest",
-                    chatInputRun: "chatInputSuggest"
-                }
-            ]
+                    chatInputRun: "chatInputSuggest",
+                },
+            ],
         });
     }
 
@@ -92,7 +92,7 @@ export class DevCommand extends Subcommand {
 
         const mInteraction = await interaction.awaitModalSubmit({
             filter: (i) => i.customId === `${reportType}-modal`,
-            time: 0
+            time: 0,
         });
 
         const { fields } = mInteraction;
@@ -108,12 +108,12 @@ export class DevCommand extends Subcommand {
 
         return mInteraction.reply({
             content: `Sent the ${reportType} Report to the Bot Developer`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 
     /**
-     * Excute Slash Subcommand (Suggest)
+     * Execute Slash Subcommand (Suggest)
      */
     async chatInputSuggest(interaction: ChatInputCommandInteraction) {
         const { devSuggestions, util } = this.container;
@@ -147,7 +147,7 @@ export class DevCommand extends Subcommand {
 
         const mInteraction = await interaction.awaitModalSubmit({
             filter: (i) => i.customId === `${suggestionType}-modal`,
-            time: 0
+            time: 0,
         });
 
         const { fields } = mInteraction;
@@ -163,7 +163,7 @@ export class DevCommand extends Subcommand {
 
         return mInteraction.reply({
             content: `Sent the ${suggestionType} Suggestion to the Bot Developer`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 }

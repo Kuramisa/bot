@@ -6,7 +6,7 @@ export class ValorantACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Valorant Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -31,16 +31,14 @@ export class ValorantACListener extends Listener {
                         );
                     });
 
-                const accts = accounts.first(25);
-
                 return interaction.respond(
-                    accts.map((account) => {
+                    accounts.first(25).map((account) => {
                         const player = account.player.acct;
                         const user = client.users.cache.get(account.memberId);
 
                         return {
                             name: `${player.game_name}#${player.tag_line} - ${user?.tag}`,
-                            value: account.memberId
+                            value: account.memberId,
                         };
                     })
                 );
@@ -75,7 +73,7 @@ export class ValorantACListener extends Listener {
 
                         return {
                             name: `${epName} - ${actName}`,
-                            value: act.uuid
+                            value: act.uuid,
                         };
                     });
 

@@ -6,8 +6,8 @@ export class TicketsCommand extends Subcommand {
         super(ctx, {
             ...opts,
             name: "tickets",
-            description: "TIcket System",
-            requiredUserPermissions: "ManageGuild"
+            description: "Ticket System",
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -61,11 +61,11 @@ export class TicketsCommand extends Subcommand {
                                 .addChoices(
                                     {
                                         name: "Open Ticket",
-                                        value: "openTicket"
+                                        value: "openTicket",
                                     },
                                     {
                                         name: "Transcripts",
-                                        value: "transcripts"
+                                        value: "transcripts",
                                     }
                                 )
                         )
@@ -99,19 +99,19 @@ export class TicketsCommand extends Subcommand {
                                         .addChoices(
                                             {
                                                 name: "Blurple",
-                                                value: "PRIMARY"
+                                                value: "PRIMARY",
                                             },
                                             {
                                                 name: "Grey",
-                                                value: "SECONDARY"
+                                                value: "SECONDARY",
                                             },
                                             {
                                                 name: "Green",
-                                                value: "SUCCESS"
+                                                value: "SUCCESS",
                                             },
                                             {
                                                 name: "Red",
-                                                value: "DANGER"
+                                                value: "DANGER",
                                             }
                                         )
                                 )
@@ -129,7 +129,7 @@ export class TicketsCommand extends Subcommand {
                                 .addStringOption((option) =>
                                     option
                                         .setName("id")
-                                        .setDescription("Button name to remvoe")
+                                        .setDescription("Button name to remove")
                                         .setAutocomplete(true)
                                         .setRequired(true)
                                 )
@@ -148,7 +148,7 @@ export class TicketsCommand extends Subcommand {
     ): Promise<any> {
         const {
             database,
-            moderation: { tickets }
+            moderation: { tickets },
         } = this.container;
 
         const { options, guild } = interaction;
@@ -188,7 +188,7 @@ export class TicketsCommand extends Subcommand {
 
                 return interaction.reply({
                     content: `Channel type was set to ${channel}`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "category": {
@@ -203,7 +203,7 @@ export class TicketsCommand extends Subcommand {
 
                 return interaction.reply({
                     content: `Ticket category set to \`${category.name}\``,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }

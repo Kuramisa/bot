@@ -7,7 +7,7 @@ export class VoiceCommand extends Subcommand {
             ...opts,
             name: "voice",
             description: "Voice utilities for members",
-            requiredUserPermissions: "MoveMembers"
+            requiredUserPermissions: "MoveMembers",
         });
     }
 
@@ -57,7 +57,7 @@ export class VoiceCommand extends Subcommand {
         if (!guild.members.me?.permissions.has("MoveMembers"))
             return interaction.reply({
                 content: "Bot missing permissions: `MOVE_MEMBERS`",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const currentVC = member.voice.channel;
@@ -65,7 +65,7 @@ export class VoiceCommand extends Subcommand {
         if (!currentVC)
             return interaction.reply({
                 content: "You have to be in a voice channel",
-                ephemeral: true
+                ephemeral: true,
             });
 
         switch (options.getSubcommand()) {
@@ -75,15 +75,15 @@ export class VoiceCommand extends Subcommand {
 
                 if (channel.equals(currentVC))
                     return interaction.reply({
-                        content: "You cannt move members to the same channel",
-                        ephemeral: true
+                        content: "You cannot move members to the same channel",
+                        ephemeral: true,
                     });
 
                 const members = currentVC.members;
 
                 const opts = members.first(25).map((member) => ({
                     label: member.user.tag,
-                    value: member.id
+                    value: member.id,
                 }));
 
                 const row = util
@@ -100,12 +100,12 @@ export class VoiceCommand extends Subcommand {
                 await interaction.deferReply({ ephemeral: true });
 
                 const message = await interaction.editReply({
-                    components: [row]
+                    components: [row],
                 });
 
                 const awaitMembers = await message.awaitMessageComponent({
                     componentType: ComponentType.SelectMenu,
-                    filter: (i) => i.customId === "voice_member_select"
+                    filter: (i) => i.customId === "voice_member_select",
                 });
 
                 const chosenMembers = awaitMembers.values.map((id) =>
@@ -131,7 +131,7 @@ export class VoiceCommand extends Subcommand {
 
                 await interaction.editReply({
                     embeds: [embed],
-                    components: []
+                    components: [],
                 });
                 break;
             }
@@ -141,8 +141,8 @@ export class VoiceCommand extends Subcommand {
 
                 if (channel.equals(currentVC))
                     return interaction.reply({
-                        content: "You cannt move members to the same channel",
-                        ephemeral: true
+                        content: "You cannot move members to the same channel",
+                        ephemeral: true,
                     });
 
                 const members = currentVC.members;
@@ -153,7 +153,7 @@ export class VoiceCommand extends Subcommand {
 
                 return interaction.reply({
                     content: `Moved everyone to ${channel}`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }

@@ -4,7 +4,7 @@ import {
     ButtonStyle,
     ChatInputCommandInteraction,
     ComponentType,
-    Message
+    Message,
 } from "discord.js";
 import moment from "moment";
 import { User } from "node-osu";
@@ -14,7 +14,7 @@ export class OsuCommand extends Command {
         super(ctx, {
             ...opts,
             name: "osu",
-            description: "Osu! Helper"
+            description: "Osu! Helper",
         });
     }
 
@@ -45,7 +45,7 @@ export class OsuCommand extends Command {
         if (!player) return message.reply("Provide a player name");
 
         const {
-            games: { osu }
+            games: { osu },
         } = this.container;
 
         try {
@@ -58,11 +58,11 @@ export class OsuCommand extends Command {
     }
 
     /**
-     * Execute Slash Comman
+     * Execute Slash Command
      */
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
-            games: { osu }
+            games: { osu },
         } = this.container;
 
         const player = interaction.options.getString("player", true);
@@ -74,7 +74,7 @@ export class OsuCommand extends Command {
         } catch (err) {
             return interaction.reply({
                 content: `\`\`\`xl\n${err}\`\`\``,
-                ephemeral: true
+                ephemeral: true,
             });
         }
     }
@@ -88,7 +88,7 @@ export class OsuCommand extends Command {
         const embed = util
             .embed()
             .setAuthor({
-                name: `Player: ${user.name} - Level: ${Math.round(user.level)}`
+                name: `Player: ${user.name} - Level: ${Math.round(user.level)}`,
             })
             .setDescription(
                 `\`Accuracy\`: ${
@@ -103,17 +103,17 @@ export class OsuCommand extends Command {
                 {
                     name: "Ranks",
                     value: `*Global*: ${user.pp.rank}\n*Country Rank*: ${user.pp.countryRank}`,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: "Plays",
                     value: `*SS*: ${user.counts.SS}\n*S*: ${user.counts.S}\n*A*: ${user.counts.A}`,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: "Hits",
                     value: `*300*: ${user.counts["300"]}\n*100*: ${user.counts["100"]}\n*50*: ${user.counts["50"]}`,
-                    inline: true
+                    inline: true,
                 }
             );
 
@@ -130,12 +130,12 @@ export class OsuCommand extends Command {
         const message = await interaction.reply({
             embeds: [embed],
             components: [row],
-            fetchReply: true
+            fetchReply: true,
         });
 
         const collector = message.createMessageComponentCollector({
             componentType: ComponentType.Button,
-            filter: (i) => i.customId === "best-user-beatmaps"
+            filter: (i) => i.customId === "best-user-beatmaps",
         });
 
         collector.on("collect", async (i: ButtonInteraction<"cached">) => {
@@ -143,7 +143,7 @@ export class OsuCommand extends Command {
                 switch (i.customId) {
                     case "best-user-beatmaps": {
                         const userBest = await games.osu.getUserBest({
-                            u: user.name
+                            u: user.name,
                         });
 
                         const scores = userBest
@@ -180,7 +180,7 @@ export class OsuCommand extends Command {
             } catch (err) {
                 await i.reply({
                     content: `\`\`\`xl\n${err}\`\`\``,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             collector.resetTimer();

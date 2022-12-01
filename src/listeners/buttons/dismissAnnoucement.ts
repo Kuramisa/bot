@@ -1,12 +1,12 @@
 import { Listener } from "@sapphire/framework";
 import { ButtonInteraction, Message } from "discord.js";
 
-export class DismissAnnoucementListener extends Listener {
+export class DismissAnnouncementListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
         super(ctx, {
             ...opts,
             name: "Button for Dismissing the announcement",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 

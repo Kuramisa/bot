@@ -41,7 +41,7 @@ export class ClearCommand extends Command {
 
         if (!guild.members.me?.permissions.has("ManageMessages"))
             return interaction.reply({
-                content: "Bot missing permissiosns `ManageMessages`",
+                content: "Bot missing permissions `ManageMessages`",
                 ephemeral: true,
             });
 

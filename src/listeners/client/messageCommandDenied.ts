@@ -1,15 +1,15 @@
 import {
     Listener,
     MessageCommandDeniedPayload,
-    UserError
+    UserError,
 } from "@sapphire/framework";
 
 export class MessageCommandListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {
         super(ctx, {
             ...opts,
-            name: "Mesage Command Denied",
-            event: "messageCommandDenied"
+            name: "Message Command Denied",
+            event: "messageCommandDenied",
         });
     }
 

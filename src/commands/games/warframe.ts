@@ -9,7 +9,7 @@ import {
 import moment from "moment";
 import { Platform } from "warframe-market/lib/typings";
 
-export class WarframCommand extends Subcommand {
+export class WarframeCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
         super(ctx, {
             ...opts,

@@ -114,7 +114,7 @@ export class PremiumInfoCommand extends Command {
             .embed()
             .setTitle(`${client.user?.username} - Premium Information`)
             .setDescription(
-                "Premium comes with more commands, more perks, beta testing for the bot and many other features that you can have a previe of"
+                "Premium comes with more commands, more perks, beta testing for the bot and many other features that you can have a preview of"
             );
 
         const commands = util
@@ -208,7 +208,7 @@ export class PremiumInfoCommand extends Command {
                         name: `${client.user?.username} - Premium Information`,
                     })
                     .setDescription(
-                        "Premium comes with more commands, more perks, beta testing for the bot and many other features that you can have a previe of"
+                        "Premium comes with more commands, more perks, beta testing for the bot and many other features that you can have a preview of"
                     );
 
                 const commands = util
