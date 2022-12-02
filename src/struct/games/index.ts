@@ -12,14 +12,13 @@ import { TextInputStyle } from "discord.js";
 const { OSU_API, STEAM_API } = process.env;
 
 export default class Games {
-    private readonly container: Container;
-
     readonly shinobi: ShinobiGame;
     readonly osu: OsuApi;
     readonly minecraft: Minecraft;
     readonly steam: SteamAPI;
     readonly warframe: Warframe;
     readonly valorant: Valorant;
+    private readonly container: Container;
 
     constructor(container: Container) {
         this.container = container;
@@ -27,7 +26,7 @@ export default class Games {
         this.shinobi = new ShinobiGame(this.container);
         this.osu = new OsuApi(OSU_API as string, {
             completeScores: true,
-            parseNumeric: true
+            parseNumeric: true,
         });
         this.minecraft = new Minecraft(this.container);
         this.steam = new SteamAPI(STEAM_API as string);
@@ -36,7 +35,7 @@ export default class Games {
     }
 
     getChannelModals(game: string) {
-        const { util } = this.container;
+        const {util} = this.container;
 
         const modal = util
             .modal()
