@@ -14,7 +14,13 @@ export class ReadyListener extends Listener {
 
     async run() {
         const { container } = this;
-        const { client, database, games, logger } = container;
+        const {
+            client,
+            database,
+            systems: { bmc },
+            games,
+            logger,
+        } = container;
 
         logger.info(`Ready! Logged in as ${client.user?.tag}`);
 
@@ -41,9 +47,10 @@ export class ReadyListener extends Listener {
         database.guilds.verifyAll();
         database.users.verifyAll();
 
-        await games.shinobi.players.init();
+        await bmc.premium.checkServers();
+        await bmc.premium.checkUsers();
 
-        container.staff = await Staff.find();
+        await games.shinobi.players.init();
 
         const activities: PresenceData[] = [
             {
@@ -75,5 +82,10 @@ export class ReadyListener extends Listener {
                 activities[Math.floor(Math.random() * activities.length)]
             );
         }, 60000);
+
+        setInterval(() => {
+            bmc.premium.checkServers();
+            bmc.premium.checkUsers();
+        }, 300000);
     }
 }

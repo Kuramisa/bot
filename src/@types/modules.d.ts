@@ -7,3 +7,4 @@ declare module "crafatar";
 declare module "image-moderation";
 declare module "discord.js-akinator";
 declare module "either-wyr";
+declare module "buymeacoffee.js";

@@ -195,7 +195,7 @@ export class PremiumInfoCommand extends Command {
         const {
             client,
             database,
-            systems: { patreon },
+            systems: { bmc },
             owners,
             util,
         } = this.container;
@@ -224,7 +224,7 @@ export class PremiumInfoCommand extends Command {
                         name: `${client.user?.username} - Premium Prices`,
                     })
                     .setDescription(
-                        "**Per Server**: *$9.99* ***Recommended***\n**Per User**: *$4.99*\n\n***These prices may change in the future, there will be a notice to all premium users if that happens***"
+                        "**Per Server**: *$10* ***Recommended***\n**Per User**: *$5*\n\n***These prices may change in the future, there will be a notice to all premium users if that happens***"
                     );
 
                 const row = util
@@ -296,15 +296,21 @@ export class PremiumInfoCommand extends Command {
                         ephemeral: true,
                     });
 
-                await patreon.premium.checkServers();
-                await patreon.premium.checkUsers();
+                await bmc.premium.checkServers();
+                await bmc.premium.checkUsers();
 
                 return interaction.reply({
-                    content: "Patreon Subscriptions refreshed",
+                    content: "Subscriptions refreshed",
                     ephemeral: true,
                 });
             }
             case "guild": {
+                if (!owners.includes(user.id))
+                    return interaction.reply({
+                        content: "This command is owner only",
+                        ephemeral: true,
+                    });
+
                 const guild = await client.guilds.fetch(
                     options.getString("server", true)
                 );
@@ -346,6 +352,12 @@ export class PremiumInfoCommand extends Command {
                 break;
             }
             case "user": {
+                if (!owners.includes(user.id))
+                    return interaction.reply({
+                        content: "This command is owner only",
+                        ephemeral: true,
+                    });
+
                 const user = await client.users.fetch(
                     options.getString("user", true)
                 );
