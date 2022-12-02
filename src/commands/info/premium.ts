@@ -191,7 +191,7 @@ export class PremiumInfoCommand extends Command {
     }
 
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
-        const { options, user } = interaction;
+        const { options, user: executor } = interaction;
         const {
             client,
             database,
@@ -290,7 +290,7 @@ export class PremiumInfoCommand extends Command {
                 break;
             }
             case "refresh": {
-                if (!owners.includes(user.id))
+                if (!owners.includes(executor.id))
                     return interaction.reply({
                         content: "This command is owner only",
                         ephemeral: true,
@@ -305,7 +305,7 @@ export class PremiumInfoCommand extends Command {
                 });
             }
             case "guild": {
-                if (!owners.includes(user.id))
+                if (!owners.includes(executor.id))
                     return interaction.reply({
                         content: "This command is owner only",
                         ephemeral: true,
@@ -352,7 +352,7 @@ export class PremiumInfoCommand extends Command {
                 break;
             }
             case "user": {
-                if (!owners.includes(user.id))
+                if (!owners.includes(executor.id))
                     return interaction.reply({
                         content: "This command is owner only",
                         ephemeral: true,
