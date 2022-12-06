@@ -6,7 +6,7 @@ export class MemberRoleAddLogListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Log when member receives a role",
-            event: "guildMemberRoleAdd"
+            event: "guildMemberRoleAdd",
         });
     }
 
@@ -22,14 +22,14 @@ export class MemberRoleAddLogListener extends Listener {
         const channel = guild.channels.cache.get(db.logs.channel);
         if (!channel || !channel.isTextBased()) return;
 
-        if (guild.members.me?.permissionsIn(channel).has("SendMessages"))
+        if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
             return;
 
         const embed = util
             .embed()
             .setAuthor({
                 name: `${guild.name} Member Logs`,
-                iconURL: guild.iconURL() as string
+                iconURL: guild.iconURL() as string,
             })
             .setThumbnail(member.displayAvatarURL())
             .setDescription(`${role} *was added to* ${member}`);

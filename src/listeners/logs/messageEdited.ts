@@ -6,13 +6,13 @@ export class MessageEditedLogListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Logs when a message is edited",
-            event: "messageUpdate"
+            event: "messageUpdate",
         });
     }
 
     async run(oldMessage: Message, newMessage: Message) {
         if (!newMessage.inGuild()) return;
-        if (!oldMessage.author || !newMessage.author) return;
+        if (!newMessage.author) return;
         if (newMessage.author.bot) return;
         if (oldMessage.content === newMessage.content) return;
 
@@ -26,14 +26,14 @@ export class MessageEditedLogListener extends Listener {
         const channel = guild.channels.cache.get(db.logs.channel);
         if (!channel || !channel.isTextBased()) return;
 
-        if (guild.members.me?.permissionsIn(channel).has("SendMessages"))
+        if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
             return;
 
         const embed = util
             .embed()
             .setAuthor({
                 name: `${guild.name} Message Logs`,
-                iconURL: guild.iconURL() as string
+                iconURL: guild.iconURL() as string,
             })
             .setThumbnail(
                 newMessage.author.avatarURL({ extension: "gif" }) as string

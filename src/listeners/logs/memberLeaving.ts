@@ -6,7 +6,7 @@ export class MemberLeaveLogListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Logging for member leaving",
-            event: "guildMemberRemove"
+            event: "guildMemberRemove",
         });
     }
 
@@ -22,14 +22,14 @@ export class MemberLeaveLogListener extends Listener {
         const channel = guild.channels.cache.get(db.logs.channel);
         if (!channel || !channel.isTextBased()) return;
 
-        if (guild.members.me?.permissionsIn(channel).has("SendMessages"))
+        if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
             return;
 
         const embed = util
             .embed()
             .setAuthor({
                 name: `${guild.name} Member Logs`,
-                iconURL: guild.iconURL() as string
+                iconURL: guild.iconURL() as string,
             })
             .setThumbnail(member.displayAvatarURL())
             .setDescription(`${member} **Left**`)
@@ -39,14 +39,14 @@ export class MemberLeaveLogListener extends Listener {
                     value: `<t:${Math.floor(
                         (member.joinedTimestamp as number) / 1000
                     )}:R>`,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: "Joined Discord",
                     value: `<t:${Math.floor(
                         (member.user.createdTimestamp as number) / 1000
                     )}:R>`,
-                    inline: true
+                    inline: true,
                 }
             )
             .setFooter({ text: `ID: ${member.id}` });

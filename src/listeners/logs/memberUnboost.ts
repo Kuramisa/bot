@@ -6,7 +6,7 @@ export class MemberUnboostLogListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Logs when member unboosts a server",
-            event: "guildMemberUnboost"
+            event: "guildMemberUnboost",
         });
     }
 
@@ -22,14 +22,14 @@ export class MemberUnboostLogListener extends Listener {
         const channel = guild.channels.cache.get(db.logs.channel);
         if (!channel || !channel.isTextBased()) return;
 
-        if (guild.members.me?.permissionsIn(channel).has("SendMessages"))
+        if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
             return;
 
         const embed = util
             .embed()
             .setAuthor({
                 name: `${guild.name} Member Logs`,
-                iconURL: guild.iconURL() as string
+                iconURL: guild.iconURL() as string,
             })
             .setThumbnail(member.displayAvatarURL())
             .setDescription(`${member} *Removed the boost from the server*`);
