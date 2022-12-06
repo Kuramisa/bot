@@ -1,5 +1,5 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { ChatInputCommandInteraction } from "discord.js";
+import { ButtonStyle, ChatInputCommandInteraction } from "discord.js";
 
 export class TicketsCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -91,7 +91,7 @@ export class TicketsCommand extends Subcommand {
                                         .setDescription("Text for the button")
                                         .setRequired(true)
                                 )
-                                .addStringOption((option) =>
+                                .addNumberOption((option) =>
                                     option
                                         .setName("style")
                                         .setDescription("Style for the button")
@@ -99,19 +99,19 @@ export class TicketsCommand extends Subcommand {
                                         .addChoices(
                                             {
                                                 name: "Blurple",
-                                                value: "PRIMARY",
+                                                value: ButtonStyle.Primary,
                                             },
                                             {
                                                 name: "Grey",
-                                                value: "SECONDARY",
+                                                value: ButtonStyle.Secondary,
                                             },
                                             {
                                                 name: "Green",
-                                                value: "SUCCESS",
+                                                value: ButtonStyle.Success,
                                             },
                                             {
                                                 name: "Red",
-                                                value: "DANGER",
+                                                value: ButtonStyle.Danger,
                                             }
                                         )
                                 )
