@@ -1,4 +1,4 @@
-import { Document, model, Schema, HydratedDocument, Types } from "mongoose";
+import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
 
 export interface IItem extends HydratedDocument<any> {
     id: string;
@@ -7,27 +7,29 @@ export interface IItem extends HydratedDocument<any> {
     usage: string;
     price?: number;
     amount?: number;
+    emoji?: string;
 }
 
 export const Item: Schema = new Schema<IItem>({
     id: {
         type: String,
-        required: true
+        required: true,
     },
     name: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
-        required: true
+        required: true,
     },
     usage: {
         type: String,
-        required: true
+        required: true,
     },
     price: Number,
-    amount: Number
+    amount: Number,
+    emoji: String,
 });
 
 export type TItem = Document<unknown, any, IItem> &

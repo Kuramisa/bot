@@ -8,7 +8,7 @@ export class MarryCommand extends Command {
             ...opts,
             name: "item",
             description: "Item System",
-            preconditions: ["OwnerOnly"]
+            preconditions: ["OwnerOnly"],
         });
     }
 
@@ -48,6 +48,12 @@ export class MarryCommand extends Command {
                                 )
                                 .setRequired(false)
                         )
+                        .addStringOption((option) =>
+                            option
+                                .setName("item_emoji")
+                                .setDescription("Emoji for an item")
+                                .setRequired(false)
+                        )
                 )
                 .addSubcommand((command) =>
                     command
@@ -76,13 +82,15 @@ export class MarryCommand extends Command {
                 const description = options.getString("item_description", true);
                 const usage = options.getString("item_usage", true);
                 const price = options.getNumber("item_price");
+                const emoji = options.getString("item_emoji");
 
                 await Item.create({
                     id,
                     name,
                     description,
                     usage,
-                    price
+                    price,
+                    emoji,
                 });
 
                 const embed = util
@@ -94,13 +102,18 @@ export class MarryCommand extends Command {
                         {
                             name: "Description",
                             value: description,
-                            inline: true
+                            inline: true,
                         },
                         { name: "Usage", value: usage, inline: true },
                         {
                             name: "Price",
                             value: price ? `${price}` : "None",
-                            inline: true
+                            inline: true,
+                        },
+                        {
+                            name: "Emoji",
+                            value: emoji ? `${emoji}` : "None",
+                            inline: true,
                         }
                     );
 
@@ -113,7 +126,7 @@ export class MarryCommand extends Command {
 
                 return interaction.reply({
                     content: `Removed item **${name.split(":")[0]}**`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }

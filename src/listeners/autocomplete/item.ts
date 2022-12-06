@@ -7,7 +7,7 @@ export class HelpACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Item Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -27,8 +27,8 @@ export class HelpACListener extends Listener {
 
         return interaction.respond(
             items.map((item) => ({
-                name: item.name,
-                value: `${item.name}:${item.id}`
+                name: `${item.name} - ${item.description}`,
+                value: `${item.name}:${item.id}`,
             }))
         );
     }

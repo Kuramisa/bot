@@ -29,11 +29,11 @@ export class HelpACListener extends Listener {
 
         if (focused.value.length > 0) {
             userItems = userItems.filter((item) =>
-                item.name.includes(focused.value)
+                item.name.startsWith(focused.value)
             );
 
             dbItems = dbItems.filter((item) =>
-                item.name.includes(focused.value)
+                item.name.startsWith(focused.value)
             );
         }
 
@@ -63,7 +63,7 @@ export class HelpACListener extends Listener {
             case "discardable_item": {
                 return interaction.respond(
                     userItems.map((item) => ({
-                        name: item.name,
+                        name: `${item.name}`,
                         value: item.id,
                     }))
                 );
