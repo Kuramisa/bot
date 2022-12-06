@@ -89,7 +89,9 @@ export class AutoRoleCommand extends Command {
                         ephemeral: true,
                     });
 
-                db.autoroles = db.autoroles.filter((role) => roleId !== role);
+                db.autoroles = db.autoroles.filter(
+                    (role: string) => roleId !== role
+                );
                 await db.save();
 
                 return interaction.reply({
