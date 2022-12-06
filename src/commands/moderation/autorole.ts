@@ -83,13 +83,13 @@ export class AutoRoleCommand extends Command {
                         ephemeral: true,
                     });
 
-                if (!db.autoroles.includes(roleId))
+                if (!db.autorole.includes(roleId))
                     return interaction.reply({
                         content: "Role does not exist in the database",
                         ephemeral: true,
                     });
 
-                db.autoroles = db.autoroles.filter(
+                db.autorole = db.autorole.filter(
                     (role: string) => roleId !== role
                 );
                 await db.save();
