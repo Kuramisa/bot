@@ -4,7 +4,6 @@ import {
     ActionRowBuilder,
     ActivityType,
     ButtonStyle,
-    EmbedBuilder,
     GuildMember,
     Presence,
 } from "discord.js";
@@ -82,13 +81,8 @@ export default class UtilMember {
         return mapped.find((u) => u.id === user.id)?.rank;
     }
 
-    async info(
-        executor: GuildMember,
-        member: GuildMember
-    ): Promise<{ embeds: EmbedBuilder[]; components: ActionRowBuilder[] }> {
-        const avatar = member.user.displayAvatarURL({
-            extension: "gif",
-        });
+    async info(executor: GuildMember, member: GuildMember) {
+        const avatar = member.displayAvatarURL();
         const activities: string[] = [];
         const status = {
             emoji: ":white_circle:",
