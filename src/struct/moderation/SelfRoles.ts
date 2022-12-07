@@ -469,6 +469,11 @@ export default class SelfRoles {
 
         const allButtons = msg.components.flatMap((row) => row.components);
 
+        if (allButtons.length < 1)
+            return interaction.editReply({
+                content: "There are no buttons to remove!",
+            });
+
         const buttonOptions = allButtons.map((button: any) => ({
             label: button.label,
             value: button.customId,
