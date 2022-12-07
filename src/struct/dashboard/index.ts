@@ -7,8 +7,6 @@ import { Container } from "@sapphire/pieces";
 import express from "express";
 import helmet from "helmet";
 import http from "http";
-import https from "https";
-import fs from "fs";
 import cors from "cors";
 import bodyParser from "body-parser";
 
@@ -20,30 +18,11 @@ import typeDefs from "./gql/typeDefs";
 const app = express();
 app.use(helmet());
 
-const configurations = {
-    // Note: You may need sudo to run on port 443
-    production: { ssl: true, port: 4000, hostname: "api.kuramisa.com" },
-    development: { ssl: false, port: 4000, hostname: "localhost" },
-};
-
-const environment = process.env.NODE_ENV || "production";
-const config = configurations[environment as keyof typeof configurations];
-
-let httpServer = http.createServer(app);
-if (config.ssl) {
-    httpServer = https.createServer(
-        {
-            key: fs.readFileSync(process.cwd() + "/private.key", "utf-8"),
-            cert: fs.readFileSync(process.cwd() + "/public.cer", "utf-8"),
-            ca: fs.readFileSync(process.cwd() + "/ca.cer", "utf-8"),
-        },
-        app
-    );
-}
+const httpServer = http.createServer(app);
 
 export default class Dashboard extends ApolloServer {
-    private readonly container: Container;
     readonly auth: Auth;
+    private readonly container: Container;
 
     constructor(container: Container) {
         super({
