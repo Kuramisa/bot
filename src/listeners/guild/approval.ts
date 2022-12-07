@@ -6,7 +6,7 @@ export class ServerApprovalListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Listens to the approval button",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -27,7 +27,7 @@ export class ServerApprovalListener extends Listener {
         if (!owners.includes(member.id))
             return interaction.reply({
                 content: "Only Bot Owners can use this button",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const guild = client.guilds.cache.get(
@@ -37,7 +37,7 @@ export class ServerApprovalListener extends Listener {
         if (!guild)
             return interaction.reply({
                 content: "Guild not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const db = await database.guilds.get(guild);

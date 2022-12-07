@@ -3,7 +3,7 @@ import {
     ButtonStyle,
     ChannelType,
     ChatInputCommandInteraction,
-    ComponentType
+    ComponentType,
 } from "discord.js";
 
 export class GameCommand extends Command {
@@ -14,7 +14,7 @@ export class GameCommand extends Command {
             description: "Setup Game channels, join to create or more",
             requiredClientPermissions: "ManageChannels",
             requiredUserPermissions: "ManageChannels",
-            preconditions: ["PremiumOnly"]
+            preconditions: ["PremiumOnly"],
         });
     }
 
@@ -148,7 +148,7 @@ export class GameCommand extends Command {
         if (!db.games.list.map((list) => list.toLowerCase()).includes(forObj))
             return interaction.reply({
                 content: "Game is not supported currently",
-                ephemeral: true
+                ephemeral: true,
             });
 
         switch (options.getSubcommand()) {
@@ -159,7 +159,7 @@ export class GameCommand extends Command {
                 )
                     return interaction.reply({
                         content: `You already have set up ${gameToUse}. To reset it use </game reset:1035351423631773726>\n**ONLY USE IF NEEDED SINCE IT RESETS SETTINGS IN THE DATABASE AND NOT ON YOUR SERVER**`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 db.games.settings[forObj] = {
@@ -168,20 +168,20 @@ export class GameCommand extends Command {
                     types: ["unranked", "competitive", "custom"],
                     jtc: {
                         enabled: jtc,
-                        channel: null
-                    }
+                        channel: null,
+                    },
                 };
 
                 const embed = util.embed().setTitle(`Setting up ${gameToUse}`);
 
                 const message = await interaction.reply({
                     embeds: [embed],
-                    fetchReply: true
+                    fetchReply: true,
                 });
 
                 const category = await guild.channels.create({
                     name: gameToUse,
-                    type: ChannelType.GuildCategory
+                    type: ChannelType.GuildCategory,
                 });
 
                 db.games.settings[forObj].category = category.id;
@@ -193,7 +193,7 @@ export class GameCommand extends Command {
                 const textChannel = await guild.channels.create({
                     name: `${gameToUse}-chat`,
                     parent: category,
-                    type: ChannelType.GuildText
+                    type: ChannelType.GuildText,
                 });
 
                 db.games.settings[forObj].channels.chat = textChannel.id;
@@ -228,7 +228,7 @@ export class GameCommand extends Command {
 
                 await message.edit({
                     embeds: [differentEmbed],
-                    components: [row]
+                    components: [row],
                 });
 
                 const buttonClick = await message.awaitMessageComponent({
@@ -236,14 +236,14 @@ export class GameCommand extends Command {
                     filter: (i) =>
                         (i.customId === "predefined_channels" ||
                             i.customId === "jtc_channel") &&
-                        i.user.id === interaction.user.id
+                        i.user.id === interaction.user.id,
                 });
 
                 if (buttonClick.customId === "jtc_channel") {
                     const jtcChannel = await guild.channels.create({
                         name: "Join to Create",
                         type: ChannelType.GuildVoice,
-                        parent: category
+                        parent: category,
                     });
 
                     db.games.settings[forObj].jtc.enabled = true;
@@ -267,7 +267,7 @@ export class GameCommand extends Command {
 
                     const mInteraction = await buttonClick.awaitModalSubmit({
                         filter: (i) => i.customId === "channel_amounts",
-                        time: 0
+                        time: 0,
                     });
 
                     let fields = mInteraction.fields as any;
@@ -279,13 +279,13 @@ export class GameCommand extends Command {
                     )
                         return mInteraction.reply({
                             content: "Please provide numbers for the channels",
-                            ephemeral: true
+                            ephemeral: true,
                         });
 
                     if (fields.some((field: any) => parseInt(field.value) > 5))
                         return mInteraction.reply({
                             content: "Maximum number of channels is 5",
-                            ephemeral: true
+                            ephemeral: true,
                         });
 
                     embed.setDescription(
@@ -304,7 +304,7 @@ export class GameCommand extends Command {
                                     channelName
                                 )} #${j}`,
                                 parent: category,
-                                type: ChannelType.GuildVoice
+                                type: ChannelType.GuildVoice,
                             });
 
                             db.games.settings[forObj].channels[
@@ -320,7 +320,7 @@ export class GameCommand extends Command {
                                 await message.edit({ embeds: [embed] });
                             else
                                 await mInteraction.editReply({
-                                    embeds: [embed]
+                                    embeds: [embed],
                                 });
                         }
 
@@ -332,7 +332,7 @@ export class GameCommand extends Command {
                     if (message) await message.edit({ embeds: [embed] });
                     else
                         await mInteraction.editReply({
-                            embeds: [embed]
+                            embeds: [embed],
                         });
 
                     db.markModified("games");
@@ -345,7 +345,7 @@ export class GameCommand extends Command {
                 if (!gameSettings.category)
                     return interaction.reply({
                         content: `${gameToUse} is not setup with this bot or for the server yet`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const category = guild.channels.cache.get(
@@ -355,7 +355,7 @@ export class GameCommand extends Command {
                 if (!category)
                     return interaction.reply({
                         content: `${gameToUse} Category not found on the server`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 await interaction.deferReply({ ephemeral: true });
@@ -377,12 +377,12 @@ export class GameCommand extends Command {
                     types: [],
                     jtc: {
                         enabled: false,
-                        channel: null
-                    }
+                        channel: null,
+                    },
                 };
 
                 await interaction.editReply({
-                    content: `Deleted **${gameToUse}** from your server`
+                    content: `Deleted **${gameToUse}** from your server`,
                 });
 
                 db.markModified("games");
@@ -396,13 +396,13 @@ export class GameCommand extends Command {
                     types: [],
                     jtc: {
                         enabled: false,
-                        channel: null
-                    }
+                        channel: null,
+                    },
                 };
 
                 await interaction.reply({
                     content: `**${gameToUse}** Database was reset`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
                 db.markModified("games");
@@ -421,14 +421,14 @@ export class GameCommand extends Command {
                         )
                             return interaction.reply({
                                 content: `${gameToUse} is not setup with this bot or for the server yet`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         if (db.games.settings[forObj].types.length === 5)
                             return interaction.reply({
                                 content:
                                     "You already hit the maximum types of 5",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         let jtcType = options
@@ -440,7 +440,7 @@ export class GameCommand extends Command {
                         if (db.games.settings[forObj].types.includes(jtcType))
                             return interaction.reply({
                                 content: `**${jtcType}** already exists`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.games.settings[forObj].types.push(jtcType);
@@ -452,7 +452,7 @@ export class GameCommand extends Command {
                             content: `Added **${util.capFirstLetter(
                                 jtcType
                             )}** as a new Join to Create Channel type`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                         return;
                     }
@@ -463,7 +463,7 @@ export class GameCommand extends Command {
                         )
                             return interaction.reply({
                                 content: `${gameToUse} is not setup with this bot or for the server yet`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         let typeToRemove = options
@@ -480,7 +480,7 @@ export class GameCommand extends Command {
                         )
                             return interaction.reply({
                                 content: `**${typeToRemove}** doesn't exist`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.games.settings[forObj].types = db.games.settings[
@@ -494,7 +494,7 @@ export class GameCommand extends Command {
                             content: `Removed **${util.capFirstLetter(
                                 typeToRemove
                             )}** from Join to Create Channel types`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                         return;
                     }
@@ -505,7 +505,7 @@ export class GameCommand extends Command {
                         )
                             return interaction.reply({
                                 content: `${gameToUse} is not setup with this bot or for the server yet`,
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         db.games.settings[forObj].types = [];
@@ -514,7 +514,7 @@ export class GameCommand extends Command {
                         await db.save();
                         await interaction.reply({
                             content: `${gameToUse} JTC types was reset`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                         return;
                     }

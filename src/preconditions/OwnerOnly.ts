@@ -2,14 +2,14 @@ import { Piece, Precondition } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
     ContextMenuCommandInteraction,
-    Message
+    Message,
 } from "discord.js";
 
 export class OwnerOnlyPrecondition extends Precondition {
     constructor(ctx: Piece.Context, opts: Precondition.Options) {
         super(ctx, {
             ...opts,
-            name: "OwnerOnly"
+            name: "OwnerOnly",
         });
     }
 
@@ -26,6 +26,6 @@ export class OwnerOnlyPrecondition extends Precondition {
         this.container.owners.includes(userId)
             ? this.ok()
             : this.error({
-                  message: "Only the bot owners can use this command"
+                  message: "Only the bot owners can use this command",
               });
 }

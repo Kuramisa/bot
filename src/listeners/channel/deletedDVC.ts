@@ -6,7 +6,7 @@ export class DeletedDVCListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Remove channel from database",
-            event: "channelDelete"
+            event: "channelDelete",
         });
     }
 

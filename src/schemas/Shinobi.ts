@@ -24,51 +24,51 @@ export const Shinobi: Schema = new Schema<IShinobi>({
     memberId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     username: {
         type: String,
-        required: true
+        required: true,
     },
     clan: {
         type: String,
-        required: true
+        required: true,
     },
     village: {
         type: String,
-        required: true
+        required: true,
     },
     rank: {
         type: String,
-        default: "genin"
+        default: "genin",
     },
     xp: {
         type: Number,
-        default: 0
+        default: 0,
     },
     level: {
         type: Number,
-        default: 0
+        default: 0,
     },
     currencies: {
         ryo: {
             type: Number,
-            default: 0
-        }
+            default: 0,
+        },
     },
     stats: {},
     weapons: [],
     equipped: {
-        weapon: {}
+        weapon: {},
     },
     cooldowns: {
         daily: {
-            type: Number
+            type: Number,
         },
         weekly: {
-            type: Number
-        }
-    }
+            type: Number,
+        },
+    },
 });
 
 export type TShinobi = Document<unknown, any, IShinobi> &

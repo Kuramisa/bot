@@ -3,7 +3,7 @@ import {
     ButtonStyle,
     ChatInputCommandInteraction,
     ComponentType,
-    Message
+    Message,
 } from "discord.js";
 import WYR from "either-wyr";
 
@@ -13,7 +13,7 @@ export class EitherCommand extends Command {
             ...opts,
             name: "either",
             description: "Would you rather?",
-            aliases: ["wouldyourather", "wyr"]
+            aliases: ["wouldyourather", "wyr"],
         });
     }
 
@@ -31,7 +31,7 @@ export class EitherCommand extends Command {
         const message = await interaction.reply({
             embeds: [wyr.embed],
             components: [wyr.row],
-            fetchReply: true
+            fetchReply: true,
         });
 
         const collector = message.createMessageComponentCollector({
@@ -41,7 +41,7 @@ export class EitherCommand extends Command {
                     i.customId === "question_2_btn" ||
                     i.customId === "next_question") &&
                 i.user.id === interaction.user.id,
-            time: 30000
+            time: 30000,
         });
 
         collector
@@ -70,7 +70,7 @@ export class EitherCommand extends Command {
                             `You chose ${i.component.label}`
                         );
 
-                        await i.update({embeds: [embed], components: [row]});
+                        await i.update({ embeds: [embed], components: [row] });
                         break;
                     }
                     case "next_question": {
@@ -78,7 +78,7 @@ export class EitherCommand extends Command {
 
                         await i.update({
                             embeds: [wyr.embed],
-                            components: [wyr.row]
+                            components: [wyr.row],
                         });
                         break;
                     }
@@ -87,7 +87,8 @@ export class EitherCommand extends Command {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete") message.delete().catch(console.error);
+                if (reason !== "messageDelete")
+                    message.delete().catch(console.error);
             });
     }
 
@@ -98,7 +99,7 @@ export class EitherCommand extends Command {
 
         const msg = await message.reply({
             embeds: [wyr.embed],
-            components: [wyr.row]
+            components: [wyr.row],
         });
 
         const collector = msg.createMessageComponentCollector({
@@ -108,7 +109,7 @@ export class EitherCommand extends Command {
                     i.customId === "question_2_btn" ||
                     i.customId === "next_question") &&
                 i.user.id === message.author.id,
-            time: 30000
+            time: 30000,
         });
 
         collector
@@ -137,7 +138,7 @@ export class EitherCommand extends Command {
                             `You chose ${i.component.label}`
                         );
 
-                        await i.update({embeds: [embed], components: [row]});
+                        await i.update({ embeds: [embed], components: [row] });
                         break;
                     }
                     case "next_question": {
@@ -145,7 +146,7 @@ export class EitherCommand extends Command {
 
                         await i.update({
                             embeds: [wyr.embed],
-                            components: [wyr.row]
+                            components: [wyr.row],
                         });
                         break;
                     }
@@ -154,7 +155,8 @@ export class EitherCommand extends Command {
                 collector.resetTimer();
             })
             .on("end", (_, reason) => {
-                if (reason !== "messageDelete") msg.delete().catch(console.error);
+                if (reason !== "messageDelete")
+                    msg.delete().catch(console.error);
             });
     }
 

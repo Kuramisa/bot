@@ -6,7 +6,7 @@ export class RulesModalListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Modal actions from rules command",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -29,7 +29,7 @@ export class RulesModalListener extends Listener {
         if (!channel)
             return interaction.reply({
                 content: "No rules channel found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!channel.isTextBased()) return;
@@ -53,7 +53,7 @@ export class RulesModalListener extends Listener {
 
                 return interaction.reply({
                     content: `Rules were created, check ${channel}`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "rules_edit": {
@@ -67,7 +67,7 @@ export class RulesModalListener extends Listener {
 
                 return interaction.reply({
                     content: `Edited current rules, check ${channel}`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }

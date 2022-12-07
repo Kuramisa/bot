@@ -6,7 +6,7 @@ export class MusicActionsModalListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Handle modals from music buttons",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -15,7 +15,7 @@ export class MusicActionsModalListener extends Listener {
         if (interaction.customId !== "add_tracks_modal") return;
 
         const {
-            systems: { music }
+            systems: { music },
         } = this.container;
 
         const { fields, guild, member } = interaction;
@@ -26,24 +26,24 @@ export class MusicActionsModalListener extends Listener {
         if (!queue)
             return interaction.reply({
                 content: "Music is not playing",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!voiceChannel)
             return interaction.reply({
                 content:
-                    "You must be in a voice channel to be able to add tracks"
+                    "You must be in a voice channel to be able to add tracks",
             });
 
         if (queue.connection.channel.id !== voiceChannel.id)
             return interaction.reply({
                 content: `I'm playing music in ${guild.members.me?.voice.channel}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const query = fields.getTextInputValue("track_query");
         const result = await music.search(query, {
-            requestedBy: interaction.user
+            requestedBy: interaction.user,
         });
 
         if (result.playlist) queue.addTracks(result.playlist.tracks);

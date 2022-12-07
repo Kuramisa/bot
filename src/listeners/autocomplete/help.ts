@@ -6,7 +6,7 @@ export class HelpACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Help Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -38,7 +38,7 @@ export class HelpACListener extends Listener {
                 return interaction.respond(
                     categories.map((cat) => ({
                         name: `${cat}`,
-                        value: cat
+                        value: cat,
                     }))
                 );
             }
@@ -54,7 +54,7 @@ export class HelpACListener extends Listener {
                 return interaction.respond(
                     cmds.map((command) => ({
                         name: `${command.name} - ${command.description}`,
-                        value: command.name
+                        value: command.name,
                     }))
                 );
             }

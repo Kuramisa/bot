@@ -13,19 +13,19 @@ export class HelpCommand extends Subcommand {
                 {
                     name: "all",
                     messageRun: "messageAll",
-                    chatInputRun: "chatInputAll"
+                    chatInputRun: "chatInputAll",
                 },
                 {
                     name: "category",
                     messageRun: "messageCategory",
-                    chatInputRun: "chatInputCategory"
+                    chatInputRun: "chatInputCategory",
                 },
                 {
                     name: "command",
                     messageRun: "messageCommand",
-                    chatInputRun: "chatInputCommand"
-                }
-            ]
+                    chatInputRun: "chatInputCommand",
+                },
+            ],
         });
     }
 
@@ -181,7 +181,7 @@ export class HelpCommand extends Subcommand {
         if (!category)
             return interaction.reply({
                 content: "Category not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const commands = category
@@ -216,12 +216,12 @@ export class HelpCommand extends Subcommand {
                 {
                     name: "Category",
                     value: `${util.capFirstLetter(command.fullCategory[0])}`,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: "Disabled",
                     value: command.enabled ? "Yes" : "No",
-                    inline: true
+                    inline: true,
                 }
             );
 
@@ -241,7 +241,7 @@ export class HelpCommand extends Subcommand {
         if (!command)
             return interaction.reply({
                 content: "Command not found",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const embed = util
@@ -251,12 +251,12 @@ export class HelpCommand extends Subcommand {
                 {
                     name: "Category",
                     value: `${util.capFirstLetter(command.fullCategory[0])}`,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: "Enabled",
                     value: command.enabled ? "Yes" : "No",
-                    inline: true
+                    inline: true,
                 }
             );
 

@@ -6,7 +6,7 @@ export default class DatabasePlaylists {
         await (
             await Playlist.create({
                 memberId: member.id,
-                name
+                name,
             })
         ).save();
 

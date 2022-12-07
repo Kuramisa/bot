@@ -6,7 +6,7 @@ export class TicketingMessageDeletedListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Removes Buttons from the db if the message was deleted",
-            event: "messageDelete"
+            event: "messageDelete",
         });
     }
 

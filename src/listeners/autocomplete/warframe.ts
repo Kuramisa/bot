@@ -6,7 +6,7 @@ export class WarframeACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Warframe Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 

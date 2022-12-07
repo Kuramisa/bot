@@ -12,8 +12,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "akimichi",
@@ -26,8 +26,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "hyuga",
@@ -40,8 +40,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "inuzuka",
@@ -54,8 +54,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "nara",
@@ -68,8 +68,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "senju",
@@ -82,8 +82,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "sarutobi",
@@ -96,8 +96,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "uzumaki",
@@ -110,8 +110,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "uchiha",
@@ -124,8 +124,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "yuki",
@@ -138,8 +138,8 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
+            kenjutsu: 0,
+        },
     },
     {
         id: "yamanaka",
@@ -152,7 +152,7 @@ export default [
             ninjutsu: 0,
             genjutsu: 0,
             taijutsu: 0,
-            kenjutsu: 0
-        }
-    }
+            kenjutsu: 0,
+        },
+    },
 ] as ShinobiClan[];

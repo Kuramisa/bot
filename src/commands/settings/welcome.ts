@@ -7,7 +7,7 @@ export class WelcomeCommand extends Subcommand {
             ...opts,
             name: "welcome",
             description: "Manage Welcome message for the server",
-            requiredUserPermissions: "ManageGuild"
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -82,7 +82,7 @@ export class WelcomeCommand extends Subcommand {
 
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
-            canvas: { welcome }
+            canvas: { welcome },
         } = this.container;
 
         switch (interaction.options.getSubcommand()) {

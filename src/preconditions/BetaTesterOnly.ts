@@ -3,14 +3,14 @@ import {
     ChatInputCommandInteraction,
     ContextMenuCommandInteraction,
     Message,
-    User
+    User,
 } from "discord.js";
 
 export class BetaTesterOnlyPrecondition extends Precondition {
     constructor(ctx: Piece.Context, opts: Precondition.Options) {
         super(ctx, {
             ...opts,
-            name: "BetaTesterOnly"
+            name: "BetaTesterOnly",
         });
     }
 
@@ -31,12 +31,12 @@ export class BetaTesterOnlyPrecondition extends Precondition {
         const db = await database.users.get(user);
         if (!db)
             return this.error({
-                message: "User not found"
+                message: "User not found",
             });
 
         if (!db.betaTester)
             return this.error({
-                message: "User not a Beta Tester"
+                message: "User not a Beta Tester",
             });
 
         return this.ok();

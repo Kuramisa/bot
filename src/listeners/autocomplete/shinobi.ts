@@ -1,7 +1,7 @@
 import { Listener } from "@sapphire/framework";
 import {
     ApplicationCommandOptionType,
-    AutocompleteInteraction
+    AutocompleteInteraction,
 } from "discord.js";
 
 export class ShinobiACListener extends Listener {
@@ -9,7 +9,7 @@ export class ShinobiACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Shinobi Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -49,7 +49,7 @@ export class ShinobiACListener extends Listener {
             await interaction.respond(
                 villages.map((village) => ({
                     name: `${village.name.en} (${village.name.jp})`,
-                    value: village.id
+                    value: village.id,
                 }))
             );
         }
@@ -65,7 +65,7 @@ export class ShinobiACListener extends Listener {
             await interaction.respond(
                 players.map((player) => ({
                     name: `${player.name} | ${player.clan?.name} | ${player.village?.name.en} - ${player.rank}`,
-                    value: player.id
+                    value: player.id,
                 }))
             );
         }
@@ -97,7 +97,7 @@ export class ShinobiACListener extends Listener {
                             await interaction.respond(
                                 weapons.map((weapon) => ({
                                     name: weapon.name,
-                                    value: weapon.id
+                                    value: weapon.id,
                                 }))
                             );
                             break;
@@ -120,7 +120,7 @@ export class ShinobiACListener extends Listener {
                             await interaction.respond(
                                 weapons.map((weapon) => ({
                                     name: `${weapon.name} - ${weapon.cost} Ryo`,
-                                    value: weapon.id
+                                    value: weapon.id,
                                 }))
                             );
                             break;
@@ -143,7 +143,7 @@ export class ShinobiACListener extends Listener {
                             await interaction.respond(
                                 weapons.map((weapon) => ({
                                     name: `${weapon.name} - ${weapon.attack} Damage`,
-                                    value: weapon.id
+                                    value: weapon.id,
                                 }))
                             );
                             break;
@@ -168,7 +168,7 @@ export class ShinobiACListener extends Listener {
                                     name: `${weapon.name} - ${
                                         weapon.cost / 2
                                     } Ryo`,
-                                    value: weapon.id
+                                    value: weapon.id,
                                 }))
                             );
                             break;

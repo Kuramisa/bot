@@ -8,7 +8,7 @@ export class PlayerTrackAddListener extends Listener {
             ...opts,
             name: "Emits when track is added",
             event: "trackAdd",
-            emitter: container.systems.music
+            emitter: container.systems.music,
         });
     }
 
@@ -27,17 +27,17 @@ export class PlayerTrackAddListener extends Listener {
                 {
                     name: "Duration",
                     value: track.duration,
-                    inline: true
+                    inline: true,
                 },
                 {
                     name: "Source",
                     value: track.source,
-                    inline: true
-                }
+                    inline: true,
+                },
             ])
             .setThumbnail(track.thumbnail)
             .setFooter({
-                text: `Requested by ${track.requestedBy.tag}`
+                text: `Requested by ${track.requestedBy.tag}`,
             });
 
         const channel = queue.metadata as TextChannel;

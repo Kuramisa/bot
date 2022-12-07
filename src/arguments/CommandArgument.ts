@@ -3,13 +3,13 @@ import {
     Argument,
     Command,
     CommandOptions,
-    PieceContext
+    PieceContext,
 } from "@sapphire/framework";
 
 export class CommandArguments extends Argument<Command<Args, CommandOptions>> {
     constructor(ctx: PieceContext) {
         super(ctx, {
-            name: "command"
+            name: "command",
         });
     }
 
@@ -23,7 +23,7 @@ export class CommandArguments extends Argument<Command<Args, CommandOptions>> {
                 context,
                 parameter,
                 message: "The provided could not resolved to a command",
-                identifier: "CommandNotFound"
+                identifier: "CommandNotFound",
             });
 
         return this.ok(command);

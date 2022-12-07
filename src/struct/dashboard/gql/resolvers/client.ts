@@ -22,7 +22,7 @@ export default {
                     description: app?.description,
                     avatarURL: user?.displayAvatarURL(),
                     guilds: client.guilds.cache.size,
-                    users: client.users.cache.size
+                    users: client.users.cache.size,
                 };
             } catch (err) {
                 console.error(err);
@@ -39,7 +39,7 @@ export default {
                     await Staff.find()
                 ).map(async (user) => {
                     const u = await client.users.fetch(user.id, {
-                        force: true
+                        force: true,
                     });
                     return {
                         ...user._doc,
@@ -47,9 +47,9 @@ export default {
                         formattedType: util.capFirstLetter(user.type),
                         avatarURL: u.avatar?.includes("a_")
                             ? u.avatarURL({ extension: "gif", size: 128 })
-                            : u.avatarURL({ extension: "png", size: 128 })
+                            : u.avatarURL({ extension: "png", size: 128 }),
                     };
                 })
-            )
-    }
+            ),
+    },
 };

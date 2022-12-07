@@ -6,7 +6,7 @@ export class XPCommand extends Command {
         super(ctx, {
             ...opts,
             name: "xp",
-            description: "Check your XP"
+            description: "Check your XP",
         });
     }
 
@@ -24,7 +24,7 @@ export class XPCommand extends Command {
      */
     async messageRun(message: Message) {
         const {
-            systems: { xp }
+            systems: { xp },
         } = this.container;
 
         const { author: user } = message;
@@ -45,7 +45,7 @@ export class XPCommand extends Command {
      */
     async chatInputCommand(interaction: ChatInputCommandInteraction) {
         const {
-            systems: { xp }
+            systems: { xp },
         } = this.container;
 
         const { user } = interaction;

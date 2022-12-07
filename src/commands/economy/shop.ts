@@ -7,7 +7,7 @@ export class ShopCommand extends Command {
         super(ctx, {
             ...opts,
             name: "shop",
-            description: "Use your Ryo to buy things here"
+            description: "Use your Ryo to buy things here",
         });
     }
 
@@ -100,12 +100,12 @@ export class ShopCommand extends Command {
                 if (!item)
                     return interaction.reply({
                         content: "That item does not exist",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 if (!item.price)
                     return interaction.reply({
                         content: "This item does not have a price",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const needsToPay = item.price * buyCount;
@@ -113,7 +113,7 @@ export class ShopCommand extends Command {
                 if (db.currencies.ryo < needsToPay)
                     return interaction.reply({
                         content: `You do not have enough Ryo to buy **${item.name}**`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 item.amount = buyCount;
@@ -124,7 +124,7 @@ export class ShopCommand extends Command {
 
                 return interaction.reply({
                     content: `Bought ${buyCount} **${item.name}** for ${needsToPay} Ryo`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "sell": {
@@ -137,25 +137,25 @@ export class ShopCommand extends Command {
                 if (!item)
                     return interaction.reply({
                         content: "That item does not exist",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 if (!item.price)
                     return interaction.reply({
                         content: "This item does not have a price",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const owned = db.items.find((it) => item.id === it.id);
                 if (!owned || !owned.amount)
                     return interaction.reply({
                         content: `You do not own any **${item.name}**`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 if (sellCount > owned.amount)
                     return interaction.reply({
                         content: `You do not have enough items to sell, you have ${owned.amount} **${item.name}**`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const sellPrice = (item.price * sellCount) / 2;
@@ -171,7 +171,7 @@ export class ShopCommand extends Command {
 
                 return interaction.reply({
                     content: `Sold ${sellCount} **${item.name}** for ${sellPrice} Ryo`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "discard": {
@@ -184,12 +184,12 @@ export class ShopCommand extends Command {
                 if (!item)
                     return interaction.reply({
                         content: "That item does not exist",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 if (!item.price)
                     return interaction.reply({
                         content: "This item does not have a price",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const owned = db.items.find((it) => it.id === item.id);
@@ -197,7 +197,7 @@ export class ShopCommand extends Command {
                 if (!owned || !owned.amount)
                     return interaction.reply({
                         content: `You do not own any **${item.name}**`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 if (owned.amount < 2) {
@@ -211,7 +211,7 @@ export class ShopCommand extends Command {
 
                 return interaction.reply({
                     content: `Discarded ${discardCount} **${item.name}**`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }

@@ -6,7 +6,7 @@ export class TicketButtonsACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Ticket Buttons Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -32,7 +32,7 @@ export class TicketButtonsACListener extends Listener {
                 name: choice.includes("-")
                     ? util.capEachFirstLetter(choice.split("_ticket")[0], "-")
                     : util.capFirstLetter(choice.split("_ticket")[0]),
-                value: choice
+                value: choice,
             }))
         );
     }

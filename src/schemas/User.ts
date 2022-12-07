@@ -48,84 +48,84 @@ export const User: Schema = new Schema<IUser>({
     id: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     username: {
         type: String,
-        required: true
+        required: true,
     },
     premium: {
         type: Boolean,
-        default: false
+        default: false,
     },
     betaTester: {
         type: Boolean,
-        default: false
+        default: false,
     },
     minecraft: {
         code: String,
-        username: String
+        username: String,
     },
     xp: {
         type: Number,
-        default: 0
+        default: 0,
     },
     level: {
         type: Number,
-        default: 0
+        default: 0,
     },
     currencies: {
         ryo: {
             type: Number,
-            default: 0
-        }
+            default: 0,
+        },
     },
     items: [],
     valorant: {
         name: String,
         tag: String,
-        puuid: String
+        puuid: String,
     },
     card: {
         background: {
             type: {
                 type: String,
-                default: "color"
+                default: "color",
             },
             color: {
                 type: String,
-                default: "#D18700"
+                default: "#D18700",
             },
-            image: Buffer
+            image: Buffer,
         },
         outlines: {
             type: {
                 type: String,
-                default: "avatar"
+                default: "avatar",
             },
             color: {
                 type: String,
-                default: "#222216"
-            }
+                default: "#222216",
+            },
         },
         text: {
             type: {
                 type: String,
-                default: "color"
+                default: "color",
             },
             color: {
                 type: String,
-                default: "#ffffff"
-            }
-        }
+                default: "#ffffff",
+            },
+        },
     },
     marriage: {
         married: {
             type: Boolean,
-            default: false
+            default: false,
         },
         to: String,
-        since: Number
+        since: Number,
     },
     warns: [
         {
@@ -134,24 +134,24 @@ export const User: Schema = new Schema<IUser>({
             by: String,
             message: {
                 id: String,
-                content: String
+                content: String,
             },
-            reason: String
-        }
+            reason: String,
+        },
     ],
     reports: [
         {
             id: String,
             guildId: String,
             by: String,
-            reason: String
-        }
-    ]
+            reason: String,
+        },
+    ],
 });
 
 export type TUser = Document<unknown, any, IUser> &
     IUser & {
-        _id: Types.ObjectId;
-    };
+    _id: Types.ObjectId;
+};
 
 export default model<IUser>("users", User);

@@ -6,7 +6,7 @@ export class DeleteEmptyChannelListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Delete empty JTC channels",
-            event: "voiceStateUpdate"
+            event: "voiceStateUpdate",
         });
     }
 

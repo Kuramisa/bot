@@ -23,7 +23,7 @@ app.use(helmet());
 const configurations = {
     // Note: You may need sudo to run on port 443
     production: { ssl: true, port: 4000, hostname: "api.kuramisa.com" },
-    development: { ssl: false, port: 4000, hostname: "localhost" }
+    development: { ssl: false, port: 4000, hostname: "localhost" },
 };
 
 const environment = process.env.NODE_ENV || "production";
@@ -35,7 +35,7 @@ if (config.ssl) {
         {
             key: fs.readFileSync(process.cwd() + "/private.key", "utf-8"),
             cert: fs.readFileSync(process.cwd() + "/public.cer", "utf-8"),
-            ca: fs.readFileSync(process.cwd() + "/ca.cer", "utf-8")
+            ca: fs.readFileSync(process.cwd() + "/ca.cer", "utf-8"),
         },
         app
     );
@@ -50,7 +50,7 @@ export default class Dashboard extends ApolloServer {
             resolvers,
             typeDefs,
             csrfPrevention: true,
-            plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+            plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
         });
 
         this.container = container;
@@ -69,8 +69,8 @@ export default class Dashboard extends ApolloServer {
                 context: async ({ req }) => ({
                     req,
                     container: this.container,
-                    server: this
-                })
+                    server: this,
+                }),
             })
         );
 

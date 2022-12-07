@@ -6,7 +6,7 @@ export class MemberJoinListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Member Welcome card",
-            event: "guildMemberAdd"
+            event: "guildMemberAdd",
         });
     }
 
@@ -40,7 +40,7 @@ export class MemberJoinListener extends Listener {
 
         const webhook = await channel.createWebhook({
             name: `${member.displayName} Joined the Server`,
-            avatar: client.user?.displayAvatarURL({ extension: "gif" })
+            avatar: client.user?.displayAvatarURL({ extension: "gif" }),
         });
 
         await webhook.send({ files: [attachment] });

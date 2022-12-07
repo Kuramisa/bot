@@ -4,14 +4,14 @@ import {
     ContextMenuCommandInteraction,
     Message,
     Guild,
-    User
+    User,
 } from "discord.js";
 
 export class PremiumOnlyPrecondition extends Precondition {
     constructor(ctx: Piece.Context, opts: Precondition.Options) {
         super(ctx, {
             ...opts,
-            name: "PremiumOnly"
+            name: "PremiumOnly",
         });
     }
 
@@ -52,12 +52,12 @@ export class PremiumOnlyPrecondition extends Precondition {
         const db = await database.guilds.get(guild);
         if (!db)
             return this.error({
-                message: "Guild not found"
+                message: "Guild not found",
             });
 
         if (!db.premium)
             return this.error({
-                message: "Guild not premium"
+                message: "Guild not premium",
             });
 
         return this.ok();
@@ -70,12 +70,12 @@ export class PremiumOnlyPrecondition extends Precondition {
         const db = await database.users.get(user);
         if (!db)
             return this.error({
-                message: "User not found"
+                message: "User not found",
             });
 
         if (!db.premium)
             return this.error({
-                message: "User not premium"
+                message: "User not premium",
             });
 
         return this.ok();

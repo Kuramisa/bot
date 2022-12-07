@@ -6,7 +6,7 @@ export class MemberLeaveListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Member Goodbye card",
-            event: ""
+            event: "",
         });
     }
 
@@ -38,7 +38,7 @@ export class MemberLeaveListener extends Listener {
 
         const webhook = await channel.createWebhook({
             name: `${member.displayName} Left the Server`,
-            avatar: client.user?.displayAvatarURL({ extension: "gif" })
+            avatar: client.user?.displayAvatarURL({ extension: "gif" }),
         });
 
         await webhook.send({ files: [attachment] });

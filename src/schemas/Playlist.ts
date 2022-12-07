@@ -12,7 +12,7 @@ export const Playlist: Schema = new Schema<IPlaylist>({
     memberId: String,
     name: String,
     tracks: [],
-    sharedWith: []
+    sharedWith: [],
 });
 
 export type TPlaylist = Document<unknown, any, IPlaylist> &

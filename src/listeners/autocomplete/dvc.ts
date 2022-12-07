@@ -6,7 +6,7 @@ export class DVCACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Dynamic Voice Channel Autocompletes",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 

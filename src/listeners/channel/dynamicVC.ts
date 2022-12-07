@@ -6,14 +6,14 @@ export class DynamicVCListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Dynamic Voice Channels",
-            event: "voiceStateUpdate"
+            event: "voiceStateUpdate",
         });
     }
 
     async run(_: VoiceState, state: VoiceState) {
         if (!state.channel) return;
 
-        const { database} = this.container;
+        const { database } = this.container;
         const { guild, channel } = state;
 
         if (channel.type !== ChannelType.GuildVoice) return;
@@ -34,7 +34,7 @@ export class DynamicVCListener extends Listener {
             name: `${parentVC.name} ${dvc.channels.length + 2}`,
             parent: channel.parent,
             position: channel.position + 1,
-            type: ChannelType.GuildVoice
+            type: ChannelType.GuildVoice,
         });
 
         dvc.channels.push(newChannel.id);

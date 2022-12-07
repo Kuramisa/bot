@@ -4,7 +4,7 @@ import { ValorantAccount } from "@types";
 export class ValorantUserArgument extends Argument<ValorantAccount> {
     constructor(ctx: PieceContext) {
         super(ctx, {
-            name: "val_user"
+            name: "val_user",
         });
     }
 
@@ -16,7 +16,7 @@ export class ValorantUserArgument extends Argument<ValorantAccount> {
                 parameter,
                 identifier: "invalid_user",
                 message: "Invalid User Provided",
-                context
+                context,
             });
 
         const account = this.container.games.valorant.accounts.get(
@@ -28,7 +28,7 @@ export class ValorantUserArgument extends Argument<ValorantAccount> {
                 parameter,
                 identifier: "invalid_account",
                 message: "Valorant Account not found",
-                context
+                context,
             });
 
         return this.ok(account);

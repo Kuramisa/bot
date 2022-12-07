@@ -6,7 +6,7 @@ export class RankCommand extends Command {
         super(ctx, {
             ...opts,
             name: "rank",
-            description: "Look at your or someone's rank"
+            description: "Look at your or someone's rank",
         });
     }
 
@@ -54,7 +54,7 @@ export class RankCommand extends Command {
         if (user.bot)
             return interaction.reply({
                 content: `${user} is a bot`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const attachment = await this.container.canvas.member.card(user);
@@ -62,7 +62,7 @@ export class RankCommand extends Command {
         if (!attachment)
             return interaction.reply({
                 content: "Failed to get rank card",
-                ephemeral: true
+                ephemeral: true,
             });
 
         return interaction.reply({ files: [attachment] });

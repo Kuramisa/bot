@@ -6,7 +6,7 @@ export class MemberActionsListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Buttons for Member Embed",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -21,7 +21,7 @@ export class MemberActionsListener extends Listener {
                 "kick_member",
                 "ban_member",
                 "report_member",
-                "warn_member"
+                "warn_member",
             ].includes(interaction.customId)
         )
             return;
@@ -40,12 +40,12 @@ export class MemberActionsListener extends Listener {
                 if (!attachment)
                     return interaction.reply({
                         content: "Could not retrieve rank card",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 return interaction.reply({
                     files: [attachment],
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "kick_member": {
@@ -55,13 +55,13 @@ export class MemberActionsListener extends Listener {
                 )
                     return interaction.reply({
                         content: "Not enough permissions",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 if (!target.kickable)
                     return interaction.reply({
                         content: `${target} is not kickable`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const modal = util
@@ -84,7 +84,7 @@ export class MemberActionsListener extends Listener {
                 await interaction.showModal(modal);
 
                 const mInteraction = await interaction.awaitModalSubmit({
-                    time: 0
+                    time: 0,
                 });
 
                 const reason =
@@ -96,7 +96,7 @@ export class MemberActionsListener extends Listener {
 
                 return mInteraction.reply({
                     content: `You kicked ${target.user.tag} from the server`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "ban_member": {
@@ -106,13 +106,13 @@ export class MemberActionsListener extends Listener {
                 )
                     return interaction.reply({
                         content: "Not enough permissions",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 if (!target.bannable)
                     return interaction.reply({
                         content: `${target} is not bannable`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const modal = util
@@ -148,7 +148,7 @@ export class MemberActionsListener extends Listener {
                 await interaction.showModal(modal);
 
                 const mInteraction = await interaction.awaitModalSubmit({
-                    time: 0
+                    time: 0,
                 });
 
                 const reason =
@@ -161,7 +161,7 @@ export class MemberActionsListener extends Listener {
                 if (!days)
                     return mInteraction.reply({
                         content: "Please provide a number of days (0-7)",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 days = util.daysToSecs(days);
@@ -169,22 +169,22 @@ export class MemberActionsListener extends Listener {
                 if (days < 0)
                     return mInteraction.reply({
                         content: "Provided days are less than 0",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 if (days > 7)
                     return mInteraction.reply({
                         content: "Provided days are more than 7",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 await target.ban({
                     reason: `Banned by ${target.user.tag}, Reason: ${reason}`,
-                    deleteMessageSeconds: days
+                    deleteMessageSeconds: days,
                 });
 
                 return mInteraction.reply({
                     content: `You banned ${target.user.tag} from the server`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "report_member": {
@@ -196,7 +196,7 @@ export class MemberActionsListener extends Listener {
                 if (!member.permissions.has("ModerateMembers"))
                     return interaction.reply({
                         content: "Not enough permissions",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 const modal = moderation.warns.modal(target);
 
@@ -206,13 +206,13 @@ export class MemberActionsListener extends Listener {
                 if (!member.permissions.has("ViewAuditLog"))
                     return interaction.reply({
                         content: "Not enough permissions",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 const reports = await moderation.reports.get(target);
                 if (!reports || reports.length < 1)
                     return interaction.reply({
                         content: `${target} has no reports`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 const mapped = reports.map(
                     (report) => `
@@ -232,13 +232,13 @@ export class MemberActionsListener extends Listener {
                 if (!member.permissions.has("ViewAuditLog"))
                     return interaction.reply({
                         content: "Not enough permissions",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 const warns = await moderation.warns.get(target);
                 if (!warns || warns.length < 1)
                     return interaction.reply({
                         content: `${target} has no warns`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 const mapped = warns.map(
                     (warn) => `

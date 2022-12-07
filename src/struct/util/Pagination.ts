@@ -5,7 +5,7 @@ import {
     ButtonInteraction,
     ChatInputCommandInteraction,
     ButtonStyle,
-    ComponentType
+    ComponentType,
 } from "discord.js";
 
 export default class UtilPagination {
@@ -38,7 +38,7 @@ export default class UtilPagination {
                 .button()
                 .setCustomId("next_page")
                 .setEmoji("➡️")
-                .setStyle(ButtonStyle.Secondary)
+                .setStyle(ButtonStyle.Secondary),
         ];
 
         const row = this.util.row().addComponents(buttons);
@@ -52,7 +52,7 @@ export default class UtilPagination {
             }
 
             embed.setFooter({
-                text: `Page ${index + 1} of ${contents.length}`
+                text: `Page ${index + 1} of ${contents.length}`,
             });
             if (title) embed.setTitle(title);
 
@@ -63,14 +63,14 @@ export default class UtilPagination {
 
         const message = await interaction.editReply({
             embeds: [embeds[page]],
-            components: embeds.length < 2 ? [] : [row]
+            components: embeds.length < 2 ? [] : [row],
         });
 
         const collector = message.createMessageComponentCollector({
             componentType: ComponentType.Button,
             filter: (i) =>
                 i.customId === "previous_page" || i.customId === "next_page",
-            time: timeout
+            time: timeout,
         });
 
         collector
@@ -89,7 +89,7 @@ export default class UtilPagination {
                 await i.deferUpdate();
                 await i.editReply({
                     embeds: [embeds[page]],
-                    components: [row]
+                    components: [row],
                 });
 
                 collector.resetTimer();
@@ -109,7 +109,7 @@ export default class UtilPagination {
 
                     message.edit({
                         embeds: [embeds[page]],
-                        components: embeds.length < 2 ? [] : [disabledRow]
+                        components: embeds.length < 2 ? [] : [disabledRow],
                     });
                 }
             });

@@ -6,7 +6,7 @@ export class PlaylistAddACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Playlist Add Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -17,7 +17,7 @@ export class PlaylistAddACListener extends Listener {
         const {
             database,
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { options, user } = interaction;
@@ -36,13 +36,13 @@ export class PlaylistAddACListener extends Listener {
                 return interaction.respond(
                     playlists.map((playlist) => ({
                         name: `${playlist.name} - ${playlist.tracks.length} Tracks`,
-                        value: playlist.name
+                        value: playlist.name,
                     }))
                 );
             }
             case "query": {
                 const result = await music.search(focused.value, {
-                    requestedBy: interaction.user
+                    requestedBy: interaction.user,
                 });
 
                 if (result.playlist) {
@@ -56,8 +56,8 @@ export class PlaylistAddACListener extends Listener {
                             } Tracks - ${util.capFirstLetter(
                                 source
                             )} ${util.capFirstLetter(type)}`,
-                            value: url
-                        }
+                            value: url,
+                        },
                     ]);
                 }
 
@@ -74,13 +74,13 @@ export class PlaylistAddACListener extends Listener {
                         value: `${util.shorten(
                             `${track.title} - ${track.author}`,
                             99
-                        )}`
+                        )}`,
                     }))
                 );
             }
             case "playlist_url": {
                 const result = await music.search(focused.value, {
-                    requestedBy: interaction.user
+                    requestedBy: interaction.user,
                 });
 
                 if (!result.playlist) return;
@@ -95,8 +95,8 @@ export class PlaylistAddACListener extends Listener {
                         } Tracks - ${util.capFirstLetter(
                             source
                         )} ${util.capFirstLetter(type)}`,
-                        value: url
-                    }
+                        value: url,
+                    },
                 ]);
             }
         }

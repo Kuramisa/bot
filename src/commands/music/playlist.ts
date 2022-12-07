@@ -14,8 +14,8 @@ export class PlaylistCommand extends Subcommand {
                 { name: "multimport", messageRun: "messageMultimport" },
                 { name: "delete", messageRun: "messageDelete" },
                 { name: "add", messageRun: "messageAdd" },
-                { name: "mutliadd", messageRun: "messageMultiadd" }
-            ]
+                { name: "mutliadd", messageRun: "messageMultiadd" },
+            ],
         });
     }
 
@@ -141,7 +141,7 @@ export class PlaylistCommand extends Subcommand {
 
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
-            systems: { playlist }
+            systems: { playlist },
         } = this.container;
 
         switch (interaction.options.getSubcommand()) {

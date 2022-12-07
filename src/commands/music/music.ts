@@ -1,7 +1,7 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import {
     ChatInputCommandInteraction,
-    ContextMenuCommandInteraction
+    ContextMenuCommandInteraction,
 } from "discord.js";
 
 export class MusicCommand extends Subcommand {
@@ -16,8 +16,8 @@ export class MusicCommand extends Subcommand {
                 { name: "actions", messageRun: "messageActions" },
                 { name: "skip", messageRun: "messageSkip" },
                 { name: "seek", messageRun: "messageSeek" },
-                { name: "volume", messageRun: "messageVolume" }
-            ]
+                { name: "volume", messageRun: "messageVolume" },
+            ],
         });
     }
 
@@ -62,12 +62,12 @@ export class MusicCommand extends Subcommand {
                                     { name: "📃Current Queue", value: "queue" },
                                     {
                                         name: "⏯ Pause/Resume",
-                                        value: "pause/resume"
+                                        value: "pause/resume",
                                     },
                                     { name: "⏹ Stop", value: "stop" },
                                     {
                                         name: "🔀 Shuffle Queue",
-                                        value: "shuffle"
+                                        value: "shuffle",
                                     }
                                 )
                                 .setRequired(true)
@@ -122,7 +122,7 @@ export class MusicCommand extends Subcommand {
     ): Promise<any> {
         const {
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { options, guild, channel, member } = interaction;
@@ -135,7 +135,7 @@ export class MusicCommand extends Subcommand {
             return interaction.reply({
                 content:
                     "You must be in a voice channel to be able to use the music commands",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (
@@ -144,13 +144,13 @@ export class MusicCommand extends Subcommand {
         )
             return interaction.reply({
                 content: `I'm already playing music in ${guild.members.me.voice.channel}`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (member.voice.deaf)
             return interaction.reply({
                 content: "You cannot play music when deafened",
-                ephemeral: true
+                ephemeral: true,
             });
 
         let queue = music.getQueue(guild);
@@ -158,25 +158,25 @@ export class MusicCommand extends Subcommand {
         switch (options.getSubcommand()) {
             case "play": {
                 await interaction.deferReply({
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
                 const query = options.getString("query", true);
                 if (query.length < 1) {
                     await interaction.editReply({
-                        content: "No tracks provided"
+                        content: "No tracks provided",
                     });
 
                     return;
                 }
 
                 const result = await music.search(query, {
-                    requestedBy: interaction.user
+                    requestedBy: interaction.user,
                 });
 
                 if (result.tracks.length < 1) {
                     await interaction.editReply({
-                        content: `Tracks with \`${query}\` was not found`
+                        content: `Tracks with \`${query}\` was not found`,
                     });
 
                     break;
@@ -184,7 +184,7 @@ export class MusicCommand extends Subcommand {
 
                 if (!queue) {
                     queue = music.createQueue(guild, {
-                        metadata: channel
+                        metadata: channel,
                     });
 
                     try {
@@ -194,7 +194,7 @@ export class MusicCommand extends Subcommand {
                         queue.destroy();
                         return interaction.reply({
                             content: "Could not join your voice channel",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }
@@ -206,7 +206,7 @@ export class MusicCommand extends Subcommand {
                         .embed()
                         .setAuthor({
                             name: playlist.author.name,
-                            url: playlist.author.url
+                            url: playlist.author.url,
                         })
                         .setTitle(
                             `Queued a playlist - ${util.capFirstLetter(
@@ -223,7 +223,7 @@ export class MusicCommand extends Subcommand {
                         )
                         .setURL(playlist.url);
                     await interaction.editReply({
-                        embeds: [embed]
+                        embeds: [embed],
                     });
                 } else {
                     const track = result.tracks[0];
@@ -240,7 +240,7 @@ export class MusicCommand extends Subcommand {
 
                     await interaction.editReply({
                         embeds: [embed],
-                        components: []
+                        components: [],
                     });
                 }
 
@@ -249,18 +249,18 @@ export class MusicCommand extends Subcommand {
             }
             case "add": {
                 await interaction.deferReply({
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
                 const query = options.getString("query", true);
 
                 const result = await music.search(query, {
-                    requestedBy: interaction.user
+                    requestedBy: interaction.user,
                 });
 
                 if (result.tracks.length < 1) {
                     await interaction.editReply({
-                        content: `Tracks with \`${query}\` was not found`
+                        content: `Tracks with \`${query}\` was not found`,
                     });
 
                     break;
@@ -268,7 +268,7 @@ export class MusicCommand extends Subcommand {
 
                 if (!queue) {
                     queue = music.createQueue(guild, {
-                        metadata: channel
+                        metadata: channel,
                     });
 
                     try {
@@ -278,7 +278,7 @@ export class MusicCommand extends Subcommand {
                         queue.destroy();
                         return interaction.reply({
                             content: "Could not join your voice channel",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }
@@ -291,7 +291,7 @@ export class MusicCommand extends Subcommand {
                         .embed()
                         .setAuthor({
                             name: playlist.author.name,
-                            url: playlist.author.url
+                            url: playlist.author.url,
                         })
                         .setTitle(
                             `Queued a playlist - ${util.capFirstLetter(
@@ -309,7 +309,7 @@ export class MusicCommand extends Subcommand {
                         .setURL(playlist.url);
 
                     await interaction.editReply({
-                        embeds: [embed]
+                        embeds: [embed],
                     });
                 } else {
                     const tracksChosen = await music.selectTrack(
@@ -332,7 +332,7 @@ export class MusicCommand extends Subcommand {
 
                     await interaction.editReply({
                         embeds: [embed],
-                        components: []
+                        components: [],
                     });
                 }
 
@@ -343,7 +343,7 @@ export class MusicCommand extends Subcommand {
                 if (!queue)
                     return interaction.reply({
                         content: "Music is not playing",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const action = options.getString("action", true);
@@ -354,7 +354,7 @@ export class MusicCommand extends Subcommand {
 
                             return interaction.reply({
                                 content: "▶ Track Resumed",
-                                ephemeral: true
+                                ephemeral: true,
                             });
                         }
 
@@ -362,7 +362,7 @@ export class MusicCommand extends Subcommand {
 
                         return interaction.reply({
                             content: "⏸ Track Paused",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "stop": {
@@ -370,13 +370,13 @@ export class MusicCommand extends Subcommand {
                             return interaction.reply({
                                 content:
                                     "You cannot stop the player, not enough permissions",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         queue.stop();
                         return interaction.reply({
                             content: "Music has been stopped",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                     case "queue": {
@@ -391,7 +391,7 @@ export class MusicCommand extends Subcommand {
                         if (chunked.length < 1)
                             return interaction.reply({
                                 content: "There are no upcoming tracks",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         await util.pagination.default(
@@ -405,14 +405,14 @@ export class MusicCommand extends Subcommand {
                         if (queue.tracks.length < 2)
                             return interaction.reply({
                                 content: "There are no upcoming tracks",
-                                ephemeral: true
+                                ephemeral: true,
                             });
 
                         queue.shuffle();
 
                         return interaction.reply({
                             content: "Queue shuffled",
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }
@@ -422,12 +422,12 @@ export class MusicCommand extends Subcommand {
                 if (!queue)
                     return interaction.reply({
                         content: "Music is not playing",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 if (queue.tracks.length < 1) {
                     return interaction.reply({
                         content: "There are no upcoming tracks to skip to",
-                        ephemeral: true
+                        ephemeral: true,
                     });
                 }
 
@@ -436,14 +436,14 @@ export class MusicCommand extends Subcommand {
                 if (requestedBy.id !== member.id)
                     return interaction.reply({
                         content: `You didn't request this track, ask ${requestedBy} to skip the track, because they requested it`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const position = options.getNumber("to");
                 if (!position) {
                     queue.skip();
                     return interaction.reply({
-                        content: "Current track skipped"
+                        content: "Current track skipped",
                     });
                 }
                 const skipTo = position - 1;
@@ -451,34 +451,34 @@ export class MusicCommand extends Subcommand {
                 queue.skipTo(skipTo);
                 return interaction.reply({
                     content: `Skipped to: **${track.title} - ${track.author}**`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "seek": {
                 if (!queue)
                     return interaction.reply({
                         content: "Music is not playing",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const duration = options.getString("duration", true);
                 const durationPattern = /^[0-5]?[0-9](:[0-5][0-9]){1,2}$/;
                 if (!durationPattern.test(duration))
                     return interaction.reply({
-                        content: "Duration provided in incorrect format"
+                        content: "Duration provided in incorrect format",
                     });
 
                 const durationMs = util.durationMs(duration);
                 if (durationMs > queue.current.durationMS)
                     return interaction.reply({
                         content: "Duration you provided exceeds track duration",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 await queue.seek(durationMs);
                 return interaction.reply({
                     content: `Seeked to ${duration}`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }
@@ -487,7 +487,7 @@ export class MusicCommand extends Subcommand {
     async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const {
             systems: { music },
-            util
+            util,
         } = this.container;
 
         const { targetId, guild, channel, member } = interaction;
@@ -501,13 +501,13 @@ export class MusicCommand extends Subcommand {
         if (track.length < 1)
             return interaction.reply({
                 content: "Track not provided",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (!voiceChannel)
             return interaction.reply({
                 content: "You must be in a voice channel to queue a track",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (
@@ -516,20 +516,20 @@ export class MusicCommand extends Subcommand {
         )
             return interaction.reply({
                 content: `You have to be in ${guild.members.me.voice.channel} to queue a track`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (member.voice.deaf)
             return interaction.reply({
                 content: "You cannot queue a track when deafened",
-                ephemeral: true
+                ephemeral: true,
             });
 
         let queue = music.getQueue(guild);
 
         if (!queue) {
             queue = music.createQueue(guild, {
-                metadata: channel
+                metadata: channel,
             });
 
             try {
@@ -538,7 +538,7 @@ export class MusicCommand extends Subcommand {
                 queue.destroy();
                 return await interaction.reply({
                     content: "Could not join your voice channel",
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
         }
@@ -546,12 +546,12 @@ export class MusicCommand extends Subcommand {
         await interaction.deferReply({ ephemeral: true });
 
         const result = await music.search(message.content, {
-            requestedBy: interaction.user
+            requestedBy: interaction.user,
         });
 
         if (result.tracks.length < 1)
             return await interaction.editReply({
-                content: `Could not find any tracks: \`${track}\``
+                content: `Could not find any tracks: \`${track}\``,
             });
 
         if (result.playlist) {
@@ -561,7 +561,7 @@ export class MusicCommand extends Subcommand {
                 .embed()
                 .setAuthor({
                     name: playlist.author.name,
-                    url: playlist.author.url
+                    url: playlist.author.url,
                 })
                 .setTitle(
                     `Queued a playlist - ${util.capFirstLetter(

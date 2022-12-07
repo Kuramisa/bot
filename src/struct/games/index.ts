@@ -35,7 +35,7 @@ export default class Games {
     }
 
     getChannelModals(game: string) {
-        const {util} = this.container;
+        const { util } = this.container;
 
         const modal = util
             .modal()

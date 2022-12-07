@@ -3,7 +3,7 @@ import {
     Argument,
     Command,
     CommandOptions,
-    PieceContext
+    PieceContext,
 } from "@sapphire/framework";
 
 export class CategoryArgument extends Argument<
@@ -11,7 +11,7 @@ export class CategoryArgument extends Argument<
 > {
     constructor(ctx: PieceContext) {
         super(ctx, {
-            name: "category"
+            name: "category",
         });
     }
 
@@ -25,7 +25,7 @@ export class CategoryArgument extends Argument<
                 context,
                 parameter,
                 message: "The provided could not resolved to a category",
-                identifier: "CategoryNotFound"
+                identifier: "CategoryNotFound",
             });
 
         return this.ok(category);

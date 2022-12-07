@@ -1,7 +1,8 @@
 import { Command } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
-    ContextMenuCommandInteraction, PermissionsBitField
+    ContextMenuCommandInteraction,
+    PermissionsBitField,
 } from "discord.js";
 
 export class WarnCommand extends Command {
@@ -10,7 +11,7 @@ export class WarnCommand extends Command {
             ...opts,
             name: "warn",
             description: "Warn a member",
-            requiredUserPermissions: "ModerateMembers"
+            requiredUserPermissions: "ModerateMembers",
         });
     }
 
@@ -19,7 +20,9 @@ export class WarnCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
-                .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers)
+                .setDefaultMemberPermissions(
+                    PermissionsBitField.Flags.ModerateMembers
+                )
                 .addUserOption((option) =>
                     option
                         .setName("member")
@@ -40,7 +43,7 @@ export class WarnCommand extends Command {
 
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
-            moderation: { warns }
+            moderation: { warns },
         } = this.container;
 
         const { options } = interaction;
@@ -53,7 +56,7 @@ export class WarnCommand extends Command {
         if (member.user.bot)
             return interaction.reply({
                 content: `${member} is a bot`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         await warns.create(member, interaction.member, reason);
@@ -65,7 +68,7 @@ export class WarnCommand extends Command {
 
     async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const {
-            moderation: { warns }
+            moderation: { warns },
         } = this.container;
 
         const { guild, targetId } = interaction;
@@ -75,7 +78,7 @@ export class WarnCommand extends Command {
         if (member.user.bot)
             return interaction.reply({
                 content: `${member} is a bot`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         return interaction.showModal(warns.modal(member));

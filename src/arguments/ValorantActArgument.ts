@@ -4,7 +4,7 @@ import { Seasons } from "@valapi/valorant-api.com";
 export class ValorantActArgument extends Argument<Seasons.Seasons> {
     constructor(ctx: PieceContext) {
         super(ctx, {
-            name: "val_act"
+            name: "val_act",
         });
     }
 
@@ -20,7 +20,7 @@ export class ValorantActArgument extends Argument<Seasons.Seasons> {
                 parameter,
                 identifier: "act_not_found",
                 message: "Valorant Act not found",
-                context
+                context,
             });
 
         return this.ok(season);

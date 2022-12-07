@@ -1,7 +1,7 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import {
     ChatInputCommandInteraction,
-    ContextMenuCommandInteraction
+    ContextMenuCommandInteraction,
 } from "discord.js";
 
 export class ShinobiCommand extends Subcommand {
@@ -11,7 +11,7 @@ export class ShinobiCommand extends Subcommand {
             name: "sh",
             description: "Shinobi Adventure Game",
             aliases: ["shinobi"],
-            preconditions: ["BetaTesterOnly"]
+            preconditions: ["BetaTesterOnly"],
         });
     }
 
@@ -159,7 +159,7 @@ export class ShinobiCommand extends Subcommand {
         const { options, user } = interaction;
 
         const {
-            games: { shinobi }
+            games: { shinobi },
         } = this.container;
 
         switch (options.getSubcommand()) {
@@ -185,7 +185,7 @@ export class ShinobiCommand extends Subcommand {
                 if (!player)
                     return interaction.reply({
                         content: `${target} is not a Shinobi`,
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const embed = shinobi.players.embed(player);
@@ -205,7 +205,7 @@ export class ShinobiCommand extends Subcommand {
                 if (!clan)
                     return interaction.reply({
                         content: "Clan not found",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const embed = shinobi.clans.embed(clan);
@@ -223,7 +223,7 @@ export class ShinobiCommand extends Subcommand {
                 if (!village)
                     return interaction.reply({
                         content: "Village not found",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const embed = shinobi.villages.embed(village);
@@ -240,7 +240,7 @@ export class ShinobiCommand extends Subcommand {
                     return interaction.reply({
                         content:
                             "You have to be a Shinobi **view/buy/sell/equip** weapons",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const weaponStr = options.getString("weapon");
@@ -251,14 +251,14 @@ export class ShinobiCommand extends Subcommand {
                 if (!weaponStr)
                     return interaction.reply({
                         content: "Please provide a weapon name",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 const weapon = shinobi.weapons.get(weaponStr);
                 if (!weapon)
                     return interaction.reply({
                         content: "Weapon not found",
-                        ephemeral: true
+                        ephemeral: true,
                     });
 
                 switch (options.getSubcommand()) {
@@ -283,7 +283,7 @@ export class ShinobiCommand extends Subcommand {
 
     async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
         const {
-            games: { shinobi }
+            games: { shinobi },
         } = this.container;
 
         const { guild, targetId } = interaction;
@@ -292,14 +292,14 @@ export class ShinobiCommand extends Subcommand {
         if (member.user.bot)
             return interaction.reply({
                 content: `${member} is a bot`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const player = shinobi.players.get(member.id);
         if (!player)
             return interaction.reply({
                 content: `${member} is not a shinobi`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const embed = shinobi.players.embed(player);

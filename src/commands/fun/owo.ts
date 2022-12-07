@@ -2,7 +2,7 @@ import { Command, Args } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
     ContextMenuCommandInteraction,
-    Message
+    Message,
 } from "discord.js";
 
 export class OwOCommand extends Command {
@@ -10,7 +10,7 @@ export class OwOCommand extends Command {
         super(ctx, {
             ...opts,
             name: "owo",
-            description: "OwOify some text"
+            description: "OwOify some text",
         });
     }
 
@@ -55,7 +55,7 @@ export class OwOCommand extends Command {
         const text = interaction.options.getString("text", true);
 
         const { owo } = await this.container.util.nekos.OwOify({
-            text
+            text,
         });
 
         return interaction.reply(owo);
@@ -73,11 +73,11 @@ export class OwOCommand extends Command {
         if (message.content.length < 1)
             return interaction.reply({
                 content: "Could not find text in the message",
-                ephemeral: true
+                ephemeral: true,
             });
 
         const { owo } = await this.container.util.nekos.OwOify({
-            text: message.content
+            text: message.content,
         });
 
         return interaction.reply(owo);

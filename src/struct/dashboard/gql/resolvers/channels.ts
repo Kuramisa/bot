@@ -39,7 +39,7 @@ export default {
             {
                 guildId,
                 channelId,
-                messageId
+                messageId,
             }: { guildId: string; channelId: string; messageId: string },
             { container: { client } }: { container: Container }
         ) => {
@@ -81,6 +81,6 @@ export default {
                 console.error(err);
                 throw err;
             }
-        }
-    }
+        },
+    },
 };

@@ -9,7 +9,7 @@ export class PromoteCommand extends Command {
             description: "Request a promotion for your server on our website",
             runIn: "GUILD_ANY",
             requiredUserPermissions: "Administrator",
-            preconditions: ["OwnerOnly"]
+            preconditions: ["OwnerOnly"],
         });
     }
 
@@ -66,12 +66,12 @@ export class PromoteCommand extends Command {
                 `${author} wants to promote **${guild}** to the website`
             )
             .setFooter({
-                text: guild.id
+                text: guild.id,
             });
 
         await promoteChannel.send({
             embeds: [embed],
-            components: [row]
+            components: [row],
         });
 
         return message.reply("Promotion request has been sent");
@@ -91,7 +91,7 @@ export class PromoteCommand extends Command {
         if (db.promoted)
             return interaction.reply({
                 content: `${guild} is already promoted`,
-                ephemeral: true
+                ephemeral: true,
             });
 
         const row = util
@@ -118,17 +118,17 @@ export class PromoteCommand extends Command {
                 `${user} wants to promote **${guild}** to the website`
             )
             .setFooter({
-                text: guild.id
+                text: guild.id,
             });
 
         await promoteChannel.send({
             embeds: [embed],
-            components: [row]
+            components: [row],
         });
 
         return interaction.reply({
             content: "Promotion request has been sent",
-            ephemeral: true
+            ephemeral: true,
         });
     }
 }

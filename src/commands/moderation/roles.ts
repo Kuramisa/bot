@@ -7,7 +7,7 @@ export class RolesCommand extends Command {
             ...opts,
             name: "roles",
             description: "Manage your role assignment",
-            requiredUserPermissions: "ManageGuild"
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -62,7 +62,7 @@ export class RolesCommand extends Command {
             if (!Object.keys(db.roles).includes(type))
                 return interaction.reply({
                     content: `\`${type}\` role type not was found in the database`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
             const role = db.roles[type as keyof typeof db.roles];
@@ -71,7 +71,7 @@ export class RolesCommand extends Command {
                 content: `\`${util.capFirstLetter(type)}\`: ${
                     role ? `<@&${role}>` : "Not Set"
                 }`,
-                ephemeral: true
+                ephemeral: true,
             });
         }
 
@@ -91,7 +91,7 @@ export class RolesCommand extends Command {
             if (roles.length < 1)
                 return interaction.reply({
                     content: `${role} role was not found in the database`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
             return interaction.reply({ content: roles, ephemeral: true });
@@ -106,7 +106,7 @@ export class RolesCommand extends Command {
                 content: `${role} was set to **${util.capFirstLetter(
                     type
                 )}** in the database`,
-                ephemeral: true
+                ephemeral: true,
             });
         }
     }

@@ -6,7 +6,7 @@ export class CreatePasteWarframeListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Create a pa ste from Warframe.market embed",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -19,7 +19,8 @@ export class CreatePasteWarframeListener extends Listener {
         const embed = message.embeds[0];
 
         const type = embed.title?.split("Orders for")[0].trim().toLowerCase();
-        const user = embed.fields[0].value.split("`Reputation`")[0]
+        const user = embed.fields[0].value
+            .split("`Reputation`")[0]
             .split(":")[1]
             .trim();
         const item = embed.title?.split("Orders for")[1].trim();
@@ -32,7 +33,7 @@ export class CreatePasteWarframeListener extends Listener {
             content: `/w ${user} Hi! I want to ${
                 type === "sell" ? "buy" : "sell"
             }: ${item} for ${price} platinum. (warframe.market)`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 }

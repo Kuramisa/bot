@@ -10,9 +10,9 @@ export default {
         ...guilds.Query,
         ...channels.Query,
         ...tickets.Query,
-        ...users.Query
+        ...users.Query,
     },
     Mutation: {
-        ...users.Mutation
-    }
+        ...users.Mutation,
+    },
 };

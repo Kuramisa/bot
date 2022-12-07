@@ -8,7 +8,7 @@ export class AkinatorCommand extends Command {
             ...opts,
             name: "akinator",
             description: "Akinator Game",
-            aliases: ["ak"]
+            aliases: ["ak"],
         });
     }
 
@@ -39,7 +39,7 @@ export class AkinatorCommand extends Command {
 
         akinator(interaction, {
             gameType,
-            useButtons: true
+            useButtons: true,
         });
     }
 
@@ -48,7 +48,7 @@ export class AkinatorCommand extends Command {
 
         akinator(message, {
             gameType,
-            useButtons: true
+            useButtons: true,
         });
     }
 }

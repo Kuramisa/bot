@@ -7,7 +7,7 @@ export class GoodbyeCommand extends Subcommand {
             ...opts,
             name: "goodbye",
             description: "Manage Goodbye message for the server",
-            requiredUserPermissions: "ManageGuild"
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -82,7 +82,7 @@ export class GoodbyeCommand extends Subcommand {
 
     async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
         const {
-            canvas: { goodbye }
+            canvas: { goodbye },
         } = this.container;
 
         switch (interaction.options.getSubcommand()) {

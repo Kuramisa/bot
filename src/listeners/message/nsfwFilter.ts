@@ -10,7 +10,7 @@ export class NSFWFilterListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Filter NSFW from messages",
-            event: "messageCreate"
+            event: "messageCreate",
         });
     }
 
@@ -30,7 +30,7 @@ export class NSFWFilterListener extends Listener {
         let url = message.content;
 
         const tenor = new Tenor({
-            apiKey: TENOR_API as string
+            apiKey: TENOR_API as string,
         });
 
         if (url.includes("https://tenor.com/view")) {
@@ -62,7 +62,7 @@ export class NSFWFilterListener extends Listener {
 
         const webhook = await channel.createWebhook({
             name: `${client.user?.username} NSFW Filter`,
-            avatar: client.user?.displayAvatarURL({ extension: "gif" })
+            avatar: client.user?.displayAvatarURL({ extension: "gif" }),
         });
 
         const wMessage = await webhook.send(

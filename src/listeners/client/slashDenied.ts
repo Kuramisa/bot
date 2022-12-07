@@ -1,7 +1,7 @@
 import {
     ChatInputCommandDeniedPayload,
     Listener,
-    UserError
+    UserError,
 } from "@sapphire/framework";
 
 export class SlashCommandListener extends Listener {
@@ -9,7 +9,7 @@ export class SlashCommandListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Slash Command Denied",
-            event: "chatInputCommandDenied"
+            event: "chatInputCommandDenied",
         });
     }
 

@@ -1,7 +1,7 @@
 import "@sapphire/plugin-logger/register";
 
-import {container, LogLevel, SapphireClient} from "@sapphire/framework";
-import {Message, Partials} from "discord.js";
+import { container, LogLevel, SapphireClient } from "@sapphire/framework";
+import { Message, Partials } from "discord.js";
 
 import logs from "discord-logs";
 
@@ -31,7 +31,7 @@ export class Kuramisa extends SapphireClient {
                 "GuildPresences",
                 "GuildIntegrations",
                 "MessageContent",
-                "DirectMessages"
+                "DirectMessages",
             ],
             partials: [Partials.Channel, Partials.Message, Partials.User],
             loadMessageCommandListeners: true,
@@ -41,11 +41,11 @@ export class Kuramisa extends SapphireClient {
                 level:
                     process.env.NODE_ENV === "development"
                         ? LogLevel.Debug
-                        : LogLevel.Info
-            }
+                        : LogLevel.Info,
+            },
         });
 
-        logs(this, {debug: process.env.NODE_ENV === "development"});
+        logs(this, { debug: process.env.NODE_ENV === "development" });
 
         container.owners = ["401269337924829186", "190120411864891392"];
 

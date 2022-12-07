@@ -8,7 +8,7 @@ export class EvalCommand extends Command {
             ...opts,
             name: "eval",
             description: "Evaluate Javascript Code",
-            preconditions: ["OwnerOnly"]
+            preconditions: ["OwnerOnly"],
         });
     }
 
@@ -57,13 +57,13 @@ export class EvalCommand extends Command {
 
             return mInteraction.reply({
                 embeds: [embed],
-                ephemeral: true
+                ephemeral: true,
             });
         } catch (err) {
             console.error(err);
             return mInteraction.reply({
                 content: `\`\`\`xl\n${err}\n\`\`\``,
-                ephemeral: true
+                ephemeral: true,
             });
         }
     }

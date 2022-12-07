@@ -5,7 +5,7 @@ import {
     VoiceState,
     Collection,
     ChannelType,
-    ComponentType
+    ComponentType,
 } from "discord.js";
 
 export class JTCListener extends Listener {
@@ -13,7 +13,7 @@ export class JTCListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Join to create channel listener",
-            event: "voiceStateUpdate"
+            event: "voiceStateUpdate",
         });
     }
 
@@ -55,7 +55,7 @@ export class JTCListener extends Listener {
         const colors: ButtonStyle[] = [
             ButtonStyle.Primary,
             ButtonStyle.Danger,
-            ButtonStyle.Secondary
+            ButtonStyle.Secondary,
         ];
 
         try {
@@ -77,7 +77,7 @@ export class JTCListener extends Listener {
             const message = await channel.send({
                 content: `${member}`,
                 embeds: [embed],
-                components: [util.row().setComponents(buttons.first(5))]
+                components: [util.row().setComponents(buttons.first(5))],
             });
 
             const buttonClick = await message.awaitMessageComponent({
@@ -86,7 +86,7 @@ export class JTCListener extends Listener {
                     buttons.some(
                         (button) =>
                             (button.toJSON() as any).customId === i.customId
-                    )
+                    ),
             });
 
             await message.edit({
@@ -94,13 +94,13 @@ export class JTCListener extends Listener {
                     row.setComponents(
                         buttons.map((button) => button.setDisabled(true))
                     )
-                )
+                ),
             });
 
             if (!channel.members.get(member.id))
                 return buttonClick.reply({
                     content: "You have left the channel",
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
             await buttonClick.deferUpdate();
@@ -123,10 +123,10 @@ export class JTCListener extends Listener {
                         allow: [
                             "MuteMembers",
                             "MoveMembers",
-                            "CreateInstantInvite"
-                        ]
-                    }
-                ]
+                            "CreateInstantInvite",
+                        ],
+                    },
+                ],
             });
 
             await member.voice.setChannel(newChannel);

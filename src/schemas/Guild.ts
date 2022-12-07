@@ -81,6 +81,19 @@ export interface IGuild extends HydratedDocument<any> {
         };
         buttons: string[];
     };
+    selfroles: {
+        channelId: string;
+        messages: {
+            id: string;
+            buttons: {
+                id: string;
+                name: string;
+                roleId: string;
+                emoji?: string | null;
+                style: number;
+            }[];
+        }[];
+    }[];
 }
 
 export const Guild: Schema = new Schema<IGuild>({
@@ -184,6 +197,25 @@ export const Guild: Schema = new Schema<IGuild>({
         },
         buttons: [],
     },
+    selfroles: [
+        {
+            channelId: String,
+            messages: [
+                {
+                    id: String,
+                    buttons: [
+                        {
+                            id: String,
+                            name: String,
+                            roleId: String,
+                            emoji: String,
+                            style: Number,
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
 });
 
 export type TGuild = Document<unknown, any, IGuild> &

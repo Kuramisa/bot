@@ -6,7 +6,7 @@ export class HelpACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Game Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -36,7 +36,7 @@ export class HelpACListener extends Listener {
                 return interaction.respond(
                     games.map((game) => ({
                         name: game,
-                        value: game
+                        value: game,
                     }))
                 );
             }
@@ -55,7 +55,7 @@ export class HelpACListener extends Listener {
                 return interaction.respond(
                     types.map((type) => ({
                         name: util.capFirstLetter(type),
-                        value: type
+                        value: type,
                     }))
                 );
             }

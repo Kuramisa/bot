@@ -6,7 +6,7 @@ export class MockCommand extends Command {
         super(ctx, {
             ...opts,
             name: "mock",
-            description: "Mock a user"
+            description: "Mock a user",
         });
     }
 
@@ -31,7 +31,7 @@ export class MockCommand extends Command {
         if (message.content.length < 1)
             return interaction.reply({
                 content: "Could not find text in the message",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (
@@ -39,20 +39,20 @@ export class MockCommand extends Command {
             !guild.members.me?.permissions.has("ManageWebhooks")
         )
             return interaction.reply({
-                content: this.mockText(message.content)
+                content: this.mockText(message.content),
             });
 
         await interaction.deferReply({ ephemeral: true });
 
         const webhook = await channel.createWebhook({
             name: member.displayName,
-            avatar: member.displayAvatarURL({ extension: "gif" })
+            avatar: member.displayAvatarURL({ extension: "gif" }),
         });
 
         await webhook.send({
             content: `${message.member} ${this.mockText(message.content)}`,
             username: member.displayName,
-            avatarURL: member.displayAvatarURL({ extension: "gif" })
+            avatarURL: member.displayAvatarURL({ extension: "gif" }),
         });
 
         await webhook.delete();

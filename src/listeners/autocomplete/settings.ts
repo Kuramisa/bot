@@ -6,7 +6,7 @@ export class SettingsACListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Settings Autocomplete",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -32,7 +32,7 @@ export class SettingsACListener extends Listener {
                 return await interaction.respond(
                     roles.map((choice) => ({
                         name: util.capFirstLetter(choice),
-                        value: choice
+                        value: choice,
                     }))
                 );
             }
@@ -47,7 +47,7 @@ export class SettingsACListener extends Listener {
                 await interaction.respond(
                     channels.map((choice) => ({
                         name: util.capFirstLetter(choice),
-                        value: choice
+                        value: choice,
                     }))
                 );
                 break;
@@ -65,7 +65,7 @@ export class SettingsACListener extends Listener {
                 return await interaction.respond(
                     toggles.map((choice) => ({
                         name: util.capFirstLetter(choice),
-                        value: choice.split(" ").join("")
+                        value: choice.split(" ").join(""),
                     }))
                 );
             }

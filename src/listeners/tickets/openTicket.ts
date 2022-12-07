@@ -6,7 +6,7 @@ export class OpenTicketListener extends Listener {
         super(ctx, {
             ...opts,
             name: "Handle opening a ticket",
-            event: "interactionCreate"
+            event: "interactionCreate",
         });
     }
 
@@ -27,7 +27,7 @@ export class OpenTicketListener extends Listener {
         if (!category)
             return interaction.reply({
                 content: "Make sure Tickets category is setup",
-                ephemeral: true
+                ephemeral: true,
             });
 
         if (category.type !== ChannelType.GuildCategory) return;
@@ -43,13 +43,17 @@ export class OpenTicketListener extends Listener {
             permissionOverwrites: [
                 {
                     id: guild.roles.everyone.id,
-                    deny: ["SendMessages", "ViewChannel", "ReadMessageHistory"]
+                    deny: ["SendMessages", "ViewChannel", "ReadMessageHistory"],
                 },
                 {
                     id: member.id,
-                    allow: ["SendMessages", "ViewChannel", "ReadMessageHistory"]
-                }
-            ]
+                    allow: [
+                        "SendMessages",
+                        "ViewChannel",
+                        "ReadMessageHistory",
+                    ],
+                },
+            ],
         });
 
         await database.tickets.create({
@@ -57,7 +61,7 @@ export class OpenTicketListener extends Listener {
             guild,
             member,
             channel,
-            type
+            type,
         });
 
         const embed = util
@@ -88,7 +92,7 @@ export class OpenTicketListener extends Listener {
 
         return interaction.reply({
             content: `Ticket Created: ${channel}`,
-            ephemeral: true
+            ephemeral: true,
         });
     }
 }

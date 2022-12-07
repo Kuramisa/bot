@@ -11,16 +11,16 @@ export const Staff = new Schema<IStaff>({
     id: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     description: {
         type: String,
-        required: true
+        required: true,
     },
     type: {
         type: String,
-        default: "helper"
-    }
+        default: "helper",
+    },
 });
 
 export type TStaff = Document<unknown, any, IStaff> &

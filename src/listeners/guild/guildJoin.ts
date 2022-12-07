@@ -6,7 +6,7 @@ export class GuildJoinListener extends Listener {
         super(ctx, {
             ...opts,
             name: "WHen bot joins server",
-            event: "guildCreate"
+            event: "guildCreate",
         });
     }
 

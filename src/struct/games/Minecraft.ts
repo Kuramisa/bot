@@ -1,5 +1,5 @@
-import {Container} from "@sapphire/pieces";
-import {Collection, Guild} from "discord.js";
+import { Container } from "@sapphire/pieces";
+import { Collection, Guild } from "discord.js";
 
 import mc from "minecraft_head";
 import crafatar from "crafatar";

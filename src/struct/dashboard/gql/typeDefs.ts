@@ -1,72 +1,72 @@
 export default `#graphql
-    scalar Client
-    scalar Staff
+scalar Client
+scalar Staff
 
-    scalar Guild
-    scalar Role
-    scalar Emoji
+scalar Guild
+scalar Role
+scalar Emoji
 
-    scalar Channel
-    scalar Message
+scalar Channel
+scalar Message
 
-    scalar User
-    scalar Member
+scalar User
+scalar Member
 
-    scalar Object
+scalar Object
 
-    scalar Ticket
+scalar Ticket
 
-    scalar Warn
-    scalar Report
+scalar Warn
+scalar Report
 
-    type Query {
-        client: Client!
-        clientUser: User!
-        clientStaff: Staff!
+type Query {
+    client: Client!
+    clientUser: User!
+    clientStaff: Staff!
 
-        guild(guildId: String!, fetchDb: Boolean): Guild!
-        guilds(fetchDb: Boolean): [Guild]!
+    guild(guildId: String!, fetchDb: Boolean): Guild!
+    guilds(fetchDb: Boolean): [Guild]!
 
-        role(guildId: String!, roleId: String!): Role!
-        roles(guildId: String!): [Role]!
+    role(guildId: String!, roleId: String!): Role!
+    roles(guildId: String!): [Role]!
 
-        channel(guildId: String!, channelId: String!): Channel!
-        channels(guildId: String!): [Channel]!
+    channel(guildId: String!, channelId: String!): Channel!
+    channels(guildId: String!): [Channel]!
 
-        message(
-            guildId: String!
-            channelId: String!
-            messageId: String!
-        ): Message!
-        messages(guildId: String!, channelId: String!): [Message]!
+    message(
+        guildId: String!
+        channelId: String!
+        messageId: String!
+    ): Message!
+    messages(guildId: String!, channelId: String!): [Message]!
 
-        emoji(guildId: String!, emojiId: String!): Emoji!
-        emojis(guildId: String!): [Emoji]!
+    emoji(guildId: String!, emojiId: String!): Emoji!
+    emojis(guildId: String!): [Emoji]!
 
-        tickets(guildId: String!): [Ticket]!
-        ticket(guildId: String!, ticketId: String!): Ticket!
-        ticketTranscript(guildId: String!, ticketId: String!): Ticket
-        memberTickets(guildId: String!, memberId: String!): [Ticket]!
+    tickets(guildId: String!): [Ticket]!
+    ticket(guildId: String!, ticketId: String!): Ticket!
+    ticketTranscript(guildId: String!, ticketId: String!): Ticket
+    memberTickets(guildId: String!, memberId: String!): [Ticket]!
 
-        user(userId: String!, fetchDb: Boolean): User!
-        userCard(userId: String!): User!
-        users(fetchDb: Boolean): [User]!
-        userGuilds(auth: String!, fetchDb: Boolean): [Guild]!
+    user(userId: String!, fetchDb: Boolean): User!
+    userCard(userId: String!): User!
+    users(fetchDb: Boolean): [User]!
+    userGuilds(auth: String!, fetchDb: Boolean): [Guild]!
 
-        member(guildId: String!, memberId: String!, fetchDb: Boolean): Member!
-        members(guildId: String!, fetchDb: Boolean): [Member]!
+    member(guildId: String!, memberId: String!, fetchDb: Boolean): Member!
+    members(guildId: String!, fetchDb: Boolean): [Member]!
 
-        warns(guildId: String!, userId: String!): [Warn]!
-        reports(guildId: String!, userId: String!): [Report]!
+    warns(guildId: String!, userId: String!): [Warn]!
+    reports(guildId: String!, userId: String!): [Report]!
 
-        chatLog(username: String!, message: String!, ip: String!): Boolean
-    }
+    chatLog(username: String!, message: String!, ip: String!): Boolean
+}
 
-    type Mutation {
-        login(code: String!): String!
-        authUser(auth: String!): User!
+type Mutation {
+    login(code: String!): String!
+    authUser(auth: String!): User!
 
-        warnUser(guildId: String!, userId: String!, reason: String): Warn!
-        reportUser(guildId: String!, userId: String!, reason: String): Report!
-    }
+    warnUser(guildId: String!, userId: String!, reason: String): Warn!
+    reportUser(guildId: String!, userId: String!, reason: String): Report!
+}
 `;

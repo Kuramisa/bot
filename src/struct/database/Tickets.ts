@@ -7,7 +7,7 @@ export default class DatabaseTickets {
         guild,
         member,
         channel,
-        type
+        type,
     }: {
         id: string | number;
         guild: Guild;
@@ -23,7 +23,7 @@ export default class DatabaseTickets {
                 channelId: channel.id,
                 closed: false,
                 locked: false,
-                type
+                type,
             })
         ).save();
 

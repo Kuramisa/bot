@@ -7,7 +7,7 @@ export class ChannelsCommand extends Command {
             ...opts,
             name: "channels",
             description: "Manage your channel assignment",
-            requiredUserPermissions: "ManageGuild"
+            requiredUserPermissions: "ManageGuild",
         });
     }
 
@@ -63,7 +63,7 @@ export class ChannelsCommand extends Command {
             if (!Object.keys(db.channels).includes(type))
                 return interaction.reply({
                     content: `\`${type}\` channel type was not found in the database`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
             const channel = db.channels[type as keyof typeof db.channels];
@@ -72,7 +72,7 @@ export class ChannelsCommand extends Command {
                 content: `\`${util.capFirstLetter(type)}\`: ${
                     channel ? `<#${channel}>` : "Not Set"
                 }`,
-                ephemeral: true
+                ephemeral: true,
             });
         }
 
@@ -92,7 +92,7 @@ export class ChannelsCommand extends Command {
             if (channels.length < 1)
                 return interaction.reply({
                     content: `${channel} channel was not found in the database`,
-                    ephemeral: true
+                    ephemeral: true,
                 });
 
             return interaction.reply({ content: channels, ephemeral: true });
@@ -107,7 +107,7 @@ export class ChannelsCommand extends Command {
                 content: `Set ${channel} as a **${util.capFirstLetter(
                     type
                 )}** channel`,
-                ephemeral: true
+                ephemeral: true,
             });
         }
     }

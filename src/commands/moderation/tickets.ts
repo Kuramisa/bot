@@ -96,7 +96,7 @@ export class TicketsCommand extends Subcommand {
                                         .setName("style")
                                         .setDescription("Style for the button")
                                         .setRequired(true)
-                                        .addChoices(
+                                        .setChoices(
                                             {
                                                 name: "Blurple",
                                                 value: ButtonStyle.Primary,

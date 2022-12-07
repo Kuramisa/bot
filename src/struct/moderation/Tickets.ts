@@ -92,8 +92,8 @@ export default class Tickets {
             await db.save();
 
             return interaction.editReply({
-                content: "New button added",
-                components: [util.row().setComponents(button)],
+                content: `New button added in ${channel}`,
+                components: [],
             });
         } catch (err: any) {
             if (err.message.includes("duplicated"))
@@ -161,7 +161,7 @@ export default class Tickets {
         await db.save();
 
         return interaction.reply({
-            content: "Removed a button",
+            content: `Removed a button in ${channel}`,
             ephemeral: true,
         });
     }
