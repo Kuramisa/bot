@@ -190,7 +190,21 @@ export class MemberActionsListener extends Listener {
             case "report_member": {
                 const modal = moderation.reports.modal(target);
 
-                return interaction.showModal(modal);
+                await interaction.showModal(modal);
+
+                const mIntereaction = await interaction.awaitModalSubmit({
+                    time: 0,
+                });
+
+                const reason =
+                    mIntereaction.fields.getTextInputValue("report-reason");
+
+                await moderation.reports.create(target, member, reason);
+
+                return interaction.reply({
+                    content: `You reported ${target.user.tag}`,
+                    ephemeral: true,
+                });
             }
             case "warn_member": {
                 if (!member.permissions.has("ModerateMembers"))
@@ -200,7 +214,21 @@ export class MemberActionsListener extends Listener {
                     });
                 const modal = moderation.warns.modal(target);
 
-                return interaction.showModal(modal);
+                await interaction.showModal(modal);
+
+                const mInteraction = await interaction.awaitModalSubmit({
+                    time: 0,
+                });
+
+                const reason =
+                    mInteraction.fields.getTextInputValue("warn-reason");
+
+                await moderation.warns.create(target, member, reason);
+
+                return interaction.reply({
+                    content: `You warned ${target.user.tag}`,
+                    ephemeral: true,
+                });
             }
             case "show_reports": {
                 if (!member.permissions.has("ViewAuditLog"))
