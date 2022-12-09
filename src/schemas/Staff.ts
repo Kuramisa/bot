@@ -7,21 +7,24 @@ export interface IStaff extends HydratedDocument<any> {
     type: StaffType;
 }
 
-export const Staff = new Schema<IStaff>({
-    id: {
-        type: String,
-        required: true,
-        unique: true,
+export const Staff = new Schema<IStaff>(
+    {
+        id: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        type: {
+            type: String,
+            default: "helper",
+        },
     },
-    description: {
-        type: String,
-        required: true,
-    },
-    type: {
-        type: String,
-        default: "helper",
-    },
-});
+    { _id: false }
+);
 
 export type TStaff = Document<unknown, any, IStaff> &
     IStaff & { _id: Types.ObjectId };

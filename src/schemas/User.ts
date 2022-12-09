@@ -44,114 +44,117 @@ export interface IUser extends HydratedDocument<any> {
     reports: IReport[];
 }
 
-export const User: Schema = new Schema<IUser>({
-    id: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    premium: {
-        type: Boolean,
-        default: false,
-    },
-    betaTester: {
-        type: Boolean,
-        default: false,
-    },
-    minecraft: {
-        code: String,
-        username: String,
-    },
-    xp: {
-        type: Number,
-        default: 0,
-    },
-    level: {
-        type: Number,
-        default: 0,
-    },
-    currencies: {
-        ryo: {
-            type: Number,
-            default: 0,
+export const User: Schema = new Schema<IUser>(
+    {
+        id: {
+            type: String,
+            required: true,
+            unique: true,
         },
-    },
-    items: [],
-    valorant: {
-        name: String,
-        tag: String,
-        puuid: String,
-    },
-    card: {
-        background: {
-            type: {
-                type: String,
-                default: "color",
-            },
-            color: {
-                type: String,
-                default: "#D18700",
-            },
-            image: Buffer,
+        username: {
+            type: String,
+            required: true,
         },
-        outlines: {
-            type: {
-                type: String,
-                default: "avatar",
-            },
-            color: {
-                type: String,
-                default: "#222216",
-            },
-        },
-        text: {
-            type: {
-                type: String,
-                default: "color",
-            },
-            color: {
-                type: String,
-                default: "#ffffff",
-            },
-        },
-    },
-    marriage: {
-        married: {
+        premium: {
             type: Boolean,
             default: false,
         },
-        to: String,
-        since: Number,
-    },
-    warns: [
-        {
-            id: String,
-            guildId: String,
-            by: String,
-            message: {
-                id: String,
-                content: String,
+        betaTester: {
+            type: Boolean,
+            default: false,
+        },
+        minecraft: {
+            code: String,
+            username: String,
+        },
+        xp: {
+            type: Number,
+            default: 0,
+        },
+        level: {
+            type: Number,
+            default: 0,
+        },
+        currencies: {
+            ryo: {
+                type: Number,
+                default: 0,
             },
-            reason: String,
         },
-    ],
-    reports: [
-        {
-            id: String,
-            guildId: String,
-            by: String,
-            reason: String,
+        items: [],
+        valorant: {
+            name: String,
+            tag: String,
+            puuid: String,
         },
-    ],
-});
+        card: {
+            background: {
+                type: {
+                    type: String,
+                    default: "color",
+                },
+                color: {
+                    type: String,
+                    default: "#D18700",
+                },
+                image: Buffer,
+            },
+            outlines: {
+                type: {
+                    type: String,
+                    default: "avatar",
+                },
+                color: {
+                    type: String,
+                    default: "#222216",
+                },
+            },
+            text: {
+                type: {
+                    type: String,
+                    default: "color",
+                },
+                color: {
+                    type: String,
+                    default: "#ffffff",
+                },
+            },
+        },
+        marriage: {
+            married: {
+                type: Boolean,
+                default: false,
+            },
+            to: String,
+            since: Number,
+        },
+        warns: [
+            {
+                id: String,
+                guildId: String,
+                by: String,
+                message: {
+                    id: String,
+                    content: String,
+                },
+                reason: String,
+            },
+        ],
+        reports: [
+            {
+                id: String,
+                guildId: String,
+                by: String,
+                reason: String,
+            },
+        ],
+    },
+    { _id: false }
+);
 
 export type TUser = Document<unknown, any, IUser> &
     IUser & {
-    _id: Types.ObjectId;
-};
+        _id: Types.ObjectId;
+    };
 
 export default model<IUser>("users", User);

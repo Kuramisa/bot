@@ -96,127 +96,130 @@ export interface IGuild extends HydratedDocument<any> {
     }[];
 }
 
-export const Guild: Schema = new Schema<IGuild>({
-    id: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    prefix: {
-        type: String,
-        default: "k!",
-    },
-    premium: {
-        type: Boolean,
-        default: false,
-    },
-    autorole: [],
-    dvc: [],
-    games: {
-        list: {
-            type: Array,
-            default: ["Valorant", "CSGO"],
+export const Guild: Schema = new Schema<IGuild>(
+    {
+        id: {
+            type: String,
+            required: true,
+            unique: true,
         },
-        settings: {
-            type: Object,
-            default: {},
+        name: {
+            type: String,
+            required: true,
         },
-    },
-    promoted: {
-        type: Boolean,
-        default: false,
-    },
-    channels: {
-        rules: String,
-        reports: String,
-    },
-    roles: {
-        member: String,
-        joined: String,
-    },
-    logs: {
-        channel: String,
-        types: {
-            memberWarned: Boolean,
-            memberReported: Boolean,
-            memberJoin: Boolean,
-            memberLeave: Boolean,
-            memberBoost: Boolean,
-            memberUnboost: Boolean,
-            memberRoleAdded: Boolean,
-            memberRoleRemoved: Boolean,
-            memberNicknameChange: Boolean,
-            messageDeleted: Boolean,
-            messageEdited: Boolean,
+        prefix: {
+            type: String,
+            default: "k!",
         },
-    },
-    welcomeMessage: {
-        enabled: Boolean,
-        channel: String,
-        card: {
-            type: {
-                type: String,
-                default: "color",
+        premium: {
+            type: Boolean,
+            default: false,
+        },
+        autorole: [],
+        dvc: [],
+        games: {
+            list: {
+                type: Array,
+                default: ["Valorant", "CSGO"],
             },
-            color: {
-                type: String,
-                default: "#D18700",
+            settings: {
+                type: Object,
+                default: {},
             },
-            image: Schema.Types.Mixed,
         },
-    },
-    goodbyeMessage: {
-        enabled: Boolean,
-        channel: String,
-        card: {
-            type: {
-                type: String,
-                default: "color",
-            },
-            color: {
-                type: String,
-                default: "#D18700",
-            },
-            image: Schema.Types.Mixed,
+        promoted: {
+            type: Boolean,
+            default: false,
         },
-    },
-    toggles: {
-        justJoined: Boolean,
-        nsfwFilter: Boolean,
-    },
-    tickets: {
-        category: String,
-        message: String,
         channels: {
-            openTicket: String,
-            transcripts: String,
+            rules: String,
+            reports: String,
         },
-        buttons: [],
-    },
-    selfroles: [
-        {
-            channelId: String,
-            messages: [
-                {
-                    id: String,
-                    buttons: [
-                        {
-                            id: String,
-                            name: String,
-                            roleId: String,
-                            emoji: String,
-                            style: Number,
-                        },
-                    ],
+        roles: {
+            member: String,
+            joined: String,
+        },
+        logs: {
+            channel: String,
+            types: {
+                memberWarned: Boolean,
+                memberReported: Boolean,
+                memberJoin: Boolean,
+                memberLeave: Boolean,
+                memberBoost: Boolean,
+                memberUnboost: Boolean,
+                memberRoleAdded: Boolean,
+                memberRoleRemoved: Boolean,
+                memberNicknameChange: Boolean,
+                messageDeleted: Boolean,
+                messageEdited: Boolean,
+            },
+        },
+        welcomeMessage: {
+            enabled: Boolean,
+            channel: String,
+            card: {
+                type: {
+                    type: String,
+                    default: "color",
                 },
-            ],
+                color: {
+                    type: String,
+                    default: "#D18700",
+                },
+                image: Schema.Types.Mixed,
+            },
         },
-    ],
-});
+        goodbyeMessage: {
+            enabled: Boolean,
+            channel: String,
+            card: {
+                type: {
+                    type: String,
+                    default: "color",
+                },
+                color: {
+                    type: String,
+                    default: "#D18700",
+                },
+                image: Schema.Types.Mixed,
+            },
+        },
+        toggles: {
+            justJoined: Boolean,
+            nsfwFilter: Boolean,
+        },
+        tickets: {
+            category: String,
+            message: String,
+            channels: {
+                openTicket: String,
+                transcripts: String,
+            },
+            buttons: [],
+        },
+        selfroles: [
+            {
+                channelId: String,
+                messages: [
+                    {
+                        id: String,
+                        buttons: [
+                            {
+                                id: String,
+                                name: String,
+                                roleId: String,
+                                emoji: String,
+                                style: Number,
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    { _id: false }
+);
 
 export type TGuild = Document<unknown, any, IGuild> &
     IGuild & {

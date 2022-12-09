@@ -8,12 +8,15 @@ export interface IPlaylist extends HydratedDocument<any> {
     sharedWith: string[];
 }
 
-export const Playlist: Schema = new Schema<IPlaylist>({
-    memberId: String,
-    name: String,
-    tracks: [],
-    sharedWith: [],
-});
+export const Playlist: Schema = new Schema<IPlaylist>(
+    {
+        memberId: String,
+        name: String,
+        tracks: [],
+        sharedWith: [],
+    },
+    { _id: false }
+);
 
 export type TPlaylist = Document<unknown, any, IPlaylist> &
     IPlaylist & {

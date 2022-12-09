@@ -11,16 +11,19 @@ export interface ITicket extends HydratedDocument<any> {
     type: string;
 }
 
-export const Ticket: Schema = new Schema<ITicket>({
-    guildId: String,
-    memberId: String,
-    ticketId: String,
-    channelId: String,
-    closed: Boolean,
-    locked: Boolean,
-    transcript: Buffer,
-    type: String,
-});
+export const Ticket: Schema = new Schema<ITicket>(
+    {
+        guildId: String,
+        memberId: String,
+        ticketId: String,
+        channelId: String,
+        closed: Boolean,
+        locked: Boolean,
+        transcript: Buffer,
+        type: String,
+    },
+    { _id: false }
+);
 
 export type TTicket = Document<unknown, any, ITicket> &
     ITicket & {

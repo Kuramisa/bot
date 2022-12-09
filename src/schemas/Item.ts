@@ -10,27 +10,30 @@ export interface IItem extends HydratedDocument<any> {
     emoji?: string;
 }
 
-export const Item: Schema = new Schema<IItem>({
-    id: {
-        type: String,
-        required: true,
+export const Item: Schema = new Schema<IItem>(
+    {
+        id: {
+            type: String,
+            required: true,
+        },
+        name: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        usage: {
+            type: String,
+            required: true,
+        },
+        price: Number,
+        amount: Number,
+        emoji: String,
     },
-    name: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    usage: {
-        type: String,
-        required: true,
-    },
-    price: Number,
-    amount: Number,
-    emoji: String,
-});
+    { _id: false }
+);
 
 export type TItem = Document<unknown, any, IItem> &
     IItem & { _id: Types.ObjectId };

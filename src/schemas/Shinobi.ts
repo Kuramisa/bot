@@ -1,5 +1,5 @@
 import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
-import { ShinobiStats, ShinobiWeapon, ShinobiRanks } from "@types";
+import { ShinobiRanks, ShinobiStats, ShinobiWeapon } from "@types";
 
 export interface IShinobi extends HydratedDocument<any> {
     memberId: string;
@@ -20,56 +20,59 @@ export interface IShinobi extends HydratedDocument<any> {
     };
 }
 
-export const Shinobi: Schema = new Schema<IShinobi>({
-    memberId: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    clan: {
-        type: String,
-        required: true,
-    },
-    village: {
-        type: String,
-        required: true,
-    },
-    rank: {
-        type: String,
-        default: "genin",
-    },
-    xp: {
-        type: Number,
-        default: 0,
-    },
-    level: {
-        type: Number,
-        default: 0,
-    },
-    currencies: {
-        ryo: {
+export const Shinobi: Schema = new Schema<IShinobi>(
+    {
+        memberId: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        clan: {
+            type: String,
+            required: true,
+        },
+        village: {
+            type: String,
+            required: true,
+        },
+        rank: {
+            type: String,
+            default: "genin",
+        },
+        xp: {
             type: Number,
             default: 0,
         },
-    },
-    stats: {},
-    weapons: [],
-    equipped: {
-        weapon: {},
-    },
-    cooldowns: {
-        daily: {
+        level: {
             type: Number,
+            default: 0,
         },
-        weekly: {
-            type: Number,
+        currencies: {
+            ryo: {
+                type: Number,
+                default: 0,
+            },
+        },
+        stats: {},
+        weapons: [],
+        equipped: {
+            weapon: {},
+        },
+        cooldowns: {
+            daily: {
+                type: Number,
+            },
+            weekly: {
+                type: Number,
+            },
         },
     },
-});
+    { _id: false }
+);
 
 export type TShinobi = Document<unknown, any, IShinobi> &
     IShinobi & {
