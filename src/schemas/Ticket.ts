@@ -1,4 +1,4 @@
-import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
+import { HydratedDocument, model, Schema } from "mongoose";
 
 export interface ITicket extends HydratedDocument<any> {
     guildId: string;
@@ -11,23 +11,15 @@ export interface ITicket extends HydratedDocument<any> {
     type: string;
 }
 
-export const Ticket: Schema = new Schema<ITicket>(
-    {
-        guildId: String,
-        memberId: String,
-        ticketId: String,
-        channelId: String,
-        closed: Boolean,
-        locked: Boolean,
-        transcript: Buffer,
-        type: String,
-    },
-    { _id: false }
-);
-
-export type TTicket = Document<unknown, any, ITicket> &
-    ITicket & {
-        _id: Types.ObjectId;
-    };
+export const Ticket: Schema = new Schema<ITicket>({
+    guildId: String,
+    memberId: String,
+    ticketId: String,
+    channelId: String,
+    closed: Boolean,
+    locked: Boolean,
+    transcript: Buffer,
+    type: String,
+});
 
 export default model<ITicket>("tickets", Ticket);

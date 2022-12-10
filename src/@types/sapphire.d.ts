@@ -9,8 +9,6 @@ import { Seasons } from "@valapi/valorant-api.com";
 import Dashboard from "#struct/dashboard";
 import Systems from "#struct/systems";
 
-import { TStaff } from "#schemas/Staff";
-
 declare module "@sapphire/pieces" {
     interface Container {
         mainGuild: Guild;
@@ -20,8 +18,6 @@ declare module "@sapphire/pieces" {
         promoteChannel: GuildBasedChannel | null;
 
         owners: string[];
-
-        staff: TStaff[];
 
         dashboard: Dashboard;
 

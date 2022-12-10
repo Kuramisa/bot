@@ -1,4 +1,4 @@
-import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
+import { HydratedDocument, model, Schema } from "mongoose";
 
 export interface IGiveaway extends HydratedDocument<any> {
     messageId: string;
@@ -57,69 +57,61 @@ export interface IGiveaway extends HydratedDocument<any> {
     };
 }
 
-export const Giveaway: Schema = new Schema<IGiveaway>(
-    {
-        messageId: String,
-        channelId: String,
-        guildId: String,
-        startAt: Number,
-        endAt: Number,
-        ended: Boolean,
-        winnerCount: Number,
-        prize: String,
-        messages: {
-            giveaway: String,
-            giveawayEnded: String,
-            title: String,
-            inviteToParticipate: String,
-            drawing: String,
-            dropMessage: String,
-            winMessage: mongoose.Mixed,
-            embedFooter: mongoose.Mixed,
-            noWinner: String,
-            winners: String,
-            endedAt: String,
-            hostedBy: String,
-        },
-        thumbnail: String,
-        image: String,
+export const Giveaway = new Schema<IGiveaway>({
+    messageId: String,
+    channelId: String,
+    guildId: String,
+    startAt: Number,
+    endAt: Number,
+    ended: Boolean,
+    winnerCount: Number,
+    prize: String,
+    messages: {
+        giveaway: String,
+        giveawayEnded: String,
+        title: String,
+        inviteToParticipate: String,
+        drawing: String,
+        dropMessage: String,
+        winMessage: Schema.Types.Mixed,
+        embedFooter: Schema.Types.Mixed,
+        noWinner: String,
+        winners: String,
+        endedAt: String,
         hostedBy: String,
-        winnerIds: { type: [String], default: undefined },
-        reaction: mongoose.Mixed,
-        botsCanWin: Boolean,
-        embedColor: mongoose.Mixed,
-        embedColorEnd: mongoose.Mixed,
-        exemptPermissions: { type: [], default: undefined },
-        exemptMembers: String,
-        bonusEntries: String,
-        extraData: mongoose.Mixed,
-        lastChance: {
-            enabled: Boolean,
-            content: String,
-            threshold: Number,
-            embedColor: mongoose.Mixed,
-        },
-        pauseOptions: {
-            isPaused: Boolean,
-            content: String,
-            unPauseAfter: Number,
-            embedColor: mongoose.Mixed,
-            durationAfterPause: Number,
-            infiniteDurationText: String,
-        },
-        isDrop: Boolean,
-        allowedMentions: {
-            parse: { type: [String], default: undefined },
-            users: { type: [String], default: undefined },
-            roles: { type: [String], default: undefined },
-        },
     },
-    { _id: false }
-);
-
-export type TGiveaway = Document<unknown, any, IGiveaway> &
-    IGiveaway & {
-        _id: Types.ObjectId;
-    };
+    thumbnail: String,
+    image: String,
+    hostedBy: String,
+    winnerIds: { type: [String], default: undefined },
+    reaction: Schema.Types.Mixed,
+    botsCanWin: Boolean,
+    embedColor: Schema.Types.Mixed,
+    embedColorEnd: Schema.Types.Mixed,
+    exemptPermissions: { type: [], default: undefined },
+    exemptMembers: String,
+    bonusEntries: String,
+    extraData: Schema.Types.Mixed,
+    lastChance: {
+        enabled: Boolean,
+        content: String,
+        threshold: Number,
+        embedColor: Schema.Types.Mixed,
+    },
+    pauseOptions: {
+        isPaused: Boolean,
+        content: String,
+        unPauseAfter: Number,
+        embedColor: Schema.Types.Mixed,
+        durationAfterPause: Number,
+        infiniteDurationText: String,
+    },
+    isDrop: Boolean,
+    allowedMentions: {
+        parse: { type: [String], default: undefined },
+        users: { type: [String], default: undefined },
+        roles: { type: [String], default: undefined },
+    },
+});
 
 export default model<IGiveaway>("giveaways", Giveaway);

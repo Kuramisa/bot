@@ -1,4 +1,4 @@
-import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
+import { HydratedDocument, model, Schema } from "mongoose";
 
 export interface IGuild extends HydratedDocument<any> {
     id: string;
@@ -96,134 +96,126 @@ export interface IGuild extends HydratedDocument<any> {
     }[];
 }
 
-export const Guild: Schema = new Schema<IGuild>(
-    {
-        id: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        prefix: {
-            type: String,
-            default: "k!",
-        },
-        premium: {
-            type: Boolean,
-            default: false,
-        },
-        autorole: [],
-        dvc: [],
-        games: {
-            list: {
-                type: Array,
-                default: ["Valorant", "CSGO"],
-            },
-            settings: {
-                type: Object,
-                default: {},
-            },
-        },
-        promoted: {
-            type: Boolean,
-            default: false,
-        },
-        channels: {
-            rules: String,
-            reports: String,
-        },
-        roles: {
-            member: String,
-            joined: String,
-        },
-        logs: {
-            channel: String,
-            types: {
-                memberWarned: Boolean,
-                memberReported: Boolean,
-                memberJoin: Boolean,
-                memberLeave: Boolean,
-                memberBoost: Boolean,
-                memberUnboost: Boolean,
-                memberRoleAdded: Boolean,
-                memberRoleRemoved: Boolean,
-                memberNicknameChange: Boolean,
-                messageDeleted: Boolean,
-                messageEdited: Boolean,
-            },
-        },
-        welcomeMessage: {
-            enabled: Boolean,
-            channel: String,
-            card: {
-                type: {
-                    type: String,
-                    default: "color",
-                },
-                color: {
-                    type: String,
-                    default: "#D18700",
-                },
-                image: Schema.Types.Mixed,
-            },
-        },
-        goodbyeMessage: {
-            enabled: Boolean,
-            channel: String,
-            card: {
-                type: {
-                    type: String,
-                    default: "color",
-                },
-                color: {
-                    type: String,
-                    default: "#D18700",
-                },
-                image: Schema.Types.Mixed,
-            },
-        },
-        toggles: {
-            justJoined: Boolean,
-            nsfwFilter: Boolean,
-        },
-        tickets: {
-            category: String,
-            message: String,
-            channels: {
-                openTicket: String,
-                transcripts: String,
-            },
-            buttons: [],
-        },
-        selfroles: [
-            {
-                channelId: String,
-                messages: [
-                    {
-                        id: String,
-                        buttons: [
-                            {
-                                id: String,
-                                name: String,
-                                roleId: String,
-                                emoji: String,
-                                style: Number,
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
+export const Guild = new Schema<IGuild>({
+    id: {
+        type: String,
+        required: true,
+        unique: true,
     },
-    { _id: false }
-);
-
-export type TGuild = Document<unknown, any, IGuild> &
-    IGuild & {
-        _id: Types.ObjectId;
-    };
+    name: {
+        type: String,
+        required: true,
+    },
+    prefix: {
+        type: String,
+        default: "k!",
+    },
+    premium: {
+        type: Boolean,
+        default: false,
+    },
+    autorole: [],
+    dvc: [],
+    games: {
+        list: {
+            type: Array,
+            default: ["Valorant", "CSGO"],
+        },
+        settings: {
+            type: Object,
+            default: {},
+        },
+    },
+    promoted: {
+        type: Boolean,
+        default: false,
+    },
+    channels: {
+        rules: String,
+        reports: String,
+    },
+    roles: {
+        member: String,
+        joined: String,
+    },
+    logs: {
+        channel: String,
+        types: {
+            memberWarned: Boolean,
+            memberReported: Boolean,
+            memberJoin: Boolean,
+            memberLeave: Boolean,
+            memberBoost: Boolean,
+            memberUnboost: Boolean,
+            memberRoleAdded: Boolean,
+            memberRoleRemoved: Boolean,
+            memberNicknameChange: Boolean,
+            messageDeleted: Boolean,
+            messageEdited: Boolean,
+        },
+    },
+    welcomeMessage: {
+        enabled: Boolean,
+        channel: String,
+        card: {
+            type: {
+                type: String,
+                default: "color",
+            },
+            color: {
+                type: String,
+                default: "#D18700",
+            },
+            image: Schema.Types.Mixed,
+        },
+    },
+    goodbyeMessage: {
+        enabled: Boolean,
+        channel: String,
+        card: {
+            type: {
+                type: String,
+                default: "color",
+            },
+            color: {
+                type: String,
+                default: "#D18700",
+            },
+            image: Schema.Types.Mixed,
+        },
+    },
+    toggles: {
+        justJoined: Boolean,
+        nsfwFilter: Boolean,
+    },
+    tickets: {
+        category: String,
+        message: String,
+        channels: {
+            openTicket: String,
+            transcripts: String,
+        },
+        buttons: [],
+    },
+    selfroles: [
+        {
+            channelId: String,
+            messages: [
+                {
+                    id: String,
+                    buttons: [
+                        {
+                            id: String,
+                            name: String,
+                            roleId: String,
+                            emoji: String,
+                            style: Number,
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
+});
 
 export default model<IGuild>("guilds", Guild);

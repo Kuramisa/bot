@@ -1,4 +1,4 @@
-import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
+import { HydratedDocument, model, Schema } from "mongoose";
 import { StaffType } from "@types";
 
 export interface IStaff extends HydratedDocument<any> {
@@ -7,26 +7,20 @@ export interface IStaff extends HydratedDocument<any> {
     type: StaffType;
 }
 
-export const Staff = new Schema<IStaff>(
-    {
-        id: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        type: {
-            type: String,
-            default: "helper",
-        },
+export const Staff = new Schema<IStaff>({
+    id: {
+        type: String,
+        required: true,
+        unique: true,
     },
-    { _id: false }
-);
-
-export type TStaff = Document<unknown, any, IStaff> &
-    IStaff & { _id: Types.ObjectId };
+    description: {
+        type: String,
+        required: true,
+    },
+    type: {
+        type: String,
+        default: "helper",
+    },
+});
 
 export default model<IStaff>("staff", Staff);

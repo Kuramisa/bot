@@ -1,4 +1,4 @@
-import { Document, HydratedDocument, model, Schema, Types } from "mongoose";
+import { HydratedDocument, model, Schema } from "mongoose";
 import { RawTrackData } from "discord-player";
 
 export interface IPlaylist extends HydratedDocument<any> {
@@ -8,19 +8,11 @@ export interface IPlaylist extends HydratedDocument<any> {
     sharedWith: string[];
 }
 
-export const Playlist: Schema = new Schema<IPlaylist>(
-    {
-        memberId: String,
-        name: String,
-        tracks: [],
-        sharedWith: [],
-    },
-    { _id: false }
-);
-
-export type TPlaylist = Document<unknown, any, IPlaylist> &
-    IPlaylist & {
-        _id: Types.ObjectId;
-    };
+export const Playlist = new Schema<IPlaylist>({
+    memberId: String,
+    name: String,
+    tracks: [],
+    sharedWith: [],
+});
 
 export default model<IPlaylist>("playlists", Playlist);

@@ -25,6 +25,7 @@ export class Kuramisa extends SapphireClient {
                 "GuildInvites",
                 "Guilds",
                 "GuildEmojisAndStickers",
+                "GuildMessageReactions",
                 "GuildMembers",
                 "GuildMessages",
                 "GuildVoiceStates",
