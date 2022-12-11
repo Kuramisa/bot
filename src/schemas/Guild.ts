@@ -33,7 +33,6 @@ export interface IGuild extends HydratedDocument<any> {
     };
     roles: {
         member: string;
-        joined: string;
     };
     logs: {
         channel: string;
@@ -136,7 +135,6 @@ export const Guild = new Schema<IGuild>({
     },
     roles: {
         member: String,
-        joined: String,
     },
     logs: {
         channel: String,
@@ -185,7 +183,6 @@ export const Guild = new Schema<IGuild>({
         },
     },
     toggles: {
-        justJoined: Boolean,
         nsfwFilter: Boolean,
     },
     tickets: {
