@@ -28,24 +28,6 @@ export default class Reports {
 
         await dbUser.save();
 
-        if (dbGuild.channels.reports) {
-            const channel = guild.channels.cache.get(dbGuild.channels.reports);
-            if (!channel || !channel.isTextBased()) return;
-            if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
-                return;
-
-            const embed = util
-                .embed()
-                .setAuthor({
-                    name: by.user.tag,
-                    iconURL: by.displayAvatarURL({ extension: "gif" }),
-                })
-                .setTitle(`${by.user.tag} reported ${member.user.tag}`)
-                .addFields({ name: "Reason", value: reason });
-
-            channel.send({ embeds: [embed] });
-        }
-
         if (dbGuild.logs.types.memberReported) {
             const channel = guild.channels.cache.get(dbGuild.logs.channel);
             if (!channel || !channel.isTextBased()) return;
@@ -91,28 +73,6 @@ export default class Reports {
         });
 
         await dbUser.save();
-
-        if (dbGuild.channels.reports) {
-            const channel = guild.channels.cache.get(dbGuild.logs.channel);
-            if (!channel || !channel.isTextBased()) return;
-
-            if (!guild.members.me?.permissionsIn(channel).has("SendMessages"))
-                return;
-
-            const embed = util
-                .embed()
-                .setAuthor({
-                    name: `${guild.name} Logs`,
-                    iconURL: guild.iconURL({ extension: "gif" }) as string,
-                })
-                .setThumbnail(member.displayAvatarURL({ extension: "gif" }))
-                .setDescription(
-                    `${by} **Reported** ${member}'s Message\n\n[Message Link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`
-                )
-                .addFields({ name: "Reason", value: reason });
-
-            channel.send({ embeds: [embed] });
-        }
 
         if (dbGuild.logs.types.memberReported) {
             const channel = guild.channels.cache.get(dbGuild.logs.channel);
