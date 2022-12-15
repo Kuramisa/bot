@@ -55,6 +55,14 @@ export default class Util {
         ];
     }
 
+    async clearCommands() {
+        const { client, logger } = this.container;
+
+        await client.application?.commands.set([]);
+
+        logger.info("Cleared all commands");
+    }
+
     daysToSecs = (days: number) => days * 24 * 60 * 60;
 
     row = (): ActionRowBuilder<MessageActionRowComponentBuilder> =>
