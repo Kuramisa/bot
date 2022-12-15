@@ -20,31 +20,45 @@ export class AcceptRulesBtnListener extends Listener {
         const db = await database.guilds.get(guild);
         if (!db) return;
 
-        if (!db.roles.member || db.roles.member.length < 1)
+        const { rules } = db;
+
+        if (!rules.roles || rules.roles.length < 1) {
+            if (
+                member.permissions.has("ManageGuild") ||
+                member.permissions.has("ManageRoles")
+            )
+                return interaction.reply({
+                    content:
+                        "Roles for the rules is not setup, since you have the `Manage Guild` or `Manage Roles` permission, you can setup the roles with `/rules roles`",
+                    ephemeral: true,
+                });
+
             return interaction.reply({
-                content: "Member is not setup, Contact the server owner",
+                content:
+                    "Roles for the rules is not setup, please contact an admin",
                 ephemeral: true,
             });
+        }
 
-        const role = guild.roles.cache.get(db.roles.member);
-        if (!role)
-            return interaction.reply({
-                content: "Member role not found",
-                ephemeral: true,
+        await interaction.deferReply({ ephemeral: true });
+
+        const neededRoles = [];
+
+        for (const role of rules.roles) {
+            if (!member.roles.cache.has(role)) neededRoles.push(role);
+        }
+
+        if (neededRoles.length < 1)
+            return interaction.editReply({
+                content: "You already have all the roles that rules gives out",
             });
 
-        if (member.roles.cache.get(role.id))
-            return interaction.reply({
-                content: "You already a member",
-                ephemeral: true,
-            });
+        await member.roles.add(neededRoles);
 
-        await member.roles.add(role);
-
-        return interaction.reply({
-            content:
-                "You accepted the rules and became a member, have a good stay",
-            ephemeral: true,
+        return interaction.editReply({
+            content: `You accepted the rules, have a good stay\n\nReceived roles: ${neededRoles
+                .map((r) => `<@&${r}>`)
+                .join(", ")}`,
         });
     }
 }

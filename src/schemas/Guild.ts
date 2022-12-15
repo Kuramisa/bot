@@ -90,6 +90,11 @@ export interface IGuild extends HydratedDocument<any> {
             }[];
         }[];
     }[];
+    rules: {
+        channelId: string;
+        messageId: string;
+        roles: string[];
+    };
 }
 
 export const Guild = new Schema<IGuild>({
@@ -200,6 +205,11 @@ export const Guild = new Schema<IGuild>({
             ],
         },
     ],
+    rules: {
+        channelId: String,
+        messageId: String,
+        roles: [],
+    },
 });
 
 export default model<IGuild>("guilds", Guild);

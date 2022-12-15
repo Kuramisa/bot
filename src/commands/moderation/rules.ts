@@ -1,5 +1,12 @@
 import { Subcommand } from "@sapphire/plugin-subcommands";
-import { ChatInputCommandInteraction, TextInputStyle } from "discord.js";
+import {
+    ButtonStyle,
+    ChannelType,
+    ChatInputCommandInteraction,
+    ComponentType,
+    PermissionsBitField,
+    TextInputStyle,
+} from "discord.js";
 
 export class RulesCommand extends Subcommand {
     constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
@@ -17,137 +24,214 @@ export class RulesCommand extends Subcommand {
                 .setName(this.name)
                 .setDescription(this.description)
                 .setDMPermission(false)
-                .setDefaultMemberPermissions(1 << 5)
-                .addSubcommand((command) =>
-                    command.setName("set").setDescription("Set rules")
+                .setDefaultMemberPermissions(
+                    PermissionsBitField.Flags.ManageGuild |
+                        PermissionsBitField.Flags.ManageRoles
                 )
                 .addSubcommand((command) =>
                     command
-                        .setName("check")
-                        .setDescription("Check current rules")
+                        .setName("setup")
+                        .setDescription("Setup some rules")
+                        .addChannelOption((option) =>
+                            option
+                                .setName("rules_channel")
+                                .setDescription("Channel to setup rules at")
+                                .addChannelTypes(ChannelType.GuildText)
+                                .setRequired(true)
+                        )
+                        .addNumberOption((option) =>
+                            option
+                                .setName("rules_button_style")
+                                .setDescription("Button Style")
+                                .setRequired(false)
+                                .setChoices(
+                                    {
+                                        name: "Blurple",
+                                        value: ButtonStyle.Primary,
+                                    },
+                                    {
+                                        name: "Grey",
+                                        value: ButtonStyle.Secondary,
+                                    },
+                                    {
+                                        name: "Green",
+                                        value: ButtonStyle.Success,
+                                    },
+                                    {
+                                        name: "Red",
+                                        value: ButtonStyle.Danger,
+                                    }
+                                )
+                        )
+                        .addStringOption((option) =>
+                            option
+                                .setName("rules_button_emoji")
+                                .setDescription("Button Emoji")
+                                .setRequired(false)
+                        )
                 )
                 .addSubcommand((command) =>
-                    command.setName("edit").setDescription("Edit current rules")
+                    command
+                        .setName("roles")
+                        .setDescription("Set what roles rules should give out")
                 )
         );
     }
 
-    async chatInputRun(
-        interaction: ChatInputCommandInteraction<"cached">
-    ): Promise<any> {
+    async chatInputRun(interaction: ChatInputCommandInteraction): Promise<any> {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
+        if (!guild) return;
 
         const db = await database.guilds.get(guild);
         if (!db) return;
 
-        const channel =
-            guild.channels.cache.get(db.channels.rules) || guild.rulesChannel;
-
-        if (!channel)
-            return interaction.reply({
-                content:
-                    "Set your Rules channel through community settings or with `/settings`",
-                ephemeral: true,
-            });
-
-        if (!channel.isTextBased())
-            return interaction.reply({
-                content: "Make sure your rules channel is text based",
-                ephemeral: true,
-            });
-
-        const messages = await channel.messages.fetch();
-
-        if (messages.some((message) => !message.author.bot))
-            return interaction.reply({
-                content:
-                    "Make sure there are no user messages and the channel is solely used for rules",
-                ephemeral: true,
-            });
-
         switch (options.getSubcommand()) {
-            case "set": {
-                if (messages.size > 0)
-                    return interaction.reply({
-                        content:
-                            "Rules already exist, use `/rules update` or `/rules delete` and make a new one",
-                        ephemeral: true,
-                    });
-
+            case "setup": {
                 const modal = util
                     .modal()
                     .setCustomId("rules_create")
-                    .setTitle("Creating Rules")
-                    .addComponents(
+                    .setTitle("Rules Creation")
+                    .setComponents(
                         util
                             .modalRow()
                             .setComponents(
                                 util
                                     .input()
                                     .setCustomId("rules_input_create")
-                                    .setLabel("New Rules")
+                                    .setLabel("Rules Message")
                                     .setStyle(TextInputStyle.Paragraph)
+                                    .setRequired(true)
                             )
                     );
 
-                return interaction.showModal(modal);
-            }
-            case "edit": {
-                if (messages.size !== 1)
-                    return interaction.reply({
-                        content:
-                            "To edit the rules there should be only one message that contains rules by the bot",
-                        ephemeral: true,
-                    });
+                await interaction.showModal(modal);
 
-                const message = messages.first();
-                if (!message)
-                    return interaction.reply({
-                        content: "Could not find the rules message",
-                        ephemeral: true,
-                    });
-
-                const modal = util
-                    .modal()
-                    .setCustomId("rules_edit")
-                    .setTitle("Editing Current Rules")
-                    .addComponents(
-                        util
-                            .modalRow()
-                            .setComponents(
-                                util
-                                    .input()
-                                    .setCustomId("rules_input_edit")
-                                    .setLabel("Current Rules")
-                                    .setStyle(TextInputStyle.Paragraph)
-                                    .setValue(message.content)
-                            )
-                    );
-
-                return interaction.showModal(modal);
-            }
-            case "check": {
-                if (messages.size !== 1)
-                    return interaction.reply({
-                        content:
-                            "To check the rules there should be only one message that contains rules by the bot",
-                        ephemeral: true,
-                    });
-
-                const message = messages.first();
-
-                if (!message)
-                    return interaction.reply({
-                        content: "No message found",
-                        ephemeral: true,
-                    });
-
-                return interaction.reply({
-                    content: message.content,
-                    ephemeral: true,
+                const mInteraction = await interaction.awaitModalSubmit({
+                    time: 0,
                 });
+
+                const roleMenu = util
+                    .row()
+                    .setComponents(
+                        util
+                            .roleMenu()
+                            .setCustomId("rules_role_menu")
+                            .setPlaceholder(
+                                "Select roles to give out after accepting rules"
+                            )
+                            .setMinValues(1)
+                            .setMaxValues(25)
+                    );
+
+                const message = await mInteraction.reply({
+                    components: [roleMenu],
+                    ephemeral: true,
+                    fetchReply: true,
+                });
+
+                const rInteraction = await message.awaitMessageComponent({
+                    componentType: ComponentType.RoleSelect,
+                });
+
+                await rInteraction.deferUpdate();
+
+                const { values, roles } = rInteraction;
+
+                const apiChannel = options.getChannel("rules_channel", true);
+                const channel = await guild.channels.fetch(apiChannel.id);
+                if (!channel || !channel.isTextBased())
+                    return interaction.reply({
+                        content: "Text channel is not provided",
+                        ephemeral: true,
+                    });
+
+                const rulesMessage =
+                    mInteraction.fields.getTextInputValue("rules_input_create");
+                const buttonStyle = options.getNumber("rules_button_style");
+
+                const button = util
+                    .button()
+                    .setCustomId("accept_rules")
+                    .setLabel("Accept Rules")
+                    .setStyle(
+                        buttonStyle ? buttonStyle : ButtonStyle.Secondary
+                    );
+
+                const buttonEmoji = options.getString("rules_button_emoji");
+
+                if (buttonEmoji) button.setEmoji(buttonEmoji);
+
+                const row = util.row().setComponents(button);
+
+                // Message that was sent to the rules channel
+                const rMessage = await channel.send({
+                    content: rulesMessage,
+                    components: [row],
+                });
+
+                const embed = util
+                    .embed()
+                    .setTitle("Rules Created")
+                    .setDescription(
+                        `Check ${channel}\n\nRoles upon accepting: ${roles
+                            .map((role) => `${role}`)
+                            .join(", ")}`
+                    );
+
+                db.rules = {
+                    channelId: channel.id,
+                    messageId: rMessage.id,
+                    roles: values,
+                };
+
+                await db.save();
+
+                return rInteraction.update({
+                    embeds: [embed],
+                });
+            }
+            case "roles": {
+                const roleMenu = util
+                    .row()
+                    .setComponents(
+                        util
+                            .roleMenu()
+                            .setCustomId("rules_role_menu")
+                            .setPlaceholder(
+                                "Select roles to give out after accepting rules"
+                            )
+                            .setMinValues(1)
+                            .setMaxValues(25)
+                    );
+
+                const message = await interaction.reply({
+                    components: [roleMenu],
+                    ephemeral: true,
+                    fetchReply: true,
+                });
+
+                const rInteraction = await message.awaitMessageComponent({
+                    componentType: ComponentType.RoleSelect,
+                });
+
+                await rInteraction.deferUpdate();
+
+                const { values, roles } = rInteraction;
+                const embed = util
+                    .embed()
+                    .setDescription(
+                        `Roles upon accepting changed to: ${roles
+                            .map((role) => `${role}`)
+                            .join(", ")}`
+                    );
+
+                db.rules.roles = values;
+
+                await db.save();
+
+                return rInteraction.editReply({ embeds: [embed] });
             }
         }
     }
