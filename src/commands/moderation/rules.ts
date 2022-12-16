@@ -231,7 +231,10 @@ export class RulesCommand extends Subcommand {
 
                 await db.save();
 
-                return rInteraction.editReply({ embeds: [embed] });
+                return rInteraction.editReply({
+                    embeds: [embed],
+                    components: [],
+                });
             }
         }
     }
