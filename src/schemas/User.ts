@@ -15,11 +15,7 @@ export interface IUser extends HydratedDocument<any> {
     level: number;
     currencies: Currencies;
     items: IItem[];
-    valorant: {
-        name: string | null | undefined;
-        tag: string | null | undefined;
-        puuid: string | null | undefined;
-    };
+    valorant: any;
     card: {
         background: {
             type: "banner" | "color" | "image";
@@ -81,11 +77,7 @@ export const User: Schema = new Schema<IUser>({
         },
     },
     items: [],
-    valorant: {
-        name: String,
-        tag: String,
-        puuid: String,
-    },
+    valorant: Object,
     card: {
         background: {
             type: {

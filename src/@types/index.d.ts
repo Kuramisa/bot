@@ -2,7 +2,7 @@ import { Client as Assets } from "@valapi/valorant-api.com";
 import { Client as Web } from "@valapi/web-client";
 
 export interface ValorantAccount {
-    memberId: string;
+    userId: string;
     assets: Assets;
     auth: Web;
     puuid: string;

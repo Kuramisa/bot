@@ -34,11 +34,11 @@ export class ValorantACListener extends Listener {
                 return interaction.respond(
                     accounts.first(25).map((account) => {
                         const player = account.player.acct;
-                        const user = client.users.cache.get(account.memberId);
+                        const user = client.users.cache.get(account.userId);
 
                         return {
                             name: `${player.game_name}#${player.tag_line} - ${user?.tag}`,
-                            value: account.memberId,
+                            value: account.userId,
                         };
                     })
                 );

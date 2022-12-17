@@ -74,6 +74,8 @@ export class ReadyListener extends Listener {
             activities[Math.floor(Math.random() * activities.length)]
         );
 
+        await games.valorant.init();
+
         setInterval(() => {
             client.user?.setPresence(
                 activities[Math.floor(Math.random() * activities.length)]

@@ -12,7 +12,7 @@ import {
 import { Client as Assets } from "@valapi/valorant-api.com";
 import { Client as Web } from "@valapi/web-client";
 
-import { ValorantAccount } from "@types";
+import { ValorantAccount } from "../../@types";
 
 export default class Valorant {
     readonly assets: Assets;
@@ -29,10 +29,40 @@ export default class Valorant {
         this.accounts = new Collection();
     }
 
+    async init() {
+        const { database } = this.container;
+
+        const users = await database.users.getAll();
+
+        for (const user of users) {
+            const { valorant } = user;
+            if (!valorant) continue;
+
+            const web = await this._web.fromJSON(valorant);
+
+            const playerInfo = (await web.getUserInfo()).data;
+            const puuid = playerInfo.sub;
+
+            const rankInfo = (await web.MMR.fetchPlayer(puuid)).data;
+
+            this.accounts.set(user.id, {
+                userId: user.id,
+                assets: this.assets,
+                auth: web,
+                puuid,
+                player: playerInfo,
+                rank: rankInfo,
+            });
+        }
+    }
+
     async login(interaction: ChatInputCommandInteraction<"cached">) {
-        const { util } = this.container;
+        const { database, util } = this.container;
 
         const { user } = interaction;
+
+        const db = await database.users.get(user);
+        if (!db) return;
 
         const web = new this._web();
 
@@ -167,13 +197,17 @@ export default class Valorant {
         const rankInfo = (await web.MMR.fetchPlayer(puuid)).data;
 
         this.accounts.set(user.id, {
-            memberId: user.id,
+            userId: user.id,
             assets: this.assets,
             auth: web,
             puuid,
             player: playerInfo,
             rank: rankInfo,
         });
+
+        db.valorant = web.toJSON();
+
+        await db.save();
 
         if (!loginSubmit.replied)
             return loginSubmit.reply({
@@ -184,6 +218,9 @@ export default class Valorant {
 
     async logout(interaction: ChatInputCommandInteraction) {
         const { user } = interaction;
+
+        const db = await this.container.database.users.get(user);
+        if (!db) return;
 
         const account = this.accounts.get(user.id);
         if (!account)
