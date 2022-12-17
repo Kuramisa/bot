@@ -247,6 +247,7 @@ export class HelpCommand extends Subcommand {
         const embed = util
             .embed()
             .setTitle(`${command.name} Command`)
+            .setDescription(command.description)
             .setFields(
                 {
                     name: "Category",
@@ -254,9 +255,8 @@ export class HelpCommand extends Subcommand {
                     inline: true,
                 },
                 {
-                    name: "Enabled",
-                    value: command.enabled ? "Yes" : "No",
-                    inline: true,
+                    name: "Permissions",
+                    value: command.options.requiredUserPermissions ? `${command.options.requiredUserPermissions}` : "Everyone"
                 }
             );
 
