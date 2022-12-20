@@ -26,7 +26,7 @@ export default class Moderation {
     }
 
     async image(url: string) {
-        const res = await imageModeration.evaluate(url, MODERATE_API);
+        const res = await imageModeration.is_adult(url, MODERATE_API);
         return JSON.parse(res);
     }
 }

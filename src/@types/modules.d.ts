@@ -4,7 +4,7 @@ declare module "is-hex-color";
 declare module "weather-js";
 declare module "minecraft_head";
 declare module "crafatar";
-declare module "image-moderation";
 declare module "discord.js-akinator";
 declare module "either-wyr";
 declare module "buymeacoffee.js";
+declare module "image-moderation";

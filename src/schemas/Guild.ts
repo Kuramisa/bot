@@ -65,9 +65,6 @@ export interface IGuild extends HydratedDocument<any> {
             image: Buffer | string;
         };
     };
-    toggles: {
-        nsfwFilter: boolean;
-    };
     tickets: {
         category: string;
         message: string;
@@ -94,6 +91,12 @@ export interface IGuild extends HydratedDocument<any> {
         channelId: string;
         messageId: string;
         roles: string[];
+    };
+    filters: {
+        media: {
+            enabled: boolean;
+            letter: string;
+        };
     };
 }
 
@@ -209,6 +212,15 @@ export const Guild = new Schema<IGuild>({
         channelId: String,
         messageId: String,
         roles: [],
+    },
+    filters: {
+        media: {
+            enabled: Boolean,
+            letter: {
+                type: String,
+                default: "a",
+            },
+        },
     },
 });
 

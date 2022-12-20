@@ -63,6 +63,22 @@ export default class Util {
         logger.info("Cleared all commands");
     }
 
+    containsURL(url: string) {
+        const urlPattern = new RegExp(
+            "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?"
+        );
+
+        return urlPattern.test(url);
+    }
+
+    extractURL(url: string) {
+        const urlPattern = new RegExp(
+            "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?"
+        );
+
+        return url.match(urlPattern)?.[0].split(" ")[0];
+    }
+
     daysToSecs = (days: number) => days * 24 * 60 * 60;
 
     row = (): ActionRowBuilder<MessageActionRowComponentBuilder> =>
