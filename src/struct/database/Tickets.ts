@@ -15,17 +15,15 @@ export default class DatabaseTickets {
         channel: TextBasedChannel;
         type: string;
     }) =>
-        await (
-            await Ticket.create({
-                ticketId: id,
-                guildId: guild.id,
-                memberId: member.id,
-                channelId: channel.id,
-                closed: false,
-                locked: false,
-                type,
-            })
-        ).save();
+        Ticket.create({
+            ticketId: id,
+            guildId: guild.id,
+            memberId: member.id,
+            channelId: channel.id,
+            closed: false,
+            locked: false,
+            type,
+        });
 
     async unlock(id: string) {
         const ticket = await Ticket.findOne({ channelId: id });

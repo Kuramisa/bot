@@ -17,15 +17,16 @@ export default class DatabaseGuilds {
             `Guild added to the database (ID: ${guild.id} - Name: ${guild.name})`
         );
 
-        return await (
-            await Guild.create({ id: guild.id, name: guild.name })
-        ).save();
+        return Guild.create({ id: guild.id, name: guild.name });
     }
 
-    get = async (guild: DiscordGuild) =>
-        (await Guild.findOne({ id: guild.id }))
-            ? await Guild.findOne({ id: guild.id })
-            : await this.create(guild);
+    async get(guild: DiscordGuild) {
+        const db = await Guild.findOne({ id: guild.id });
+        if (!db) return this.create(guild);
+
+        return db;
+    }
+
     getAll = async () => await Guild.find();
 
     check = async (guild: DiscordGuild) =>
