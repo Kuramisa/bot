@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { Player, Track } from "discord-player";
+import { Player, Track } from "@mateie/discord-player";
 import {
     ChatInputCommandInteraction,
     TextInputModalData,
@@ -179,14 +179,21 @@ export default class Playlist {
             name: playlist.title,
         });
 
-        const tracks = playlist.tracks.map((track) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { playlist, ...customTrack } = track;
+        const tracks = playlist.tracks
+            .map((track) => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { playlist, ...customTrack } = track;
 
-            return { ...customTrack, ...track.raw };
-        });
+                return { ...customTrack, ...track.raw };
+            })
+            .map((track) => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { playlist, ...customTrack } = track;
 
-        newPlaylist.tracks = [...tracks, ...newPlaylist.tracks];
+                return { ...customTrack, ...track.raw };
+            });
+
+        newPlaylist.tracks = tracks;
 
         await newPlaylist.save();
 
@@ -244,6 +251,8 @@ export default class Playlist {
             time: 0,
         });
 
+        await mInteraction.deferReply({ ephemeral: true });
+
         const { components } = mInteraction;
 
         const member = mInteraction.member;
@@ -253,20 +262,19 @@ export default class Playlist {
             name,
         });
 
-        const playlists = (
-            await Promise.all(
-                components.map(async (field) => {
-                    const f = field.components[0] as TextInputModalData;
-                    const result = await music.search(f.value, {
-                        requestedBy: interaction.user,
-                    });
+        const playlists = [];
 
-                    if (!result.playlist) return null;
+        for (let i = 0; i < components.length; i++) {
+            const field = components[i];
+            const f = field.components[0] as TextInputModalData;
+            const result = await music.search(f.value, {
+                requestedBy: interaction.user,
+            });
 
-                    return result.playlist.tracks;
-                })
-            )
-        ).filter((el) => el !== null);
+            if (!result.playlist) continue;
+
+            playlists.push(result.playlist.tracks);
+        }
 
         if (playlists.length < 1 || playlists.length !== amount) {
             await mInteraction.reply({
@@ -278,21 +286,27 @@ export default class Playlist {
             return;
         }
 
-        const tracks = playlists.flat().map((track) => {
-            const truck = track as Track;
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { playlist, ...customTrack } = truck;
+        newPlaylist.tracks = playlists
+            .flat()
+            .map((track) => {
+                const truck = track as Track;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { playlist, ...customTrack } = truck;
 
-            return { ...customTrack, ...truck.raw };
-        });
+                return { ...customTrack, ...truck.raw };
+            })
+            .map((track) => {
+                const truck = track as Track;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { playlist, ...customTrack } = truck;
 
-        newPlaylist.tracks = [...tracks, ...newPlaylist.tracks];
+                return { ...customTrack, ...truck.raw };
+            });
 
         await newPlaylist.save();
 
-        await mInteraction.reply({
+        await mInteraction.editReply({
             content: `Added ${amount} playlists to your new playlist \`${name}\``,
-            ephemeral: true,
         });
     }
 

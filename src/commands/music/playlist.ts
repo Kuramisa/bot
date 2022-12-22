@@ -64,7 +64,7 @@ export class PlaylistCommand extends Subcommand {
                 )
                 .addSubcommand((command) =>
                     command
-                        .setName("multimport")
+                        .setName("multi_import")
                         .setDescription(
                             "Import multiple existing playlists from other sources"
                         )
@@ -118,7 +118,7 @@ export class PlaylistCommand extends Subcommand {
                 )
                 .addSubcommand((command) =>
                     command
-                        .setName("multiadd")
+                        .setName("multi_add")
                         .setDescription(
                             "Add Multiple Tracks into your playlist"
                         )
@@ -154,13 +154,13 @@ export class PlaylistCommand extends Subcommand {
             case "import":
                 await playlist.import(interaction);
                 break;
-            case "import_multiple":
+            case "multi_import":
                 await playlist.importMultiple(interaction);
                 break;
             case "add":
                 await playlist.add(interaction);
                 break;
-            case "add_multiple":
+            case "multi_add":
                 await playlist.addMultiple(interaction);
                 break;
             case "delete":

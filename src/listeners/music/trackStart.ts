@@ -1,4 +1,4 @@
-import { Queue, Track } from "discord-player";
+import { Queue, Track } from "@mateie/discord-player";
 import { container, Listener } from "@sapphire/framework";
 import { TextChannel } from "discord.js";
 
