@@ -51,7 +51,6 @@ export default class Warns {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
-        if (!db) return;
 
         return db.warns.filter((warn) => warn.guildId === member.guild.id);
     }
@@ -60,7 +59,6 @@ export default class Warns {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
-        if (!db) return;
 
         db.warns = db.warns.filter((warn) => warn.guildId !== member.guild.id);
 
@@ -71,7 +69,6 @@ export default class Warns {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
-        if (!db) return;
 
         db.warns = db.warns.filter((warn) => warn.id !== id);
 

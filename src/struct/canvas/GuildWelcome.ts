@@ -22,7 +22,6 @@ export default class GuildWelcome {
         const { guild } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (!guild.banner)
             return interaction.reply({
@@ -46,7 +45,6 @@ export default class GuildWelcome {
         const { guild } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (!guild.icon)
             return interaction.reply({
@@ -70,7 +68,6 @@ export default class GuildWelcome {
         const { guild, options } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const color = options.getString("color");
 
@@ -112,7 +109,6 @@ export default class GuildWelcome {
         const { guild, options } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
 
@@ -164,7 +160,6 @@ export default class GuildWelcome {
         const { guild, options } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
 
@@ -210,7 +205,6 @@ export default class GuildWelcome {
         const { guild, options } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const channel = options.getChannel("text_channel", true);
 
@@ -230,7 +224,6 @@ export default class GuildWelcome {
         const { guild } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         db.welcomeMessage.enabled = !db.welcomeMessage.enabled;
 
@@ -255,7 +248,6 @@ export default class GuildWelcome {
         const guild = await member.guild.fetch();
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const settings = db.welcomeMessage;
 

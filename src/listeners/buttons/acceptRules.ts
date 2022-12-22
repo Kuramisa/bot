@@ -18,7 +18,6 @@ export class AcceptRulesBtnListener extends Listener {
         const { guild, member } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const { rules } = db;
 

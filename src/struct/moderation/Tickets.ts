@@ -18,7 +18,6 @@ export default class Tickets {
         const { options, guild } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         await interaction.deferReply({ ephemeral: true });
 
@@ -114,7 +113,6 @@ export default class Tickets {
 
         const id = options.getString("id", true);
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const channel = guild.channels.cache.get(
             db.tickets.channels.openTicket
@@ -172,7 +170,6 @@ export default class Tickets {
         const { guild } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const channel = guild.channels.cache.get(
             db.tickets.channels.openTicket
@@ -206,7 +203,6 @@ export default class Tickets {
         const { options, guild } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (!db.tickets.category)
             return interaction.reply({
@@ -259,7 +255,6 @@ export default class Tickets {
         await interaction.deferReply({ ephemeral: true });
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const setupEmbed = util.embed().setTitle("Ticket System Auto Setup");
 

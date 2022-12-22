@@ -20,7 +20,6 @@ export class AutoRoleACListener extends Listener {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const focused = options.getFocused(true);
 

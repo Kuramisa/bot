@@ -56,7 +56,6 @@ export class AutoRoleCommand extends Command {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         switch (options.getSubcommand()) {
             case "add": {

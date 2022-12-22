@@ -16,7 +16,6 @@ export class TicketingMessageDeletedListener extends Listener {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (message.id !== db.tickets.message) return;
 

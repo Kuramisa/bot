@@ -53,7 +53,7 @@ export default class Dashboard extends ApolloServer {
             })
         );
 
-        await httpServer.listen({ port: process.env.PORT });
+        httpServer.listen({ port: process.env.PORT });
 
         this.container.logger.info(`Server ready at port: ${process.env.PORT}`);
     }

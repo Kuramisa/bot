@@ -22,7 +22,7 @@ export default class MemberCanvas {
         const ctx = canvas.getContext("2d");
 
         const db = await database.users.get(user);
-        if (!db) return;
+
         const data = await util.member.getCardData(db);
 
         ctx.filter = "blur(6px)";

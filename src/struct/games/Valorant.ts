@@ -62,7 +62,6 @@ export default class Valorant {
         const { user } = interaction;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         const web = new this._web();
 
@@ -220,7 +219,6 @@ export default class Valorant {
         const { user } = interaction;
 
         const db = await this.container.database.users.get(user);
-        if (!db) return;
 
         const account = this.accounts.get(user.id);
         if (!account)
@@ -230,6 +228,8 @@ export default class Valorant {
             });
 
         this.accounts.delete(user.id);
+
+        db.valorant = null;
 
         await interaction.reply({
             content: `You have been logged out from your account, ${account.player.acct.game_name}#${account.player.acct.tag_line}`,

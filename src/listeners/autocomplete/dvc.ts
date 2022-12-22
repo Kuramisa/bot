@@ -18,7 +18,6 @@ export class DVCACListener extends Listener {
         const { guild, options } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const focused = options.getFocused(true);
 

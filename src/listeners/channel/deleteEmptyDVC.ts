@@ -17,7 +17,6 @@ export class DeleteEmptyChannelListener extends Listener {
         if (!member) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const dvc =
             db.dvc.find((vc) => vc.parent === channel.id) ||

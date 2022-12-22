@@ -17,7 +17,6 @@ export class DeletedDVCListener extends Listener {
         const { guild } = channel;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const dvc =
             db.dvc.find((vc) => vc.parent === channel.id) ||

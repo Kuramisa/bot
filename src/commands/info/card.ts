@@ -116,7 +116,6 @@ export class CardCommand extends Subcommand {
         await user.fetch();
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         switch (options.getSubcommandGroup()) {
             case "background": {

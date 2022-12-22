@@ -16,7 +16,6 @@ export class MediaFilterListener extends Listener {
         if (!channel || !guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (!db.filters.media.enabled) return;
 

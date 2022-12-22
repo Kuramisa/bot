@@ -101,7 +101,6 @@ export default class Reports {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
-        if (!db) return;
 
         return db.reports.filter(
             (report) => report.guildId === member.guild.id
@@ -112,7 +111,6 @@ export default class Reports {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
-        if (!db) return;
 
         db.reports = db.reports.filter(
             (report) => report.guildId !== member.guild.id
@@ -125,7 +123,6 @@ export default class Reports {
         const { database } = this.container;
 
         const db = await database.users.get(member.user);
-        if (!db) return;
 
         db.reports = db.reports.filter((report) => report.id !== id);
 

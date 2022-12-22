@@ -58,7 +58,6 @@ export class LogsCommand extends Subcommand {
         const { options, guild } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         switch (options.getSubcommand()) {
             case "channel": {

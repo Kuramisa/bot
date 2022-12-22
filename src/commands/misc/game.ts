@@ -138,7 +138,6 @@ export class GameCommand extends Command {
 
         if (!channel) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const gameToUse = options.getString("game_to_use", true);
         const jtc = options.getBoolean("jtc") || false;

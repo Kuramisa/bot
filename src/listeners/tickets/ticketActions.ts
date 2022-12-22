@@ -35,7 +35,6 @@ export class TicketActionsListener extends Listener {
             });
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const ticket = await database.tickets.get(channel.id);
         if (!ticket)

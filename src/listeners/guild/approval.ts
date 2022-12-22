@@ -41,7 +41,6 @@ export class ServerApprovalListener extends Listener {
             });
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const embed = util
             .embed()

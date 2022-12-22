@@ -20,7 +20,7 @@ export class OpenTicketListener extends Listener {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
+
         if (!db.tickets.buttons.includes(customId)) return;
 
         const category = guild.channels.cache.get(db.tickets.category);

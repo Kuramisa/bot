@@ -176,7 +176,6 @@ export class TicketsCommand extends Subcommand {
             }
             case "channels": {
                 const db = await database.guilds.get(guild);
-                if (!db) return;
 
                 const type = options.getString("channel_type", true);
                 const channel = options.getChannel("channel", true);
@@ -193,7 +192,6 @@ export class TicketsCommand extends Subcommand {
             }
             case "category": {
                 const db = await database.guilds.get(guild);
-                if (!db) return;
 
                 const category = options.getChannel("category_channel", true);
 

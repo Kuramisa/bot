@@ -25,7 +25,6 @@ export class TicketButtonsACListener extends Listener {
             return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         return interaction.respond(
             db.tickets.buttons.map((choice) => ({

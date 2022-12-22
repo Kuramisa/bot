@@ -21,7 +21,6 @@ export default class SelfRoles {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const channelName = options.getString("channel_name", true);
         const customMessage = options.getBoolean("custom_message", true);
@@ -119,7 +118,6 @@ export default class SelfRoles {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (db.selfroles.length < 1)
             return interaction.reply({
@@ -209,7 +207,6 @@ export default class SelfRoles {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (db.selfroles.length < 1)
             return interaction.reply({
@@ -254,7 +251,6 @@ export default class SelfRoles {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (db.selfroles.length < 1)
             return interaction.reply({
@@ -314,7 +310,6 @@ export default class SelfRoles {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (db.selfroles.length < 1)
             return interaction.reply({
@@ -438,7 +433,6 @@ export default class SelfRoles {
         const { options, guild } = interaction;
         if (!guild) return;
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (db.selfroles.length < 1)
             return interaction.reply({

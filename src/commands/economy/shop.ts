@@ -87,7 +87,6 @@ export class ShopCommand extends Command {
         const { options, user } = interaction;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         switch (options.getSubcommand()) {
             case "buy": {

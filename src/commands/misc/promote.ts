@@ -38,8 +38,6 @@ export class PromoteCommand extends Command {
 
         const db = await database.guilds.get(guild);
 
-        if (!db) return;
-
         if (db.promoted) return message.reply(`${guild} is already promoted`);
 
         const row = util
@@ -86,7 +84,6 @@ export class PromoteCommand extends Command {
         const { guild, user } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (db.promoted)
             return interaction.reply({

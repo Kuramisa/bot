@@ -15,7 +15,6 @@ export class AutoRoleMemberAdd extends Listener {
         const { guild } = member;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         if (db.autorole.length === 0) return;
 

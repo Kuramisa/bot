@@ -15,7 +15,6 @@ export default class XP {
         const { database } = this.container;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         db.xp += amount;
         await db.save();
@@ -25,7 +24,6 @@ export default class XP {
         const { database } = this.container;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         db.level = level;
         await db.save();
@@ -35,7 +33,6 @@ export default class XP {
         const { database } = this.container;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         db.level += 1;
         await db.save();
@@ -45,7 +42,6 @@ export default class XP {
         const { database } = this.container;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         return db.xp;
     }
@@ -54,7 +50,6 @@ export default class XP {
         const { database } = this.container;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         return db.level;
     }

@@ -19,7 +19,6 @@ export class DynamicVCListener extends Listener {
         if (channel.type !== ChannelType.GuildVoice) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const dvc =
             db.dvc.find((vc) => vc.parent === channel.id) ||

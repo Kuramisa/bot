@@ -2,10 +2,10 @@ import { Listener } from "@sapphire/framework";
 import {
     ButtonBuilder,
     ButtonStyle,
-    VoiceState,
-    Collection,
     ChannelType,
+    Collection,
     ComponentType,
+    VoiceState,
 } from "discord.js";
 
 export class JTCListener extends Listener {
@@ -30,7 +30,7 @@ export class JTCListener extends Listener {
             return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
+
         if (!db.games || !db.games.settings) return;
 
         const gameName = channel.parent.name;

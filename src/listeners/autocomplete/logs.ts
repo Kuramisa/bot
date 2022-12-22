@@ -19,7 +19,6 @@ export class LogsACListener extends Listener {
         const { options, guild } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const focused = options.getFocused();
 

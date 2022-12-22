@@ -19,7 +19,6 @@ export class SelfRoleButtons extends Listener {
         if (!channel || !guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         const dbChannel = db.selfroles.find((c) => c.channelId === channel.id);
         if (!dbChannel)

@@ -18,7 +18,6 @@ export class HelpACListener extends Listener {
         const { options, guild } = interaction;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         let gameChosen = options.getString("game_to_use");
         const focused = options.getFocused(true);

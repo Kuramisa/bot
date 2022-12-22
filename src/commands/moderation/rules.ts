@@ -85,7 +85,6 @@ export class RulesCommand extends Subcommand {
         if (!guild) return;
 
         const db = await database.guilds.get(guild);
-        if (!db) return;
 
         switch (options.getSubcommand()) {
             case "setup": {

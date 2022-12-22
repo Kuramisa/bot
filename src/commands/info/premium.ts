@@ -320,7 +320,6 @@ export class PremiumInfoCommand extends Command {
                         ephemeral: true,
                     });
                 const db = await database.guilds.get(guild);
-                if (!db) return;
                 switch (options.getSubcommandGroup()) {
                     case "give": {
                         if (db.premium === true)
@@ -367,7 +366,6 @@ export class PremiumInfoCommand extends Command {
                         ephemeral: true,
                     });
                 const db = await database.users.get(user);
-                if (!db) return;
                 switch (options.getSubcommandGroup()) {
                     case "give": {
                         if (db.premium === true)
