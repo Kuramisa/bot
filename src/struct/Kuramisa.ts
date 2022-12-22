@@ -1,7 +1,7 @@
 import "@sapphire/plugin-logger/register";
 
-import { container, LogLevel, SapphireClient } from "@sapphire/framework";
-import { Message, Partials } from "discord.js";
+import {container, LogLevel, SapphireClient} from "@sapphire/framework";
+import {Message, Partials} from "discord.js";
 
 import logs from "discord-logs";
 
@@ -14,6 +14,7 @@ import Games from "./games";
 import Canvas from "./canvas";
 import Systems from "./systems";
 
+// TODO: Make new Profile System with new database entries
 export class Kuramisa extends SapphireClient {
     constructor() {
         super({
