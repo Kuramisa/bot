@@ -118,7 +118,7 @@ export class ShopCommand extends Command {
 
                 item.amount = buyCount;
 
-                db.items.push(item);
+                db.inventory.items.push(item);
                 db.currencies.ryo -= needsToPay;
                 await db.save();
 
@@ -145,7 +145,9 @@ export class ShopCommand extends Command {
                         ephemeral: true,
                     });
 
-                const owned = db.items.find((it) => item.id === it.id);
+                const owned = db.inventory.items.find(
+                    (it) => item.id === it.id
+                );
                 if (!owned || !owned.amount)
                     return interaction.reply({
                         content: `You do not own any **${item.name}**`,
@@ -161,7 +163,9 @@ export class ShopCommand extends Command {
                 const sellPrice = (item.price * sellCount) / 2;
 
                 if (owned.amount < 2) {
-                    db.items = db.items.filter((it) => it.id !== item.id);
+                    db.inventory.items = db.inventory.items.filter(
+                        (it) => it.id !== item.id
+                    );
                 } else {
                     owned.amount -= sellCount;
                 }
@@ -192,7 +196,9 @@ export class ShopCommand extends Command {
                         ephemeral: true,
                     });
 
-                const owned = db.items.find((it) => it.id === item.id);
+                const owned = db.inventory.items.find(
+                    (it) => it.id === item.id
+                );
 
                 if (!owned || !owned.amount)
                     return interaction.reply({
@@ -201,7 +207,9 @@ export class ShopCommand extends Command {
                     });
 
                 if (owned.amount < 2) {
-                    db.items = db.items.filter((it) => it.id === item.id);
+                    db.inventory.items = db.inventory.items.filter(
+                        (it) => it.id === item.id
+                    );
                 } else {
                     owned.amount -= discardCount;
                 }

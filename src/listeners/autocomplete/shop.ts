@@ -20,11 +20,10 @@ export class HelpACListener extends Listener {
         const { options, user } = interaction;
 
         const db = await database.users.get(user);
-        if (!db) return;
 
         const focused = options.getFocused(true);
 
-        let userItems = db.items;
+        let userItems = db.inventory.items;
         let dbItems = await Item.find();
 
         if (focused.value.length > 0) {
