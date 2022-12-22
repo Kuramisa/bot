@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { Player, Track, Util } from "discord-player";
+import { Player, Track, Util } from "@mateie/discord-player";
 import songlyrics from "songlyrics";
 import {
     ButtonStyle,
@@ -18,6 +18,7 @@ export default class Music extends Player {
         super(container.client, {
             ytdlOptions: {
                 filter: "audioonly",
+                highWaterMark: 1 << 25,
             },
         });
 
@@ -54,7 +55,7 @@ export default class Music extends Player {
                 util
                     .stringMenu()
                     .setCustomId("queue_track_select")
-                    .setPlaceholder("Which track to queue?")
+                    .setPlaceholder("Which track to queue/add?")
                     .setOptions(options)
                     .setMaxValues(options.length)
             );
