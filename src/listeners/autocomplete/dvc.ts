@@ -10,9 +10,10 @@ export class DVCACListener extends Listener {
         });
     }
 
-    async run(interaction: AutocompleteInteraction<"cached">) {
+    async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "dvc") return;
+        if (!interaction.inCachedGuild()) return;
 
         const { database } = this.container;
         const { guild, options } = interaction;

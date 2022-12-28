@@ -10,9 +10,10 @@ export class TicketButtonsACListener extends Listener {
         });
     }
 
-    async run(interaction: AutocompleteInteraction<"cached">) {
+    async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "tickets") return;
+        if (!interaction.inCachedGuild()) return;
 
         const { database, util } = this.container;
 

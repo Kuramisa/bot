@@ -132,7 +132,13 @@ export class GameCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database, games, util } = this.container;
         const { options, guild, channel } = interaction;
 

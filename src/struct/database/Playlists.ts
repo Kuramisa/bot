@@ -1,10 +1,10 @@
 import Playlist from "#schemas/Playlist";
-import { GuildMember } from "discord.js";
+import { User } from "discord.js";
 
 export default class DatabasePlaylists {
-    create = async ({ member, name }: { member: GuildMember; name: string }) =>
+    create = async ({ user, name }: { user: User; name: string }) =>
         Playlist.create({
-            memberId: member.id,
+            userId: user.id,
             name,
         });
 

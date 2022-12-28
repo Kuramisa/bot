@@ -65,12 +65,12 @@ export default class ShinobiPlayer {
 
     async equip(
         interaction:
-            | ChatInputCommandInteraction<"cached">
-            | ContextMenuCommandInteraction<"cached">,
+            | ChatInputCommandInteraction
+            | ContextMenuCommandInteraction,
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({
-            memberId: interaction.member.id,
+            memberId: interaction.user.id,
         });
 
         if (!shinobi)

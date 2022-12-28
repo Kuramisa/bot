@@ -11,7 +11,7 @@ export class TicketActionsListener extends Listener {
         });
     }
 
-    async run(interaction: ButtonInteraction<"cached">) {
+    async run(interaction: ButtonInteraction) {
         if (!interaction.isButton()) return;
 
         if (
@@ -20,6 +20,12 @@ export class TicketActionsListener extends Listener {
             )
         )
             return;
+
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This button can only be used in a server",
+                ephemeral: true,
+            });
 
         const { database, util } = this.container;
 

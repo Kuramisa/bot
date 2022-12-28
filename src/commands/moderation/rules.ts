@@ -1,4 +1,4 @@
-import { Subcommand } from "@sapphire/plugin-subcommands";
+import { Command } from "@sapphire/framework";
 import {
     ButtonStyle,
     ChannelType,
@@ -8,8 +8,8 @@ import {
     TextInputStyle,
 } from "discord.js";
 
-export class RulesCommand extends Subcommand {
-    constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
+export class RulesCommand extends Command {
+    constructor(ctx: Command.Context, opts: Command.Options) {
         super(ctx, {
             ...opts,
             name: "rules",
@@ -18,7 +18,7 @@ export class RulesCommand extends Subcommand {
         });
     }
 
-    override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -78,7 +78,7 @@ export class RulesCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction): Promise<any> {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { database, util } = this.container;
 
         const { options, guild } = interaction;

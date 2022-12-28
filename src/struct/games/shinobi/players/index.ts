@@ -33,7 +33,7 @@ export default class ShinobiPlayers {
         });
     }
 
-    me(interaction: ChatInputCommandInteraction<"cached">) {
+    me(interaction: ChatInputCommandInteraction) {
         const { user } = interaction;
 
         const player = this.get(user.id);
@@ -86,7 +86,7 @@ export default class ShinobiPlayers {
             .setThumbnail(clan.icon);
     }
 
-    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const players = this.getAll();

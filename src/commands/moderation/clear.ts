@@ -34,9 +34,14 @@ export class ClearCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
-        const { util } = this.container;
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
 
+        const { util } = this.container;
         const { options, guild, channel } = interaction;
 
         if (!guild.members.me?.permissions.has("ManageMessages"))

@@ -32,13 +32,13 @@ export class ServerCommand extends Command {
     /**
      * Execute Message Command
      */
-    messageRun = async (message: Message<true>) =>
+    messageRun = async (message: Message) =>
         message.reply({ embeds: [this.generateEmbed(message.guild)] });
 
     /**
      * Execute Slash Command
      */
-    chatInputRun = (interaction: ChatInputCommandInteraction<"cached">) =>
+    chatInputRun = (interaction: ChatInputCommandInteraction) =>
         interaction.reply({
             embeds: [this.generateEmbed(interaction.guild)],
             ephemeral: true,
@@ -47,8 +47,11 @@ export class ServerCommand extends Command {
     /**
      * Create Embed for Server Info
      */
-    private generateEmbed(guild: Guild) {
+    private generateEmbed(guild: Guild | null) {
         const { util } = this.container;
+
+        if (!guild)
+            return util.embed().setDescription("Server could not be fetched");
 
         const {
             createdTimestamp,

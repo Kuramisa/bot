@@ -10,11 +10,17 @@ export class AcceptRulesBtnListener extends Listener {
         });
     }
 
-    async run(interaction: ButtonInteraction<"cached">) {
+    async run(interaction: ButtonInteraction) {
         if (!interaction.isButton()) return;
         if (interaction.customId !== "accept_rules") return;
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This button is only available in a server",
+                ephemeral: true,
+            });
 
         const { database } = this.container;
+
         const { guild, member } = interaction;
 
         const db = await database.guilds.get(guild);

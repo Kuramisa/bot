@@ -80,7 +80,7 @@ export class WelcomeCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const {
             canvas: { welcome },
         } = this.container;

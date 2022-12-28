@@ -1,8 +1,8 @@
-import { Subcommand } from "@sapphire/plugin-subcommands";
+import { Command } from "@sapphire/framework";
 import { ChatInputCommandInteraction, ComponentType } from "discord.js";
 
-export class LogsCommand extends Subcommand {
-    constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
+export class LogsCommand extends Command {
+    constructor(ctx: Command.Context, opts: Command.Options) {
         super(ctx, {
             ...opts,
             name: "logs",
@@ -11,7 +11,7 @@ export class LogsCommand extends Subcommand {
         });
     }
 
-    override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -50,9 +50,13 @@ export class LogsCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(
-        interaction: ChatInputCommandInteraction<"cached">
-    ): Promise<any> {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
@@ -79,10 +83,11 @@ export class LogsCommand extends Subcommand {
 
                 await db.save();
 
-                return interaction.reply({
+                await interaction.reply({
                     content: `Logs channel set to ${channel}`,
                     ephemeral: true,
                 });
+                break;
             }
             case "toggles": {
                 const toggle = options.getString("toggle");
@@ -103,10 +108,11 @@ export class LogsCommand extends Subcommand {
                         ? "Enabled"
                         : "Disabled";
 
-                    return interaction.reply({
+                    await interaction.reply({
                         content: `\`${toggleName}\` - **${newValue}**`,
                         ephemeral: true,
                     });
+                    break;
                 }
 
                 const toggles = Object.keys(db.logs.types)
@@ -208,7 +214,8 @@ export class LogsCommand extends Subcommand {
                     ${toggles.join("\n")}
                     `);
 
-                return interaction.reply({ embeds: [embed], ephemeral: true });
+                await interaction.reply({ embeds: [embed], ephemeral: true });
+                break;
             }
         }
     }

@@ -1,6 +1,5 @@
 import { Args, Command } from "@sapphire/framework";
 import {
-    ButtonInteraction,
     ButtonStyle,
     ChatInputCommandInteraction,
     ComponentType,
@@ -60,7 +59,7 @@ export class OsuCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const {
             games: { osu },
         } = this.container;
@@ -80,7 +79,7 @@ export class OsuCommand extends Command {
     }
 
     private async createMessage(
-        interaction: Message | ChatInputCommandInteraction<"cached">,
+        interaction: Message | ChatInputCommandInteraction,
         user: User
     ) {
         const { games, util } = this.container;
@@ -138,7 +137,7 @@ export class OsuCommand extends Command {
             filter: (i) => i.customId === "best-user-beatmaps",
         });
 
-        collector.on("collect", async (i: ButtonInteraction<"cached">) => {
+        collector.on("collect", async (i) => {
             try {
                 switch (i.customId) {
                     case "best-user-beatmaps": {

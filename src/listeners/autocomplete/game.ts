@@ -10,9 +10,10 @@ export class HelpACListener extends Listener {
         });
     }
 
-    async run(interaction: AutocompleteInteraction<"cached">) {
+    async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
-        if (!["game"].includes(interaction.commandName)) return;
+        if (interaction.commandName !== "game") return;
+        if (!interaction.inCachedGuild()) return;
 
         const { database, util } = this.container;
         const { options, guild } = interaction;

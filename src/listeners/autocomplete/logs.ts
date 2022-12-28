@@ -10,12 +10,12 @@ export class LogsACListener extends Listener {
         });
     }
 
-    async run(interaction: AutocompleteInteraction<"cached">) {
+    async run(interaction: AutocompleteInteraction) {
         if (!interaction.isAutocomplete()) return;
         if (interaction.commandName !== "logs") return;
+        if (!interaction.inCachedGuild()) return;
 
         const { database, util } = this.container;
-
         const { options, guild } = interaction;
 
         const db = await database.guilds.get(guild);

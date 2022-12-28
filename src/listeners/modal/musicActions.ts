@@ -10,9 +10,14 @@ export class MusicActionsModalListener extends Listener {
         });
     }
 
-    async run(interaction: ModalSubmitInteraction<"cached">) {
+    async run(interaction: ModalSubmitInteraction) {
         if (!interaction.isModalSubmit()) return;
         if (interaction.customId !== "add_tracks_modal") return;
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This modal can only be used in a server",
+                ephemeral: true,
+            });
 
         const {
             systems: { music },

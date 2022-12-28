@@ -41,7 +41,13 @@ export class WarnCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             moderation: { warns },
         } = this.container;
@@ -66,7 +72,13 @@ export class WarnCommand extends Command {
         );
     }
 
-    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             moderation: { warns },
         } = this.container;

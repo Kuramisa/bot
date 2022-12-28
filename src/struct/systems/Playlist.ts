@@ -13,7 +13,13 @@ export default class Playlist {
         this.container = container;
     }
 
-    async play(interaction: ChatInputCommandInteraction<"cached">) {
+    async play(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             database,
             systems: { music },
@@ -108,12 +114,12 @@ export default class Playlist {
         return interaction.reply({ embeds: [embed], ephemeral: true });
     }
 
-    async create(interaction: ChatInputCommandInteraction<"cached">) {
+    async create(interaction: ChatInputCommandInteraction) {
         const { database } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
-        if ((await database.playlists.getAll(member.id)).length === 5)
+        if ((await database.playlists.getAll(user.id)).length === 5)
             return interaction.reply({
                 content: "You can only have 5 playlist",
                 ephemeral: true,
@@ -122,7 +128,7 @@ export default class Playlist {
         const name = options.getString("playlist_name", true);
 
         if (
-            (await database.playlists.getAll(member.id)).some(
+            (await database.playlists.getAll(user.id)).some(
                 (playlist) => playlist.name === name
             )
         )
@@ -132,7 +138,7 @@ export default class Playlist {
             });
 
         await database.playlists.create({
-            member,
+            user,
             name,
         });
 
@@ -142,14 +148,14 @@ export default class Playlist {
         });
     }
 
-    async import(interaction: ChatInputCommandInteraction<"cached">) {
+    async import(interaction: ChatInputCommandInteraction) {
         const {
             database,
             systems: { music },
             util,
         } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
         const url = options.getString("playlist_url", true);
 
@@ -165,7 +171,7 @@ export default class Playlist {
         const { playlist } = result;
 
         if (
-            (await database.playlists.getAll(member.id)).some(
+            (await database.playlists.getAll(user.id)).some(
                 (pl) => pl.name === playlist.title
             )
         )
@@ -175,7 +181,7 @@ export default class Playlist {
             });
 
         const newPlaylist = await database.playlists.create({
-            member,
+            user,
             name: playlist.title,
         });
 
@@ -209,7 +215,7 @@ export default class Playlist {
         });
     }
 
-    async importMultiple(interaction: ChatInputCommandInteraction<"cached">) {
+    async importMultiple(interaction: ChatInputCommandInteraction) {
         const {
             database,
             systems: { music },
@@ -253,12 +259,10 @@ export default class Playlist {
 
         await mInteraction.deferReply({ ephemeral: true });
 
-        const { components } = mInteraction;
-
-        const member = mInteraction.member;
+        const { components, user } = mInteraction;
 
         const newPlaylist = await database.playlists.create({
-            member,
+            user,
             name,
         });
 
@@ -310,14 +314,14 @@ export default class Playlist {
         });
     }
 
-    async delete(interaction: ChatInputCommandInteraction<"cached">) {
+    async delete(interaction: ChatInputCommandInteraction) {
         const { database, util } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
         const name = options.getString("playlist_name", true);
 
-        const playlist = await database.playlists.get(member.id, name);
+        const playlist = await database.playlists.get(user.id, name);
 
         if (!playlist)
             return interaction.reply({
@@ -325,7 +329,7 @@ export default class Playlist {
                 ephemeral: true,
             });
 
-        const confirmText = `${member.user.username}/${playlist.name}`;
+        const confirmText = `${user.username}/${playlist.name}`;
 
         const modal = util
             .modal()
@@ -364,7 +368,7 @@ export default class Playlist {
             return;
         }
 
-        await database.playlists.delete(member.id, name);
+        await database.playlists.delete(user.id, name);
 
         await mInteraction.reply({
             content: "Playlist was deleted successfully",
@@ -372,13 +376,13 @@ export default class Playlist {
         });
     }
 
-    async add(interaction: ChatInputCommandInteraction<"cached">) {
+    async add(interaction: ChatInputCommandInteraction) {
         const {
             database,
             systems: { music },
         } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
         const playlistName = options.getString("playlist_name", true);
         const query = options.getString("query", true);
@@ -386,7 +390,7 @@ export default class Playlist {
         if (query.length < 1)
             return interaction.reply({ content: "No Tracks Provided" });
 
-        const playlist = await database.playlists.get(member.id, playlistName);
+        const playlist = await database.playlists.get(user.id, playlistName);
 
         if (!playlist)
             return interaction.reply({
@@ -428,19 +432,19 @@ export default class Playlist {
         });
     }
 
-    async addMultiple(interaction: ChatInputCommandInteraction<"cached">) {
+    async addMultiple(interaction: ChatInputCommandInteraction) {
         const {
             database,
             systems: { music },
             util,
         } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
         const name = options.getString("playlist_name", true);
         const query = options.getString("query", true);
 
-        const playlist = await database.playlists.get(member.id, name);
+        const playlist = await database.playlists.get(user.id, name);
 
         if (!playlist)
             return interaction.reply({

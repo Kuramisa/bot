@@ -1,12 +1,12 @@
-import { Subcommand } from "@sapphire/plugin-subcommands";
+import { Command } from "@sapphire/framework";
 
 import toHex from "colornames";
 import fromHex from "color-namer";
 import isHexColor from "is-hex-color";
 import { ChatInputCommandInteraction } from "discord.js";
 
-export class CardCommand extends Subcommand {
-    constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
+export class CardCommand extends Command {
+    constructor(ctx: Command.Context, opts: Command.Options) {
         super(ctx, {
             ...opts,
             name: "card",
@@ -14,7 +14,7 @@ export class CardCommand extends Subcommand {
         });
     }
 
-    override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -106,9 +106,7 @@ export class CardCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(
-        interaction: ChatInputCommandInteraction<"cached">
-    ): Promise<any> {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { database, util } = this.container;
 
         const { options, user } = interaction;

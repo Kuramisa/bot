@@ -3,8 +3,8 @@ import Util from ".";
 
 import {
     ButtonInteraction,
-    ChatInputCommandInteraction,
     ButtonStyle,
+    ChatInputCommandInteraction,
     ComponentType,
 } from "discord.js";
 
@@ -18,9 +18,7 @@ export default class UtilPagination {
     }
 
     async default(
-        interaction:
-            | ButtonInteraction<"cached">
-            | ChatInputCommandInteraction<"cached">,
+        interaction: ButtonInteraction | ChatInputCommandInteraction,
         contents: string[] | string[][],
         title?: string,
         ephemeral = false,

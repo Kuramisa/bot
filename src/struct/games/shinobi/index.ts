@@ -36,12 +36,12 @@ export default class ShinobiGame {
         this.weapons = new ShinobiWeapons(this);
     }
 
-    async start(interaction: ChatInputCommandInteraction<"cached">) {
+    async start(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const { user } = interaction;
 
-        const player = await Shinobi.findOne({ memberId: user.id });
+        const player = await Shinobi.findOne({ userId: user.id });
 
         if (player)
             return interaction.reply({
@@ -96,7 +96,7 @@ export default class ShinobiGame {
                         if (!village) return;
 
                         const shinobi = await Shinobi.create({
-                            memberId: user.id,
+                            userId: user.id,
                             clan: clan.id,
                             village: village.id,
                             stats: clan.stats,
@@ -131,7 +131,7 @@ export default class ShinobiGame {
             });
     }
 
-    async delete(interaction: ChatInputCommandInteraction<"cached">) {
+    async delete(interaction: ChatInputCommandInteraction) {
         const { owners } = this.container;
 
         const { options, user } = interaction;
@@ -154,7 +154,7 @@ export default class ShinobiGame {
 
         const target = interaction.guild?.members.cache.get(player.id);
 
-        await Shinobi.deleteOne({ memberId: sh });
+        await Shinobi.deleteOne({ userId: sh });
 
         this.players.delete(sh);
 
@@ -164,10 +164,10 @@ export default class ShinobiGame {
         });
     }
 
-    async daily(interaction: ChatInputCommandInteraction<"cached">) {
+    async daily(interaction: ChatInputCommandInteraction) {
         const { user } = interaction;
 
-        const player = await Shinobi.findOne({ memberId: user.id });
+        const player = await Shinobi.findOne({ userId: user.id });
 
         if (!player)
             return interaction.reply({
@@ -196,10 +196,10 @@ export default class ShinobiGame {
         });
     }
 
-    async weekly(interaction: ChatInputCommandInteraction<"cached">) {
-        const { member } = interaction;
+    async weekly(interaction: ChatInputCommandInteraction) {
+        const { user } = interaction;
 
-        const player = await Shinobi.findOne({ memberId: member.id });
+        const player = await Shinobi.findOne({ userId: user.id });
 
         if (!player)
             return interaction.reply({
@@ -227,23 +227,5 @@ export default class ShinobiGame {
             content: `You received **${ryo} Ryo** from your daily`,
             ephemeral: true,
         });
-    }
-
-    async fight(interaction: ChatInputCommandInteraction<"cached">) {
-        const { util } = this.container;
-
-        const { options, member } = interaction;
-
-        const player1 = this.players.get(member.id);
-        const player2 = this.players.get(options.getString("player", true));
-
-        if (!player1) return;
-        if (!player2) return;
-
-        const embed = util
-            .embed()
-            .setTitle(`${player1.name} is fighting ${player2.name}`);
-
-        await interaction.reply({ embeds: [embed] });
     }
 }

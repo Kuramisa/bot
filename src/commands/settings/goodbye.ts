@@ -80,7 +80,7 @@ export class GoodbyeCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const {
             canvas: { goodbye },
         } = this.container;

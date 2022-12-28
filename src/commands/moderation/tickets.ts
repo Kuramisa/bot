@@ -1,8 +1,8 @@
-import { Subcommand } from "@sapphire/plugin-subcommands";
+import { Command } from "@sapphire/framework";
 import { ButtonStyle, ChatInputCommandInteraction } from "discord.js";
 
-export class TicketsCommand extends Subcommand {
-    constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
+export class TicketsCommand extends Command {
+    constructor(ctx: Command.Context, opts: Command.Options) {
         super(ctx, {
             ...opts,
             name: "tickets",
@@ -11,7 +11,7 @@ export class TicketsCommand extends Subcommand {
         });
     }
 
-    override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -143,9 +143,13 @@ export class TicketsCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(
-        interaction: ChatInputCommandInteraction<"cached">
-    ): Promise<any> {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             database,
             moderation: { tickets },

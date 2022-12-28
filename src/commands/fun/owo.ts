@@ -1,4 +1,4 @@
-import { Command, Args } from "@sapphire/framework";
+import { Args, Command } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
     ContextMenuCommandInteraction,
@@ -51,7 +51,7 @@ export class OwOCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const text = interaction.options.getString("text", true);
 
         const { owo } = await this.container.util.nekos.OwOify({
@@ -64,7 +64,7 @@ export class OwOCommand extends Command {
     /**
      * Execute Context Menu
      */
-    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction) {
         const { channel, targetId } = interaction;
 
         if (!channel) return;

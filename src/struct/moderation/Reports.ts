@@ -52,7 +52,7 @@ export default class Reports {
     async createMessageReport(
         member: GuildMember,
         by: GuildMember,
-        message: Message<true>,
+        message: Message,
         reason: string
     ) {
         const { database, util } = this.container;
@@ -62,7 +62,7 @@ export default class Reports {
         const dbUser = await database.users.get(member.user);
         const dbGuild = await database.guilds.get(guild);
 
-        if (!dbUser || !dbGuild) return;
+        if (!dbUser || !dbGuild || !message.guild) return;
 
         dbUser.reports.push({
             id: `report-${DiscordSnowflake.generate()}`,

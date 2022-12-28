@@ -10,7 +10,7 @@ export class MemberActionsModalListener extends Listener {
         });
     }
 
-    async run(interaction: ModalSubmitInteraction<"cached">) {
+    async run(interaction: ModalSubmitInteraction) {
         if (!interaction.isModalSubmit()) return;
 
         const id = interaction.customId.split("_")[2];
@@ -21,6 +21,12 @@ export class MemberActionsModalListener extends Listener {
             )
         )
             return;
+
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This modal can only be used in a server",
+                ephemeral: true,
+            });
 
         const { moderation } = this.container;
 

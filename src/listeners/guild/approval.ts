@@ -10,7 +10,7 @@ export class ServerApprovalListener extends Listener {
         });
     }
 
-    async run(interaction: ButtonInteraction<"cached">) {
+    async run(interaction: ButtonInteraction) {
         if (!interaction.isButton()) return;
 
         if (
@@ -22,9 +22,9 @@ export class ServerApprovalListener extends Listener {
 
         const { client, database, owners, util } = this.container;
 
-        const { message, member } = interaction;
+        const { message, user } = interaction;
 
-        if (!owners.includes(member.id))
+        if (!owners.includes(user.id))
             return interaction.reply({
                 content: "Only Bot Owners can use this button",
                 ephemeral: true,
@@ -53,7 +53,7 @@ export class ServerApprovalListener extends Listener {
 
                 await db.save();
 
-                embed.setDescription(`${member} approved the promotion`);
+                embed.setDescription(`${user} approved the promotion`);
 
                 await message.edit({ embeds: [embed], components: [] });
 
@@ -64,7 +64,7 @@ export class ServerApprovalListener extends Listener {
 
                 await db.save();
 
-                embed.setDescription(`${member} declined the promotion`);
+                embed.setDescription(`${user} declined the promotion`);
 
                 await message.edit({ embeds: [embed], components: [] });
 

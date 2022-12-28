@@ -22,7 +22,13 @@ export class MockCommand extends Command {
     /**
      * Execute Context Menu
      */
-    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { guild, channel, targetId, member } = interaction;
 
         if (!channel) return;

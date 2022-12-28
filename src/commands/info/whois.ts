@@ -62,7 +62,13 @@ export class MemberCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         let member = interaction.options.getMember("member");
 
         if (!member) member = interaction.member;
@@ -84,7 +90,13 @@ export class MemberCommand extends Command {
     /**
      * Execute Context Menu
      */
-    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { guild, targetId } = interaction;
 
         const member = await guild.members.fetch(targetId);

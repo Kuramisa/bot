@@ -1,11 +1,11 @@
-import { Subcommand } from "@sapphire/plugin-subcommands";
+import { Command } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
     ContextMenuCommandInteraction,
 } from "discord.js";
 
-export class ShinobiCommand extends Subcommand {
-    constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
+export class ShinobiCommand extends Command {
+    constructor(ctx: Command.Context, opts: Command.Options) {
         super(ctx, {
             ...opts,
             name: "sh",
@@ -15,7 +15,7 @@ export class ShinobiCommand extends Subcommand {
         });
     }
 
-    override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -153,9 +153,7 @@ export class ShinobiCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(
-        interaction: ChatInputCommandInteraction<"cached">
-    ): Promise<any> {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { options, user } = interaction;
 
         const {
@@ -173,8 +171,6 @@ export class ShinobiCommand extends Subcommand {
                 return shinobi.daily(interaction);
             case "weekly":
                 return shinobi.weekly(interaction);
-            case "fight":
-                return shinobi.fight(interaction);
             case "players": {
                 const target = options.getString("player");
 
@@ -263,9 +259,9 @@ export class ShinobiCommand extends Subcommand {
 
                 switch (options.getSubcommand()) {
                     case "view": {
-                        const embed = shinobi.weapons.embed(weapon);
-
-                        return interaction.reply({ embeds: [embed] });
+                        return interaction.reply({
+                            embeds: [shinobi.weapons.embed(weapon)],
+                        });
                     }
                     case "buy": {
                         return shinobi.weapons.buy(interaction, weapon);
@@ -281,24 +277,25 @@ export class ShinobiCommand extends Subcommand {
         }
     }
 
-    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction) {
         const {
+            client,
             games: { shinobi },
         } = this.container;
 
-        const { guild, targetId } = interaction;
-        const member = await guild.members.fetch(targetId);
+        const { targetId } = interaction;
+        const user = await client.users.fetch(targetId);
 
-        if (member.user.bot)
+        if (user.bot)
             return interaction.reply({
-                content: `${member} is a bot`,
+                content: `${user} is a bot`,
                 ephemeral: true,
             });
 
-        const player = shinobi.players.get(member.id);
+        const player = shinobi.players.get(user.id);
         if (!player)
             return interaction.reply({
-                content: `${member} is not a shinobi`,
+                content: `${user} is not a shinobi`,
                 ephemeral: true,
             });
 

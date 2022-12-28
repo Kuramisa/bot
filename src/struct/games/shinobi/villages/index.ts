@@ -34,7 +34,7 @@ export default class ShinobiVillages {
             .setThumbnail(village.icon)
             .setFooter({ text: `Population: ${village.population}` });
 
-    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const villages = this.getAll();

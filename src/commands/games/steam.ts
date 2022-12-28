@@ -200,7 +200,7 @@ export class SteamCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const {
             games: { steam },
             util,

@@ -240,6 +240,6 @@ export class WarframeCommand extends Subcommand {
     /**
      * Execute Slash Subcommand (Market)
      */
-    chatInputMarket = (interaction: ChatInputCommandInteraction<"cached">) =>
+    chatInputMarket = (interaction: ChatInputCommandInteraction) =>
         this.container.games.warframe.orders(interaction);
 }

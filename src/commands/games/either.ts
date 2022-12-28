@@ -23,7 +23,7 @@ export class EitherCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         let wyr = await this.getQuestion();

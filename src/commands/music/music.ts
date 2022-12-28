@@ -1,27 +1,19 @@
-import { Subcommand } from "@sapphire/plugin-subcommands";
+import { Command } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
     ContextMenuCommandInteraction,
 } from "discord.js";
 
-export class MusicCommand extends Subcommand {
-    constructor(ctx: Subcommand.Context, opts: Subcommand.Options) {
+export class MusicCommand extends Command {
+    constructor(ctx: Command.Context, opts: Command.Options) {
         super(ctx, {
             ...opts,
             name: "music",
             description: "Music System",
-            subcommands: [
-                { name: "play", messageRun: "messagePlay" },
-                { name: "add", messageRun: "messageAdd" },
-                { name: "actions", messageRun: "messageActions" },
-                { name: "skip", messageRun: "messageSkip" },
-                { name: "seek", messageRun: "messageSeek" },
-                { name: "volume", messageRun: "messageVolume" },
-            ],
         });
     }
 
-    override registerApplicationCommands(registry: Subcommand.Registry) {
+    override registerApplicationCommands(registry: Command.Registry) {
         registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
@@ -117,9 +109,13 @@ export class MusicCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(
-        interaction: ChatInputCommandInteraction<"cached">
-    ): Promise<any> {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             systems: { music },
             util,
@@ -484,7 +480,13 @@ export class MusicCommand extends Subcommand {
         }
     }
 
-    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             systems: { music },
             util,

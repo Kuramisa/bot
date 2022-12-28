@@ -56,7 +56,7 @@ export default class Valorant {
         }
     }
 
-    async login(interaction: ChatInputCommandInteraction<"cached">) {
+    async login(interaction: ChatInputCommandInteraction) {
         const { database, util } = this.container;
 
         const { user } = interaction;
@@ -240,6 +240,8 @@ export default class Valorant {
     async refresh(interaction: ChatInputCommandInteraction) {
         const { user } = interaction;
 
+        const db = await this.container.database.users.get(user);
+
         const account = this.accounts.get(user.id);
         if (!account)
             return interaction.reply({
@@ -248,6 +250,8 @@ export default class Valorant {
             });
 
         await account.auth.refresh();
+
+        db.valorant = account.auth.toJSON();
 
         return interaction.reply({
             content: "Refreshed your account",
@@ -301,12 +305,12 @@ export default class Valorant {
         await interaction.editReply({ content: balance.join("\n") });
     }
 
-    async store(interaction: ChatInputCommandInteraction<"cached">) {
+    async store(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
-        const account = this.accounts.get(member.id);
+        const account = this.accounts.get(user.id);
 
         if (!account)
             return interaction.reply({
@@ -465,7 +469,7 @@ export default class Valorant {
         const collector = message.createMessageComponentCollector({
             componentType: ComponentType.Button,
             filter: (i) =>
-                i.user.id === member.id &&
+                i.user.id === user.id &&
                 (i.customId === "previous_page" || i.customId === "next_page"),
             time: 30000,
         });
@@ -497,24 +501,23 @@ export default class Valorant {
             });
     }
 
-    async loadout(interaction: ChatInputCommandInteraction<"cached">) {
+    async loadout(interaction: ChatInputCommandInteraction) {
         const { client, util } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
         const playerGiven = options.getString("val_account");
 
-        const user = playerGiven
-            ? client.users.cache.get(playerGiven)
-            : interaction.user;
+        // Discord User
+        const dUser = playerGiven ? client.users.cache.get(playerGiven) : user;
 
-        if (!user)
+        if (!dUser)
             return interaction.reply({
                 content: "Invalid user",
                 ephemeral: true,
             });
 
-        const account = this.accounts.get(user.id);
+        const account = this.accounts.get(dUser.id);
 
         if (!account)
             return interaction.reply({
@@ -654,7 +657,7 @@ export default class Valorant {
                     i.customId === "profile_page" ||
                     i.customId === "sprays_page" ||
                     i.customId === "weapons_page") &&
-                i.user.id === member.id,
+                i.user.id === user.id,
             time: 35000,
         });
 
@@ -700,25 +703,24 @@ export default class Valorant {
             });
     }
 
-    async mmr(interaction: ChatInputCommandInteraction<"cached">) {
+    async mmr(interaction: ChatInputCommandInteraction) {
         const { client, util } = this.container;
 
-        const { options, member } = interaction;
+        const { options, user } = interaction;
 
         const playerGiven = options.getString("val_account");
         const actGiven = options.getString("act_rank");
 
-        const user = playerGiven
-            ? client.users.cache.get(playerGiven)
-            : interaction.user;
+        // Discord User
+        const dUser = playerGiven ? client.users.cache.get(playerGiven) : user;
 
-        if (!user)
+        if (!dUser)
             return interaction.reply({
                 content: "Invalid user",
                 ephemeral: true,
             });
 
-        const account = this.accounts.get(user.id);
+        const account = this.accounts.get(dUser.id);
 
         if (!account)
             return interaction.reply({
@@ -856,7 +858,7 @@ export default class Valorant {
         const collector = await message.createMessageComponentCollector({
             componentType: ComponentType.SelectMenu,
             filter: (i) =>
-                i.customId === "choose_act_rank" && i.user.id === member.id,
+                i.customId === "choose_act_rank" && i.user.id === user.id,
             time: 35000,
         });
 

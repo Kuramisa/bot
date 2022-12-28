@@ -190,7 +190,7 @@ export class PremiumInfoCommand extends Command {
             });
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { options, user: executor } = interaction;
         const {
             client,

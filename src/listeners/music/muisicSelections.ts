@@ -10,10 +10,14 @@ export class MusicSelectionsDropListener extends Listener {
         });
     }
 
-    async run(interaction: SelectMenuInteraction<"cached">) {
-        if (!interaction.isAnySelectMenu()) return;
-
+    async run(interaction: SelectMenuInteraction) {
+        if (!interaction.isStringSelectMenu()) return;
         if (interaction.customId !== "select_track") return;
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This dropdown can only be used in a server",
+                ephemeral: true,
+            });
 
         const {
             systems: { music },

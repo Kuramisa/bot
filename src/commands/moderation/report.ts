@@ -40,7 +40,13 @@ export class ReportCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             moderation: { reports },
         } = this.container;
@@ -50,7 +56,11 @@ export class ReportCommand extends Command {
         const member = options.getMember("member");
         const reason = options.getString("reason") || "No reason specified";
 
-        if (!member) return;
+        if (!member)
+            return interaction.reply({
+                content: "Member not found",
+                ephemeral: true,
+            });
 
         if (member.user.bot)
             return interaction.reply({
@@ -66,7 +76,13 @@ export class ReportCommand extends Command {
         });
     }
 
-    async contextMenuRun(interaction: ContextMenuCommandInteraction<"cached">) {
+    async contextMenuRun(interaction: ContextMenuCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const {
             moderation: { reports },
         } = this.container;

@@ -37,12 +37,9 @@ export default class ShinobiWeapons {
             .setThumbnail(weapon.icon)
             .setFooter({ text: `Cost: ${weapon.cost}` });
 
-    async buy(
-        interaction: ChatInputCommandInteraction<"cached">,
-        weapon: ShinobiWeapon
-    ) {
+    async buy(interaction: ChatInputCommandInteraction, weapon: ShinobiWeapon) {
         const shinobi = await Shinobi.findOne({
-            memberId: interaction.member.id,
+            memberId: interaction.user.id,
         });
 
         if (!shinobi)
@@ -78,11 +75,11 @@ export default class ShinobiWeapons {
     }
 
     async sell(
-        interaction: ChatInputCommandInteraction<"cached">,
+        interaction: ChatInputCommandInteraction,
         weapon: ShinobiWeapon
     ) {
         const shinobi = await Shinobi.findOne({
-            memberId: interaction.member.id,
+            memberId: interaction.user.id,
         });
 
         if (!shinobi)
@@ -116,7 +113,7 @@ export default class ShinobiWeapons {
         });
     }
 
-    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const weapons = this.getAll();

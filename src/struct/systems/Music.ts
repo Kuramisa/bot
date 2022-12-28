@@ -36,8 +36,8 @@ export default class Music extends Player {
 
     async selectTrack(
         interaction:
-            | ChatInputCommandInteraction<"cached">
-            | ContextMenuCommandInteraction<"cached">,
+            | ChatInputCommandInteraction
+            | ContextMenuCommandInteraction,
         tracks: Track[]
     ) {
         const { util } = this.container;

@@ -139,7 +139,7 @@ export class PlaylistCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const {
             systems: { playlist },
         } = this.container;

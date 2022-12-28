@@ -78,7 +78,13 @@ export class PromoteCommand extends Command {
     /**
      * Execute Slash Command
      */
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database, promoteChannel, util } = this.container;
 
         const { guild, user } = interaction;

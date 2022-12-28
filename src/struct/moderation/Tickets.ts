@@ -12,7 +12,13 @@ export default class Tickets {
         this.container = container;
     }
 
-    async addButton(interaction: ChatInputCommandInteraction<"cached">) {
+    async addButton(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
@@ -106,7 +112,13 @@ export default class Tickets {
         }
     }
 
-    async removeButton(interaction: ChatInputCommandInteraction<"cached">) {
+    async removeButton(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database } = this.container;
 
         const { options, guild } = interaction;
@@ -164,7 +176,13 @@ export default class Tickets {
         });
     }
 
-    async resetButtons(interaction: ChatInputCommandInteraction<"cached">) {
+    async resetButtons(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database } = this.container;
 
         const { guild } = interaction;
@@ -197,7 +215,13 @@ export default class Tickets {
         });
     }
 
-    async editDescription(interaction: ChatInputCommandInteraction<"cached">) {
+    async editDescription(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database, util } = this.container;
 
         const { options, guild } = interaction;
@@ -241,7 +265,13 @@ export default class Tickets {
         });
     }
 
-    async autoSetup(interaction: ChatInputCommandInteraction<"cached">) {
+    async autoSetup(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This command can only be used in a server",
+                ephemeral: true,
+            });
+
         const { database, util } = this.container;
 
         const { guild } = interaction;

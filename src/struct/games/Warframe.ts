@@ -47,7 +47,7 @@ export default class Warframe {
         );
     }
 
-    async orders(interaction: ChatInputCommandInteraction<"cached">) {
+    async orders(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const { options, user } = interaction;

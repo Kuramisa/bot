@@ -2,8 +2,8 @@ import { Piece, Precondition } from "@sapphire/framework";
 import {
     ChatInputCommandInteraction,
     ContextMenuCommandInteraction,
-    Message,
     Guild,
+    Message,
     User,
 } from "discord.js";
 
@@ -15,69 +15,65 @@ export class PremiumOnlyPrecondition extends Precondition {
         });
     }
 
-    override async messageRun(message: Message<true>) {
-        const resultUser = await this.checkPremiumUser(message.author);
-        const resultGuild = await this.checkPremiumGuild(message.guild);
+    override async messageRun(message: Message) {
+        const resultUser = await this.checkPremium(message.author);
+        const resultGuild = await this.checkPremium(message.guild);
 
         return resultUser.isOk() || resultGuild.isOk()
             ? this.ok()
             : this.error({ message: "Guild or User not premium" });
     }
 
-    override async chatInputRun(
-        interaction: ChatInputCommandInteraction<"cached">
-    ) {
-        const resultUser = await this.checkPremiumUser(interaction.user);
-        const resultGuild = await this.checkPremiumGuild(interaction.guild);
+    override async chatInputRun(interaction: ChatInputCommandInteraction) {
+        const resultUser = await this.checkPremium(interaction.user);
+        const resultGuild = await this.checkPremium(interaction.guild);
 
         return resultUser.isOk() || resultGuild.isOk()
             ? this.ok()
             : this.error({ message: "User or Server not premium" });
     }
 
-    override async contextMenuRun(
-        interaction: ContextMenuCommandInteraction<"cached">
-    ) {
-        const resultUser = await this.checkPremiumUser(interaction.user);
-        const resultGuild = await this.checkPremiumGuild(interaction.guild);
+    override async contextMenuRun(interaction: ContextMenuCommandInteraction) {
+        const resultUser = await this.checkPremium(interaction.user);
+        const resultGuild = await this.checkPremium(interaction.guild);
 
         return resultUser.isOk() || resultGuild.isOk()
             ? this.ok()
             : this.error({ message: "Guild or User not premium" });
     }
 
-    private async checkPremiumGuild(guild: Guild) {
-        const { database } = this.container;
-
-        const db = await database.guilds.get(guild);
-        if (!db)
-            return this.error({
-                message: "Guild not found",
-            });
-
-        if (!db.premium)
-            return this.error({
-                message: "Guild not premium",
-            });
-
-        return this.ok();
-    }
-
-    private async checkPremiumUser(user: User) {
+    private async checkPremium(checkFor: Guild | User | null) {
         const { database, owners } = this.container;
-        if (owners.includes(user.id)) return this.ok();
 
-        const db = await database.users.get(user);
-        if (!db)
-            return this.error({
-                message: "User not found",
-            });
+        if (checkFor instanceof Guild) {
+            const db = await database.guilds.get(checkFor);
+            if (!db)
+                return this.error({
+                    message: "Guild not found",
+                });
 
-        if (!db.premium)
-            return this.error({
-                message: "User not premium",
-            });
+            if (!db.premium)
+                return this.error({
+                    message: "Guild not premium",
+                });
 
-        return this.ok();
+            return this.ok();
+        } else if (checkFor instanceof User) {
+            if (owners.includes(checkFor.id)) return this.ok();
+            const db = await database.users.get(checkFor);
+            if (!db)
+                return this.error({
+                    message: "User not found",
+                });
+
+            if (!db.premium)
+                return this.error({
+                    message: "User not premium",
+                });
+
+            return this.ok();
+        }
+
+        return this.error({ message: "Something went wrong" });
     }
 }

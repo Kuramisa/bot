@@ -2,7 +2,7 @@ import { HydratedDocument, model, Schema } from "mongoose";
 import { ShinobiRanks, ShinobiStats, ShinobiWeapon } from "@types";
 
 export interface IShinobi extends HydratedDocument<any> {
-    memberId: string;
+    userId: string;
     username: string;
     clan: string;
     village: string;
@@ -21,7 +21,7 @@ export interface IShinobi extends HydratedDocument<any> {
 }
 
 export const Shinobi: Schema = new Schema<IShinobi>({
-    memberId: {
+    userId: {
         type: String,
         required: true,
         unique: true,

@@ -10,7 +10,7 @@ export class GiveXPListener extends Listener {
         });
     }
 
-    async run(message: Message<true>) {
+    async run(message: Message) {
         if (message.author.bot) return;
 
         const {
@@ -38,6 +38,8 @@ export class GiveXPListener extends Listener {
             if (!currentXP || !requiredXP) return;
             if (currentXP + give >= requiredXP) {
                 await xp.levelUp(author);
+                if (!guild) return;
+                if (channel.isDMBased()) return;
                 if (
                     !guild.members.me
                         ?.permissionsIn(channel)

@@ -16,7 +16,7 @@ export default class GuildWelcome {
         this.canvas = canvas;
     }
 
-    async banner(interaction: ChatInputCommandInteraction<"cached">) {
+    async banner(interaction: ChatInputCommandInteraction) {
         const { database } = this.container;
 
         const { guild } = interaction;
@@ -39,7 +39,7 @@ export default class GuildWelcome {
         });
     }
 
-    async icon(interaction: ChatInputCommandInteraction<"cached">) {
+    async icon(interaction: ChatInputCommandInteraction) {
         const { database } = this.container;
 
         const { guild } = interaction;
@@ -62,7 +62,7 @@ export default class GuildWelcome {
         });
     }
 
-    async color(interaction: ChatInputCommandInteraction<"cached">) {
+    async color(interaction: ChatInputCommandInteraction) {
         const { database } = this.container;
 
         const { guild, options } = interaction;
@@ -103,7 +103,7 @@ export default class GuildWelcome {
         });
     }
 
-    async image(interaction: ChatInputCommandInteraction<"cached">) {
+    async image(interaction: ChatInputCommandInteraction) {
         const { database, util } = this.container;
 
         const { guild, options } = interaction;
@@ -154,7 +154,7 @@ export default class GuildWelcome {
         });
     }
 
-    async imageURL(interaction: ChatInputCommandInteraction<"cached">) {
+    async imageURL(interaction: ChatInputCommandInteraction) {
         const { database, util } = this.container;
 
         const { guild, options } = interaction;
@@ -199,7 +199,7 @@ export default class GuildWelcome {
         });
     }
 
-    async channel(interaction: ChatInputCommandInteraction<"cached">) {
+    async channel(interaction: ChatInputCommandInteraction) {
         const { database } = this.container;
 
         const { guild, options } = interaction;
@@ -218,7 +218,7 @@ export default class GuildWelcome {
         });
     }
 
-    async toggle(interaction: ChatInputCommandInteraction<"cached">) {
+    async toggle(interaction: ChatInputCommandInteraction) {
         const { database } = this.container;
 
         const { guild } = interaction;

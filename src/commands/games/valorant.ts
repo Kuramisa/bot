@@ -119,7 +119,7 @@ export class ValorantCommand extends Subcommand {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const {
             games: { valorant },
         } = this.container;

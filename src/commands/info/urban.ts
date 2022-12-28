@@ -32,7 +32,7 @@ export class UrbanCommand extends Command {
         );
     }
 
-    async chatInputRun(interaction: ChatInputCommandInteraction<"cached">) {
+    async chatInputRun(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const word = interaction.options.getString("word", true);

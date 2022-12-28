@@ -10,7 +10,7 @@ export class MusicButtonsListener extends Listener {
         });
     }
 
-    async run(interaction: ButtonInteraction<"cached">) {
+    async run(interaction: ButtonInteraction) {
         if (!interaction.isButton()) return;
 
         if (
@@ -26,6 +26,12 @@ export class MusicButtonsListener extends Listener {
             ].includes(interaction.customId)
         )
             return;
+
+        if (!interaction.inCachedGuild())
+            return interaction.reply({
+                content: "This button can only be used in a server",
+                ephemeral: true,
+            });
 
         const {
             systems: { music },

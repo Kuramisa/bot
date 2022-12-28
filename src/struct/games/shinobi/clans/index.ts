@@ -45,7 +45,7 @@ export default class ShinobiClans {
             .setThumbnail(clan.icon)
             .setFooter({ text: `Members: ${clan.members}` });
 
-    async pagination(interaction: ChatInputCommandInteraction<"cached">) {
+    async pagination(interaction: ChatInputCommandInteraction) {
         const { util } = this.container;
 
         const clans = this.getAll();
