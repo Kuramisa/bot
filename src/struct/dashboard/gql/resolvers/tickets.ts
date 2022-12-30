@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {Container} from "@sapphire/pieces";
-import {GraphQLError} from "graphql";
+import { Container } from "@sapphire/pieces";
+import { GraphQLError } from "graphql";
 
 export default {
     Query: {

@@ -5,9 +5,8 @@ import mc from "minecraft_head";
 import crafatar from "crafatar";
 
 export default class Minecraft {
-    private readonly container: Container;
-
     readonly guilds: Collection<string, Guild>;
+    private readonly container: Container;
 
     constructor(container: Container) {
         this.container = container;

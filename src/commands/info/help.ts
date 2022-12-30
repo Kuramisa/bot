@@ -256,7 +256,9 @@ export class HelpCommand extends Subcommand {
                 },
                 {
                     name: "Permissions",
-                    value: command.options.requiredUserPermissions ? `${command.options.requiredUserPermissions}` : "Everyone",
+                    value: command.options.requiredUserPermissions
+                        ? `${command.options.requiredUserPermissions}`
+                        : "Everyone",
                     inline: true,
                 }
             );

@@ -1,4 +1,4 @@
-import { Listener, container } from "@sapphire/framework";
+import { container, Listener } from "@sapphire/framework";
 
 export class MusicErrorListener extends Listener {
     constructor(ctx: Listener.Context, opts: Listener.Options) {

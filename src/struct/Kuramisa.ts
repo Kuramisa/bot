@@ -1,7 +1,7 @@
 import "@sapphire/plugin-logger/register";
 
-import {container, LogLevel, SapphireClient} from "@sapphire/framework";
-import {Message, Partials} from "discord.js";
+import { container, LogLevel, SapphireClient } from "@sapphire/framework";
+import { Message, Partials } from "discord.js";
 
 import logs from "discord-logs";
 

@@ -9,14 +9,12 @@ import DatabaseUsers from "./Users";
 const { DB } = process.env;
 
 export default class Database {
-    private readonly container: Container;
-
     readonly connection: typeof mongoose;
-
     readonly guilds: DatabaseGuilds;
     readonly playlists: DatabasePlaylists;
     readonly tickets: DatabaseTickets;
     readonly users: DatabaseUsers;
+    private readonly container: Container;
 
     constructor(container: Container) {
         this.container = container;

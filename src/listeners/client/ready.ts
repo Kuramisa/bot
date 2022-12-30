@@ -44,8 +44,8 @@ export class ReadyListener extends Listener {
         database.guilds.verifyAll();
         database.users.verifyAll();
 
-        await bmc.premium.checkServers();
-        await bmc.premium.checkUsers();
+        bmc.premium.checkServers();
+        bmc.premium.checkUsers();
 
         await games.shinobi.players.init();
 
