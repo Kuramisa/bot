@@ -1,8 +1,7 @@
 import * as dotenv from "dotenv";
+import Kuramisa from "#struct/Kuramisa";
 
 dotenv.config();
-
-import Kuramisa from "#struct/Kuramisa";
 
 const { TOKEN } = process.env;
 
