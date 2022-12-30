@@ -28,7 +28,9 @@ export default class MemberCanvas {
         ctx.filter = "blur(6px)";
         switch (data.card.background.type) {
             case "banner": {
-                const background = await loadImage(user.bannerURL() as string);
+                const background = await loadImage(
+                    user.bannerURL({ extension: "png" }) as string
+                );
                 ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
                 break;
             }
@@ -59,7 +61,7 @@ export default class MemberCanvas {
         switch (data.card.outlines.type) {
             case "banner": {
                 const colors = await this.canvas.popularColor(
-                    user.bannerURL() as string
+                    user.bannerURL({ extension: "png" }) as string
                 );
                 strokeStyle = colors[Math.floor(Math.random() * colors.length)];
                 break;
@@ -78,7 +80,7 @@ export default class MemberCanvas {
         switch (data.card.text.type) {
             case "banner": {
                 const colors = await this.canvas.popularColor(
-                    user.bannerURL() as string
+                    user.bannerURL({ extension: "png" }) as string
                 );
                 fillStyle = colors[Math.floor(Math.random() * colors.length)];
                 break;
