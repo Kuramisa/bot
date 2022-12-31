@@ -1,5 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { rateLimitDirective } from "graphql-rate-limit-directive";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
 import { Container } from "@sapphire/pieces";
@@ -20,14 +22,23 @@ app.use(helmet());
 
 const httpServer = http.createServer(app);
 
+const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } =
+    rateLimitDirective();
+
+let schema = makeExecutableSchema({
+    typeDefs: [rateLimitDirectiveTypeDefs, typeDefs],
+    resolvers,
+});
+
+schema = rateLimitDirectiveTransformer(schema);
+
 export default class Dashboard extends ApolloServer {
     readonly auth: Auth;
     private readonly container: Container;
 
     constructor(container: Container) {
         super({
-            resolvers,
-            typeDefs,
+            schema,
             csrfPrevention: true,
             plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
         });

@@ -53,7 +53,7 @@ type Query {
     users(fetchDb: Boolean): [User]!
     userGuilds(auth: String!, fetchDb: Boolean): [Guild]!
 
-    member(guildId: String!, memberId: String!, fetchDb: Boolean): Member!
+    member(guildId: String!, memberId: String!, fetchDb: Boolean): Member! @rateLimit(limit: 5, duration: 60)
     members(guildId: String!, fetchDb: Boolean): [Member]!
 
     warns(guildId: String!, userId: String!): [Warn]!
