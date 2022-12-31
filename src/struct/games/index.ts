@@ -29,7 +29,7 @@ export default class Games {
             parseNumeric: true,
         });
         this.minecraft = new Minecraft(this.container);
-        this.steam = new SteamAPI(STEAM_API as string);
+        this.steam = new SteamAPI(STEAM_API ?? "");
         this.valorant = new Valorant(this.container);
         this.warframe = new Warframe(this.container);
     }
