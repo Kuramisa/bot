@@ -1,6 +1,6 @@
 import { Container } from "@sapphire/pieces";
 
-import { PermissionsBitField, User } from "discord.js";
+import { PermissionsBitField } from "discord.js";
 
 import jwt from "jsonwebtoken";
 import { GraphQLError } from "graphql";
@@ -188,10 +188,9 @@ export default class Auth {
 
             let info = { ...user, avatarURL, bannerURL };
 
-            if (client.users.cache.has(user.id)) {
-                const db = await database.users.get(
-                    client.users.cache.get(user.id) as User
-                );
+            const userInClient = await client.users.fetch(user.id);
+            if (userInClient) {
+                const db = await database.users.get(userInClient);
 
                 if (db) {
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars

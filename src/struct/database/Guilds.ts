@@ -1,5 +1,5 @@
 import { Container } from "@sapphire/pieces";
-import { Guild as DiscordGuild } from "discord.js";
+import { Guild as DiscordGuild, OAuth2Guild } from "discord.js";
 
 import Guild from "#schemas/Guild";
 
@@ -10,7 +10,7 @@ export default class DatabaseGuilds {
         this.container = container;
     }
 
-    async create(guild: DiscordGuild) {
+    async create(guild: DiscordGuild | OAuth2Guild) {
         const { logger } = this.container;
 
         logger.info(
@@ -20,7 +20,7 @@ export default class DatabaseGuilds {
         return Guild.create({ id: guild.id, name: guild.name });
     }
 
-    async get(guild: DiscordGuild) {
+    async get(guild: DiscordGuild | OAuth2Guild) {
         const db = await Guild.findOne({ id: guild.id });
         if (!db) return this.create(guild);
 
@@ -29,10 +29,10 @@ export default class DatabaseGuilds {
 
     getAll = async () => await Guild.find();
 
-    check = async (guild: DiscordGuild) =>
+    check = async (guild: DiscordGuild | OAuth2Guild) =>
         !!(await Guild.findOne({ id: guild.id }));
 
-    verify = async (guild: DiscordGuild) =>
+    verify = async (guild: DiscordGuild | OAuth2Guild) =>
         !(await this.check(guild)) && this.create(guild);
 
     verifyAll = () =>

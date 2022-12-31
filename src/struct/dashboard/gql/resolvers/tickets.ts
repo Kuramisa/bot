@@ -10,7 +10,7 @@ export default {
             { container: { client, database } }: { container: Container }
         ) => {
             try {
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
                 return (await database.tickets.getAll())
@@ -31,7 +31,7 @@ export default {
             { container: { client, database } }: { container: Container }
         ) => {
             try {
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
                 const tckt = (await database.tickets.getAll()).find(
@@ -56,7 +56,7 @@ export default {
             { container: { client, database } }: { container: Container }
         ) => {
             try {
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
                 return (await database.tickets.getAll())
@@ -81,7 +81,7 @@ export default {
             { container: { client, database } }: { container: Container }
         ) => {
             try {
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
                 const tckt = (await database.tickets.getAll()).find(

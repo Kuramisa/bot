@@ -12,7 +12,7 @@ export default {
             { container: { client, database, util } }: { container: Container }
         ) => {
             try {
-                const user = client.users.cache.get(userId);
+                const user = await client.users.fetch(userId);
                 if (!user) throw new GraphQLError("User not found");
                 if (user.bot) throw new GraphQLError("User is a bot");
 
@@ -39,7 +39,7 @@ export default {
             { container: { client, canvas } }: { container: Container }
         ) => {
             try {
-                const user = client.users.cache.get(userId);
+                const user = await client.users.fetch(userId);
                 if (!user) throw new GraphQLError("User not found");
                 if (user.bot) throw new GraphQLError("User is a bot");
 
@@ -95,10 +95,10 @@ export default {
             { guildId, userId }: { guildId: string; userId: string },
             { container: { client, moderation } }: { container: Container }
         ) => {
-            const guild = client.guilds.cache.get(guildId);
+            const guild = await client.guilds.fetch(guildId);
             if (!guild) throw new Error("Guild not found");
 
-            const member = guild.members.cache.get(userId);
+            const member = await guild.members.fetch(userId);
             if (!member) throw new Error("Member not found");
 
             return await moderation.warns.get(member);
@@ -108,10 +108,10 @@ export default {
             { guildId, userId }: { guildId: string; userId: string },
             { container: { client, moderation } }: { container: Container }
         ) => {
-            const guild = client.guilds.cache.get(guildId);
+            const guild = await client.guilds.fetch(guildId);
             if (!guild) throw new Error("Guild not found");
 
-            const member = guild.members.cache.get(userId);
+            const member = await guild.members.fetch(userId);
             if (!member) throw new Error("Member not found");
 
             return await moderation.reports.get(member);
@@ -134,16 +134,16 @@ export default {
             try {
                 const user = await auth.checkToken(req);
 
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new Error("Guild not found");
 
-                const warnedBy = guild.members.cache.get(user.id);
+                const warnedBy = await guild.members.fetch(user.id);
                 if (!warnedBy) throw new Error("Member not found");
 
                 if (!warnedBy.permissions.has("ModerateMembers"))
                     throw new Error("Not enough permissions");
 
-                const member = guild.members.cache.get(userId);
+                const member = await guild.members.fetch(userId);
                 if (!member) throw new Error("Member not found");
 
                 const dbUser = await database.users.get(member.user);
@@ -217,13 +217,13 @@ export default {
             try {
                 const user = await auth.checkToken(req);
 
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new Error("Guild not found");
 
-                const warnedBy = guild.members.cache.get(user.id);
+                const warnedBy = await guild.members.fetch(user.id);
                 if (!warnedBy) throw new Error("Member not found");
 
-                const member = guild.members.cache.get(userId);
+                const member = await guild.members.fetch(userId);
                 if (!member) throw new Error("Member not found");
 
                 const dbUser = await database.users.get(member.user);

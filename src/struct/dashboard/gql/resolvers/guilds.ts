@@ -16,7 +16,7 @@ export default {
             }: { req: Request; server: Dashboard; container: Container }
         ) => {
             try {
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
                 const iconURL = guild.icon
@@ -65,7 +65,9 @@ export default {
 
                 const user = await auth.check(req);
                 if (user) {
-                    const member = guild.members.cache.get(user.id);
+                    const member = await guild.members
+                        .fetch(user.id)
+                        .catch(console.error);
                     if (member) {
                         const authPerms = member.permissions.toArray();
                         info = { authPerms, ...info };
@@ -128,7 +130,10 @@ export default {
                                                 .first() as any
                                         );
 
-                                    info = { ...info, inviteURL: invite.url };
+                                    info = {
+                                        ...info,
+                                        inviteURL: invite.url,
+                                    };
                                 }
                             }
                         }
@@ -136,7 +141,6 @@ export default {
                         return info;
                     })
                 );
-
                 return guilds
                     .sort((a, b) => b.memberCount - a.memberCount)
                     .sort((a, b) => Number(b.promoted) - Number(a.promoted));
@@ -156,10 +160,10 @@ export default {
             { container: { client, database, util } }: { container: Container }
         ) => {
             try {
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
-                const member = guild.members.cache.get(memberId);
+                const member = await guild.members.fetch(memberId);
                 if (!member) throw new GraphQLError("Member not found");
                 if (member.user.bot) throw new GraphQLError("Member is a bot");
 
@@ -189,12 +193,12 @@ export default {
             { container: { client, database, util } }: { container: Container }
         ) => {
             try {
-                const guild = client.guilds.cache.get(guildId);
+                const guild = await client.guilds.fetch(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
 
                 return await Promise.all(
                     (
-                        await guild.members.fetch()
+                        await guild.members.cache
                     )
                         .filter((member) => !member.user.bot)
                         .toJSON()
