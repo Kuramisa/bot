@@ -54,7 +54,7 @@ export default class Dashboard extends ApolloServer {
         app.use(
             "/",
             cors<cors.CorsRequest>({
-                origin: ["https://api.kuramisa.com", "http://localhost:3000"],
+                origin: ["https://kuramisa.com", "http://localhost:3000"],
             }),
             bodyParser.json(),
             expressMiddleware(this, {
