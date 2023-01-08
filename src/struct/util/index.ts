@@ -154,14 +154,8 @@ export default class Util {
         }${arr.slice(-1)}`;
     }
 
-    capEachFirstLetter(str: string, separator = " ") {
-        const temp: string[] = [];
-        str.split(separator).forEach((str) => {
-            temp.push(this.capFirstLetter(str));
-        });
-
-        return temp.join(" ");
-    }
+    capEachFirstLetter = (str: string, separator = " ") =>
+        str.split(separator).map(this.capFirstLetter).join(separator);
 
     abbrev(num: any) {
         if (!num || isNaN(num)) return 0;
