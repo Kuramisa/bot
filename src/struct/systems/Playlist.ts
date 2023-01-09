@@ -484,4 +484,93 @@ export default class Playlist {
 
         return interaction.editReply({ embeds: [embed], components: [] });
     }
+
+    async list(interaction: ChatInputCommandInteraction) {
+        const { database } = this.container;
+
+        const { user } = interaction;
+
+        const playlists = await database.playlists.getAll(user.id);
+
+        if (playlists.length < 1)
+            return interaction.reply({
+                content: "You have no playlists",
+                ephemeral: true,
+            });
+
+        const embed = util
+            .embed()
+            .setTitle("Your Playlists")
+            .setDescription(
+                playlists
+                    .map(
+                        (playlist, index) =>
+                            `\`${index + 1}\`. ${playlist.name} - ${
+                                playlist.tracks.length
+                            } tracks`
+                    )
+                    .join(",\n")
+            );
+
+        return interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+
+    async rename(interaction: ChatInputCommandInteraction) {
+        const { database } = this.container;
+
+        const { options, user } = interaction;
+
+        const oldName = options.getString("playlist_name", true);
+        const newName = options.getString("new_name", true);
+
+        const playlist = await database.playlists.get(user.id, oldName);
+
+        if (!playlist)
+            return interaction.reply({
+                content: "Playlist not found",
+                ephemeral: true,
+            });
+
+        playlist.name = newName;
+
+        await playlist.save();
+
+        return interaction.reply({
+            content: `Playlist \`${oldName}\` was renamed to \`${newName}\``,
+            ephemeral: true,
+        });
+    }
+
+    async info(interaction: ChatInputCommandInteraction) {
+        const { database, util } = this.container;
+
+        const { options, user } = interaction;
+
+        const name = options.getString("playlist_name", true);
+
+        const playlist = await database.playlists.get(user.id, name);
+
+        if (!playlist)
+            return interaction.reply({
+                content: "Playlist not found",
+                ephemeral: true,
+            });
+
+        const tracks = util.chunk(
+            playlist.tracks.map(
+                (track, index) =>
+                    `\`${index + 1}\`. ${track.title} - ${track.author} | ${
+                        track.duration
+                    }`
+            ),
+            25
+        );
+
+        return util.pagination.default(
+            interaction,
+            tracks,
+            `Playlist: ${name} - ${playlist.tracks.length} tracks`,
+            true
+        );
+    }
 }

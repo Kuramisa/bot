@@ -97,31 +97,77 @@ export class PlaylistCommand extends Subcommand {
                                 .setRequired(true)
                         )
                 )
-                .addSubcommand((command) =>
-                    command
-                        .setName("add")
-                        .setDescription("Add a single track to your playlist")
-                        .addStringOption((option) =>
-                            option
-                                .setName("playlist_name")
-                                .setDescription("Name of your playlist")
-                                .setAutocomplete(true)
-                                .setRequired(true)
+                .addSubcommandGroup((group) =>
+                    group
+                        .setName("tracks")
+                        .setDescription("Playlist Track Management")
+                        .addSubcommand((command) =>
+                            command
+                                .setName("add")
+                                .setDescription(
+                                    "Add a single track to your playlist"
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("playlist_name")
+                                        .setDescription("Name of your playlist")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("query")
+                                        .setDescription(
+                                            "Track/Playlist URL or a name"
+                                        )
+                                        .setRequired(true)
+                                        .setAutocomplete(true)
+                                )
                         )
-                        .addStringOption((option) =>
-                            option
-                                .setName("query")
-                                .setDescription("Track/Playlist URL or a name")
-                                .setRequired(true)
-                                .setAutocomplete(true)
+                        .addSubcommand((command) =>
+                            command
+                                .setName("multi_add")
+                                .setDescription(
+                                    "Add Multiple Tracks into your playlist"
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("playlist_name")
+                                        .setDescription("Name of your playlist")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("query")
+                                        .setDescription(
+                                            "Track/Playlist URL or a name"
+                                        )
+                                        .setRequired(true)
+                                )
+                        )
+                        .addSubcommand((command) =>
+                            command
+                                .setName("info")
+                                .setDescription("Get info about a playlist")
+                                .addStringOption((option) =>
+                                    option
+                                        .setName("playlist_name")
+                                        .setDescription("Name of your playlist")
+                                        .setAutocomplete(true)
+                                        .setRequired(true)
+                                )
                         )
                 )
                 .addSubcommand((command) =>
                     command
-                        .setName("multi_add")
-                        .setDescription(
-                            "Add Multiple Tracks into your playlist"
-                        )
+                        .setName("list")
+                        .setDescription("List all your playlists")
+                )
+                .addSubcommand((command) =>
+                    command
+                        .setName("rename")
+                        .setDescription("Rename your playlist")
                         .addStringOption((option) =>
                             option
                                 .setName("playlist_name")
@@ -131,8 +177,8 @@ export class PlaylistCommand extends Subcommand {
                         )
                         .addStringOption((option) =>
                             option
-                                .setName("query")
-                                .setDescription("Track/Playlist URL or a name")
+                                .setName("new_name")
+                                .setDescription("New name for your playlist")
                                 .setRequired(true)
                         )
                 )
@@ -165,6 +211,15 @@ export class PlaylistCommand extends Subcommand {
                 break;
             case "delete":
                 await playlist.delete(interaction);
+                break;
+            case "list":
+                await playlist.list(interaction);
+                break;
+            case "rename":
+                await playlist.rename(interaction);
+                break;
+            case "info":
+                await playlist.info(interaction);
                 break;
         }
     }
