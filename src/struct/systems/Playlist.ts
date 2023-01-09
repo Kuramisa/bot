@@ -486,7 +486,7 @@ export default class Playlist {
     }
 
     async list(interaction: ChatInputCommandInteraction) {
-        const { database } = this.container;
+        const { database, util } = this.container;
 
         const { user } = interaction;
 
