@@ -526,7 +526,7 @@ export class MusicCommand extends Command {
                         ephemeral: true,
                     });
 
-                const loop = options.getString("loop", true);
+                const loop = options.getString("loop_type", true);
                 switch (loop) {
                     case "queue": {
                         queue.setRepeatMode(2);
