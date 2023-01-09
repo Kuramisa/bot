@@ -102,6 +102,26 @@ export class MusicCommand extends Command {
                                 .setMaxValue(100)
                         )
                 )
+                .addSubcommand((command) =>
+                    command
+                        .setName("loop")
+                        .setDescription("Loop the current track/queue")
+                        .addStringOption((option) =>
+                            option
+                                .setName("loop_type")
+                                .setDescription(
+                                    "How do you want to loop the music?"
+                                )
+                                .addChoices(
+                                    { name: "🔁 Loop Queue", value: "queue" },
+                                    {
+                                        name: "🔂 Loop Track",
+                                        value: "track",
+                                    },
+                                    { name: "Off", value: "off" }
+                                )
+                        )
+                )
         );
 
         registry.registerContextMenuCommand((builder) =>
@@ -476,6 +496,59 @@ export class MusicCommand extends Command {
                     content: `Seeked to ${duration}`,
                     ephemeral: true,
                 });
+            }
+            case "volume": {
+                if (!queue)
+                    return interaction.reply({
+                        content: "Music is not playing",
+                        ephemeral: true,
+                    });
+
+                const volume = options.getNumber("volume", true);
+                if (volume < 0 || volume > 100)
+                    return interaction.reply({
+                        content: "Volume must be between 0 and 100",
+                        ephemeral: true,
+                    });
+
+                queue.setVolume(volume);
+
+                return interaction.reply({
+                    content: `Volume set to ${volume}`,
+                    ephemeral: true,
+                });
+            }
+            case "loop": {
+                if (!queue)
+                    return interaction.reply({
+                        content: "Music is not playing",
+                        ephemeral: true,
+                    });
+
+                const loop = options.getString("loop", true);
+                switch (loop) {
+                    case "queue": {
+                        queue.setRepeatMode(2);
+                        return interaction.reply({
+                            content: "Looping queue",
+                            ephemeral: true,
+                        });
+                    }
+                    case "track": {
+                        queue.setRepeatMode(1);
+                        return interaction.reply({
+                            content: "Looping track",
+                            ephemeral: true,
+                        });
+                    }
+                    case "off": {
+                        queue.setRepeatMode(0);
+                        return interaction.reply({
+                            content: "Looping off",
+                            ephemeral: true,
+                        });
+                    }
+                }
             }
         }
     }
