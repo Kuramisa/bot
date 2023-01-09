@@ -112,6 +112,7 @@ export class MusicCommand extends Command {
                                 .setDescription(
                                     "How do you want to loop the music?"
                                 )
+                                .setRequired(true)
                                 .addChoices(
                                     { name: "🔁 Loop Queue", value: "queue" },
                                     {
