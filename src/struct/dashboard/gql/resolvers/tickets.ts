@@ -6,7 +6,11 @@ export default {
     Query: {
         tickets: async (
             _: any,
-            { guildId }: { guildId: string },
+            {
+                guildId,
+                first,
+                offset,
+            }: { guildId: string; first?: number; offset?: number },
             { container: { client, database } }: { container: Container }
         ) => {
             try {
@@ -15,6 +19,7 @@ export default {
 
                 return (await database.tickets.getAll())
                     .filter((ticket) => ticket.guildId === guild.id)
+                    .slice(offset, first)
                     .map((tckt) => {
                         const { transcript, ...ticket } = tckt._doc;
 
@@ -52,7 +57,17 @@ export default {
         },
         memberTickets: async (
             _: any,
-            { guildId, memberId }: { guildId: string; memberId: string },
+            {
+                guildId,
+                memberId,
+                first,
+                offset,
+            }: {
+                guildId: string;
+                memberId: string;
+                first?: number;
+                offset?: number;
+            },
             { container: { client, database } }: { container: Container }
         ) => {
             try {
@@ -65,6 +80,7 @@ export default {
                             ticket.guildId === guild.id &&
                             ticket.memberId === memberId
                     )
+                    .slice(offset, first)
                     .map((tckt) => {
                         const { transcript, ...ticket } = tckt._doc;
 

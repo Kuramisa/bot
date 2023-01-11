@@ -21,13 +21,17 @@ export default {
         },
         channels: (
             _: any,
-            { guildId }: { guildId: string },
+            {
+                guildId,
+                first,
+                offset,
+            }: { guildId: string; first?: number; offset?: number },
             { container: { client } }: { container: Container }
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
-                return guild.channels.cache.toJSON();
+                return guild.channels.cache.toJSON().slice(offset, first);
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -63,7 +67,17 @@ export default {
         },
         messages: async (
             _: any,
-            { guildId, channelId }: { guildId: string; channelId: string },
+            {
+                guildId,
+                channelId,
+                first,
+                offset,
+            }: {
+                guildId: string;
+                channelId: string;
+                first?: number;
+                offset?: number;
+            },
             { container: { client } }: { container: Container }
         ) => {
             try {
@@ -76,7 +90,7 @@ export default {
                         "Channel provided is not text based"
                     );
                 const messages = await channel.messages.fetch();
-                return messages.toJSON();
+                return messages.toJSON().slice(offset, first);
             } catch (err) {
                 console.error(err);
                 throw err;

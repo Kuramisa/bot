@@ -82,11 +82,17 @@ export default {
         },
         guilds: async (
             _: any,
-            { fetchDb }: { fetchDb?: boolean },
+            {
+                fetchDb,
+                first,
+                offset,
+            }: { fetchDb?: boolean; first?: number; offset?: number },
             { container: { client, database, util } }: { container: Container }
         ) => {
             try {
-                const guildsCache = client.guilds.cache;
+                const guildsCache = client.guilds.cache
+                    .toJSON()
+                    .slice(offset, first);
                 const guilds = await Promise.all(
                     guildsCache.map(async (guild) => {
                         const iconURL = guild.icon
@@ -98,7 +104,7 @@ export default {
                               })
                             : "https://i.imgur.com/SCv8M69.png";
 
-                        let info = { iconURL, ...(guild.toJSON() as any) };
+                        let info = { ...guild, iconURL } as any;
 
                         if (fetchDb) {
                             const db = await database.guilds.get(guild);
@@ -189,7 +195,17 @@ export default {
         },
         members: async (
             _: any,
-            { guildId, fetchDb }: { guildId: string; fetchDb?: boolean },
+            {
+                guildId,
+                fetchDb,
+                first,
+                offset,
+            }: {
+                guildId: string;
+                fetchDb?: boolean;
+                first?: number;
+                offset?: number;
+            },
             { container: { client, database, util } }: { container: Container }
         ) => {
             try {
@@ -202,6 +218,7 @@ export default {
                     )
                         .filter((member) => !member.user.bot)
                         .toJSON()
+                        .slice(offset, first)
                         .map(async (member) => {
                             const avatarURL = member.user.avatar
                                 ? util.cdn.avatar(member.id, member.user.avatar)
@@ -246,13 +263,17 @@ export default {
         },
         roles: (
             _: any,
-            { guildId }: { guildId: string },
+            {
+                guildId,
+                first,
+                offset,
+            }: { guildId: string; first?: number; offset?: number },
             { container: { client } }: { container: Container }
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
-                return guild.roles.cache.toJSON();
+                return guild.roles.cache.toJSON().slice(offset, first);
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -261,7 +282,13 @@ export default {
 
         emoji: (
             _: any,
-            { guildId, emojiId }: { guildId: string; emojiId: string },
+            {
+                guildId,
+                emojiId,
+            }: {
+                guildId: string;
+                emojiId: string;
+            },
             { container: { client } }: { container: Container }
         ) => {
             try {
@@ -279,13 +306,17 @@ export default {
         },
         emojis: (
             _: any,
-            { guildId }: { guildId: string },
+            {
+                guildId,
+                first,
+                offset,
+            }: { guildId: string; first?: number; offset?: number },
             { container: { client } }: { container: Container }
         ) => {
             try {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
-                return guild.emojis.cache.toJSON();
+                return guild.emojis.cache.toJSON().slice(offset, first);
             } catch (err) {
                 console.error(err);
                 throw err;

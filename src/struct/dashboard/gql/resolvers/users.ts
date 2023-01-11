@@ -51,7 +51,11 @@ export default {
         },
         users: async (
             _: any,
-            { fetchDb }: { fetchDb?: boolean },
+            {
+                fetchDb,
+                first,
+                offset,
+            }: { fetchDb?: boolean; first?: number; offset?: number },
             { container: { client, database, util } }: { container: Container }
         ) => {
             const usersCache = client.users.cache;
@@ -60,6 +64,7 @@ export default {
                     usersCache
                         .filter((user) => !user.bot)
                         .toJSON()
+                        .slice(offset, first)
                         .map(async (user) => {
                             const avatarURL = user.avatar
                                 ? util.cdn.avatar(user.id, user.avatar)
@@ -92,7 +97,17 @@ export default {
 
         warns: async (
             _: any,
-            { guildId, userId }: { guildId: string; userId: string },
+            {
+                guildId,
+                userId,
+                first,
+                offset,
+            }: {
+                guildId: string;
+                userId: string;
+                first?: number;
+                offset?: number;
+            },
             { container: { client, moderation } }: { container: Container }
         ) => {
             const guild = await client.guilds.fetch(guildId);
@@ -101,11 +116,21 @@ export default {
             const member = await guild.members.fetch(userId);
             if (!member) throw new Error("Member not found");
 
-            return await moderation.warns.get(member);
+            return (await moderation.warns.get(member)).slice(offset, first);
         },
         reports: async (
             _: any,
-            { guildId, userId }: { guildId: string; userId: string },
+            {
+                guildId,
+                userId,
+                first,
+                offset,
+            }: {
+                guildId: string;
+                userId: string;
+                first?: number;
+                offset?: number;
+            },
             { container: { client, moderation } }: { container: Container }
         ) => {
             const guild = await client.guilds.fetch(guildId);
@@ -114,7 +139,7 @@ export default {
             const member = await guild.members.fetch(userId);
             if (!member) throw new Error("Member not found");
 
-            return await moderation.reports.get(member);
+            return (await moderation.reports.get(member)).slice(offset, first);
         },
     },
     Mutation: {
