@@ -92,7 +92,7 @@ export default {
             try {
                 const guildsCache = client.guilds.cache
                     .toJSON()
-                    .slice(offset, first);
+                    .slice(first, offset);
 
                 const guilds = await Promise.all(
                     guildsCache.map(async (guild) => {
@@ -274,7 +274,7 @@ export default {
             try {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
-                return guild.roles.cache.toJSON().slice(offset, first);
+                return guild.roles.cache.toJSON().slice(first, offset);
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -317,7 +317,7 @@ export default {
             try {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
-                return guild.emojis.cache.toJSON().slice(offset, first);
+                return guild.emojis.cache.toJSON().slice(first, offset);
             } catch (err) {
                 console.error(err);
                 throw err;

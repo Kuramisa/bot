@@ -31,7 +31,7 @@ export default {
             try {
                 const guild = client.guilds.cache.get(guildId);
                 if (!guild) throw new GraphQLError("Guild not found");
-                return guild.channels.cache.toJSON().slice(offset, first);
+                return guild.channels.cache.toJSON().slice(first, offset);
             } catch (err) {
                 console.error(err);
                 throw err;
@@ -90,7 +90,7 @@ export default {
                         "Channel provided is not text based"
                     );
                 const messages = await channel.messages.fetch();
-                return messages.toJSON().slice(offset, first);
+                return messages.toJSON().slice(first, offset);
             } catch (err) {
                 console.error(err);
                 throw err;

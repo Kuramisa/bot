@@ -116,7 +116,7 @@ export default {
             const member = await guild.members.fetch(userId);
             if (!member) throw new Error("Member not found");
 
-            return (await moderation.warns.get(member)).slice(offset, first);
+            return (await moderation.warns.get(member)).slice(first, offset);
         },
         reports: async (
             _: any,
@@ -139,7 +139,7 @@ export default {
             const member = await guild.members.fetch(userId);
             if (!member) throw new Error("Member not found");
 
-            return (await moderation.reports.get(member)).slice(offset, first);
+            return (await moderation.reports.get(member)).slice(first, offset);
         },
     },
     Mutation: {
