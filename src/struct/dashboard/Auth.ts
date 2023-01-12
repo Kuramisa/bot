@@ -142,7 +142,7 @@ export default class Auth {
                 clientSecret: this.secrets.client,
 
                 code: Buffer.from(code, "base64").toString("ascii"),
-                scope: "identify guilds",
+                scope: ["identify", "guilds"],
                 grantType: "authorization_code",
                 redirectUri:
                     process.env.NODE_ENV === "development"
