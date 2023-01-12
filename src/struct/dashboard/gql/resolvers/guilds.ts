@@ -93,6 +93,7 @@ export default {
                 const guildsCache = client.guilds.cache
                     .toJSON()
                     .slice(offset, first);
+
                 const guilds = await Promise.all(
                     guildsCache.map(async (guild) => {
                         const iconURL = guild.icon
@@ -104,7 +105,7 @@ export default {
                               })
                             : "https://i.imgur.com/SCv8M69.png";
 
-                        let info = { ...guild, iconURL } as any;
+                        let info = { iconURL, ...(guild.toJSON() as any) };
 
                         if (fetchDb) {
                             const db = await database.guilds.get(guild);
