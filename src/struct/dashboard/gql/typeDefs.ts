@@ -51,7 +51,7 @@ type Query {
     user(userId: String!, fetchDb: Boolean): User!
     userCard(userId: String!): User!
     users(fetchDb: Boolean, first: Int, offset: Int): [User]!
-    userGuilds(auth: String!, fetchDb: Boolean): [Guild]!
+    userGuilds(auth: String!, fetchDb: Boolean, first: Int, offset: Int): [Guild]!
 
     member(guildId: String!, memberId: String!, fetchDb: Boolean): Member! @rateLimit(limit: 5, duration: 60)
     members(guildId: String!, fetchDb: Boolean, first: Int, offset: Int): [Member]!

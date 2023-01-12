@@ -92,7 +92,7 @@ export default {
             try {
                 const guildsCache = client.guilds.cache
                     .toJSON()
-                    .slice(first, offset);
+                    .slice(offset, first);
 
                 const guilds = await Promise.all(
                     guildsCache.map(async (guild) => {

@@ -30,7 +30,12 @@ export default class Auth {
         return await this.oauth.getUser(auth.token.access_token);
     }
 
-    async getUserGuilds(auth: string, db?: boolean) {
+    async getUserGuilds(
+        auth: string,
+        db?: boolean,
+        first?: number,
+        offset?: number
+    ) {
         if (!auth) throw new GraphQLError("User not logged in");
 
         const {
@@ -81,7 +86,7 @@ export default class Auth {
                 return info;
             });
 
-        return Promise.all(guilds);
+        return (await Promise.all(guilds)).slice(offset, first);
     }
 
     async checkToken(req: Request) {
